@@ -1,5 +1,23 @@
-
-<style>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWR Нормативы — пауэрлифтинг</title>
+    <meta name="description" content="Нормативы по пауэрлифтингу: жим, присед, тяга, троеборье. ФПР, WRPF, НАП, СПР. Разряды МСМК, МС, КМС, I, II, III.">
+    
+    <!-- ===== FAVICON (иконка на вкладке) ===== -->
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="apple-touch-icon" href="favicon.png">
+    
+    <!-- ===== OPEN GRAPH (для ссылок в соцсетях) ===== -->
+    <meta property="og:title" content="PWR Нормативы по пауэрлифтингу">
+    <meta property="og:description" content="Жим, присед, тяга, троеборье. ФПР, WRPF, НАП, СПР. Все разряды в одной таблице.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nikitatopro36-dot.github.io/pwrlabs-normatives/">
+    
+    <!-- ===== СТИЛИ (твои) ===== -->
+    <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#020608}
 .pa-root{background:#04090f;min-height:100vh;font-family:'Courier New',monospace;position:relative;overflow:hidden;max-width:960px;margin:0 auto}
@@ -12,6 +30,8 @@ body{background:#020608}
 .pa-logo-main{font-size:16px;font-weight:900;color:#00ddb4;letter-spacing:1px}
 .pa-logo-sub{font-size:9px;color:#1a4a5a;letter-spacing:2px;text-transform:uppercase}
 .pa-handle{background:#041820;border:1px solid #00ddb4;border-radius:4px;padding:3px 10px;font-size:11px;color:#00ddb4;font-weight:700;letter-spacing:0.5px}
+.pa-handle a{color:#00ddb4;text-decoration:none}
+.pa-handle a:hover{color:#00ffd4;text-decoration:underline}
 .pa-badges{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .pa-badge{background:#050f1a;border:1px solid #0d2535;border-radius:3px;padding:2px 8px;font-size:9px;color:#1e5a6a;letter-spacing:1px}
 .pa-disc{display:flex;gap:2px;padding:8px 12px;background:#030810;border-bottom:1px solid #080f18;overflow-x:auto;scrollbar-width:none}
@@ -59,9 +79,13 @@ body{background:#020608}
 .pa-footer{padding:5px 12px 8px;border-top:1px solid #060f18;background:#010608;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px}
 .pa-src{font-size:8px;color:#0d2030;line-height:1.5}
 .pa-handle-sm{font-size:9px;color:#005040;font-weight:700;letter-spacing:1px}
+.pa-handle-sm a{color:#00ddb4;text-decoration:none}
+.pa-handle-sm a:hover{color:#00ffd4;text-decoration:underline}
 .pa-nodata{padding:24px;text-align:center;color:#0d2a35;font-size:12px;line-height:1.8}
 .pa-nodata strong{color:#006050;display:block;margin-bottom:6px}
 </style>
+</head>
+<body>
 
 <div class="pa-root">
 <div class="pa-watermark" aria-hidden="true">
@@ -77,7 +101,7 @@ body{background:#020608}
   <div class="pa-badges">
     <span class="pa-badge">ЕВСК 2022–2026</span>
     <span class="pa-badge">ФПР · WRPF · СПР · НАП</span>
-    <span class="pa-handle">🤖 @PWRLAB_bot</span>
+    <span class="pa-handle"><a href="https://t.me/PWRLab_bot" target="_blank">🤖 @PWRLAB_bot</a></span>
   </div>
 </div>
 <div class="pa-corner-badge">⚡ PWRLAB</div>
@@ -109,7 +133,7 @@ body{background:#020608}
 </div>
 <div class="pa-footer">
   <div class="pa-src" id="srcNote">Источник: ФПР ЕВСК 2022–2026 (приказ Минспорта №1255 от 19.12.2022, ред. 24.01.2024) · WRPF — wrpf.pro · СПР — russia-powerlifting.ru · НАП — napdv.com, сводные таблицы frs24.ru</div>
-  <div class="pa-handle-sm">🔥 @PWRLAB_bot</div>
+  <div class="pa-handle-sm"><a href="https://t.me/PWRLab_bot" target="_blank">🔥 @PWRLAB_bot</a></div>
 </div>
 
 </div>
@@ -616,3 +640,5 @@ document.getElementById('discTabs').addEventListener('click',e=>{
 
 fillFeds();render();
 </script>
+</body>
+</html>
