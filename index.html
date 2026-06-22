@@ -9,7 +9,12 @@
     <!-- ===== FAVICON (иконка на вкладке) ===== -->
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
-    
+    <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00ddb4">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PWR Нормативы">
     <!-- ===== OPEN GRAPH (для ссылок в соцсетях) ===== -->
     <meta property="og:title" content="PWR Нормативы по пауэрлифтингу">
     <meta property="og:description" content="Жим, присед, тяга, троеборье. ФПР, WRPF, НАП, СПР. Все разряды в одной таблице.">
@@ -639,6 +644,31 @@ document.getElementById('discTabs').addEventListener('click',e=>{
 });
 
 fillFeds();render();
+</script>
+    <div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#011c20;border-top:1px solid #00ddb4;padding:10px 14px;align-items:center;gap:10px;font-family:'Courier New',monospace">
+  <span style="font-size:11px;color:#00ddb4;flex:1">📲 <b>Установить PWR</b> как приложение — работает офлайн!</span>
+  <button id="pwa-install-btn" style="background:#00ddb4;color:#010c12;border:none;border-radius:4px;padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Courier New',monospace">УСТАНОВИТЬ</button>
+  <button id="pwa-dismiss-btn" style="background:transparent;color:#1a4a5a;border:1px solid #0d2535;border-radius:4px;padding:6px 10px;font-size:10px;cursor:pointer">✕</button>
+</div>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+}
+let deferredPrompt;
+const banner = document.getElementById('pwa-banner');
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault(); deferredPrompt = e;
+  if (!localStorage.getItem('pwa-dismissed')) banner.style.display = 'flex';
+});
+document.getElementById('pwa-install-btn').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null; banner.style.display = 'none';
+});
+document.getElementById('pwa-dismiss-btn').addEventListener('click', () => {
+  banner.style.display = 'none'; localStorage.setItem('pwa-dismissed', '1');
+});
 </script>
 </body>
 </html>
