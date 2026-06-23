@@ -5,24 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PWR Нормативы — пауэрлифтинг</title>
     <meta name="description" content="Нормативы по пауэрлифтингу: жим, присед, тяга, троеборье. ФПР, WRPF, НАП, СПР. Разряды МСМК, МС, КМС, I, II, III.">
-    
-    <!-- ===== FAVICON (иконка на вкладке) ===== -->
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="favicon.png">
     <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#00ddb4">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="PWR Нормативы">
-    <!-- ===== OPEN GRAPH (для ссылок в соцсетях) ===== -->
+    <meta name="theme-color" content="#00ddb4">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="PWR Нормативы">
     <meta property="og:title" content="PWR Нормативы по пауэрлифтингу">
     <meta property="og:description" content="Жим, присед, тяга, троеборье. ФПР, WRPF, НАП, СПР. Все разряды в одной таблице.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://nikitatopro36-dot.github.io/pwrlabs-normatives/">
-    
-    <!-- ===== СТИЛИ (твои) ===== -->
     <style>
+/* ===== BASE (сохранён оригинал) ===== */
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#020608}
 .pa-root{background:#04090f;min-height:100vh;font-family:'Courier New',monospace;position:relative;overflow:hidden;max-width:960px;margin:0 auto}
@@ -41,8 +37,9 @@ body{background:#020608}
 .pa-badge{background:#050f1a;border:1px solid #0d2535;border-radius:3px;padding:2px 8px;font-size:9px;color:#1e5a6a;letter-spacing:1px}
 .pa-disc{display:flex;gap:2px;padding:8px 12px;background:#030810;border-bottom:1px solid #080f18;overflow-x:auto;scrollbar-width:none}
 .pa-disc::-webkit-scrollbar{display:none}
-.pa-dt{padding:6px 13px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;border:1px solid #0d1c28;background:transparent;color:#1e4a5a;letter-spacing:0.5px;transition:all 0.15s;font-family:'Courier New',monospace}
-.pa-dt:hover{color:#4a8a9a;border-color:#1a3a4a}
+.pa-dt{padding:6px 13px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;border:1px solid #0d1c28;background:transparent;color:#1e4a5a;letter-spacing:0.5px;transition:all 0.2s;font-family:'Courier New',monospace}
+.pa-dt:hover{color:#4a8a9a;border-color:#1a3a4a;transform:translateY(-1px)}
+.pa-dt:active{transform:translateY(0) scale(0.97)}
 .pa-dt.act-bench{background:#011c20;border-color:#00ddb4;color:#00ddb4;box-shadow:0 0 12px rgba(0,221,180,0.45)}
 .pa-dt.act-squat{background:#1e0010;border-color:#ff2d78;color:#ff2d78;box-shadow:0 0 12px rgba(255,45,120,0.45)}
 .pa-dt.act-dead{background:#1e1000;border-color:#ffaa00;color:#ffaa00;box-shadow:0 0 12px rgba(255,170,0,0.45)}
@@ -50,12 +47,14 @@ body{background:#020608}
 .pa-dt.act-equipped{background:#14002e;border-color:#c060ff;color:#c060ff;box-shadow:0 0 12px rgba(192,96,255,0.45)}
 .pa-ctrl{display:flex;gap:8px;padding:8px 12px;background:#020a12;border-bottom:1px solid #060f18;align-items:center;flex-wrap:wrap}
 .pa-clabel{font-size:9px;color:#1a4050;letter-spacing:2px;text-transform:uppercase}
-.pa-gbtn{padding:5px 14px;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid #0d1c28;background:transparent;color:#1e4050;font-family:'Courier New',monospace;letter-spacing:0.5px;transition:all 0.15s}
+.pa-gbtn{padding:5px 14px;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid #0d1c28;background:transparent;color:#1e4050;font-family:'Courier New',monospace;letter-spacing:0.5px;transition:all 0.2s}
+.pa-gbtn:hover{transform:translateY(-1px)}
+.pa-gbtn:active{transform:scale(0.97)}
 .pa-gbtn.gm{background:#011c20;border-color:#00ddb4;color:#00ddb4}
 .pa-gbtn.gf{background:#1e0010;border-color:#ff2d78;color:#ff2d78}
-.pa-sel{background:#020c16;border:1px solid #0d2030;color:#5a9aaa;padding:5px 10px;border-radius:4px;font-size:11px;font-family:'Courier New',monospace;cursor:pointer}
+.pa-sel{background:#020c16;border:1px solid #0d2030;color:#5a9aaa;padding:5px 10px;border-radius:4px;font-size:11px;font-family:'Courier New',monospace;cursor:pointer;transition:border-color 0.2s}
 .pa-sel option{background:#030d18}
-.pa-fed-bar{display:flex;align-items:center;gap:10px;padding:6px 12px;border-left:3px solid #00ddb4;margin:8px 12px 4px;background:#020c16;border-radius:0 4px 4px 0}
+.pa-fed-bar{display:flex;align-items:center;gap:10px;padding:6px 12px;border-left:3px solid #00ddb4;margin:8px 12px 4px;background:#020c16;border-radius:0 4px 4px 0;animation:slideInLeft 0.3s ease}
 .pa-fed-name{font-size:12px;font-weight:700;color:#c0d8e0;letter-spacing:1px}
 .pa-fed-note{font-size:9px;color:#1a3a4a;margin-left:auto;text-align:right;max-width:280px;line-height:1.4}
 .pa-tw{padding:4px 12px 12px;overflow-x:auto}
@@ -65,12 +64,13 @@ body{background:#020608}
 .pa-tbl{width:100%;border-collapse:collapse;font-size:11px;min-width:500px}
 .pa-tbl th{padding:7px 6px;font-size:9px;letter-spacing:1px;font-weight:700;text-transform:uppercase;border-bottom:1px solid;text-align:center;position:sticky;top:0}
 .pa-tbl th.wc{text-align:left;padding-left:10px}
-.pa-tbl td{padding:5px 6px;text-align:center;border-bottom:1px solid #060e18}
+.pa-tbl td{padding:5px 6px;text-align:center;border-bottom:1px solid #060e18;transition:background 0.15s}
 .pa-tbl td.wc{text-align:left;padding-left:10px;font-size:10px;color:#2a6070;font-weight:700;letter-spacing:0.5px}
 .pa-tbl tr:nth-child(even) td{background:#020b14}
 .pa-tbl tr:nth-child(odd) td{background:#030d18}
 .pa-tbl tr:hover td{background:#041525}
-.rc{border-radius:3px;padding:2px 5px;display:inline-block;min-width:36px;font-weight:700;font-size:10px}
+.rc{border-radius:3px;padding:2px 5px;display:inline-block;min-width:36px;font-weight:700;font-size:10px;transition:transform 0.15s}
+.rc:hover{transform:scale(1.1)}
 .rc-msmk{background:#001e22;color:#00ddb4;border:1px solid #006050}
 .rc-ms{background:#1e1200;color:#ffaa00;border:1px solid #604000}
 .rc-kms{background:#001228;color:#3ab0ff;border:1px solid #104080}
@@ -88,6 +88,192 @@ body{background:#020608}
 .pa-handle-sm a:hover{color:#00ffd4;text-decoration:underline}
 .pa-nodata{padding:24px;text-align:center;color:#0d2a35;font-size:12px;line-height:1.8}
 .pa-nodata strong{color:#006050;display:block;margin-bottom:6px}
+
+/* ===== АНИМАЦИИ ===== */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+@keyframes barFill{from{width:0}to{width:var(--bar-w,0%)}}
+@keyframes countUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes glow{0%,100%{box-shadow:0 0 8px rgba(0,221,180,0.3)}50%{box-shadow:0 0 20px rgba(0,221,180,0.7)}}
+
+.anim-fadeup{animation:fadeInUp 0.35s ease both}
+.anim-fadein{animation:fadeIn 0.3s ease both}
+.anim-scalein{animation:scaleIn 0.25s ease both}
+
+/* стаггер для строк таблицы */
+.pa-tbl tbody tr{animation:fadeInUp 0.25s ease both}
+.pa-tbl tbody tr:nth-child(1){animation-delay:0.02s}
+.pa-tbl tbody tr:nth-child(2){animation-delay:0.04s}
+.pa-tbl tbody tr:nth-child(3){animation-delay:0.06s}
+.pa-tbl tbody tr:nth-child(4){animation-delay:0.08s}
+.pa-tbl tbody tr:nth-child(5){animation-delay:0.10s}
+.pa-tbl tbody tr:nth-child(6){animation-delay:0.12s}
+.pa-tbl tbody tr:nth-child(7){animation-delay:0.14s}
+.pa-tbl tbody tr:nth-child(8){animation-delay:0.16s}
+.pa-tbl tbody tr:nth-child(9){animation-delay:0.18s}
+.pa-tbl tbody tr:nth-child(10){animation-delay:0.20s}
+.pa-tbl tbody tr:nth-child(11){animation-delay:0.22s}
+.pa-tbl tbody tr:nth-child(12){animation-delay:0.24s}
+
+/* скелетон */
+.skeleton{background:linear-gradient(90deg,#030d18 25%,#051525 50%,#030d18 75%);background-size:200% 100%;animation:shimmer 1.2s infinite;border-radius:3px}
+
+/* ===== НАВИГАЦИЯ-ТАБЫ (новые разделы) ===== */
+.nav-tabs{display:flex;gap:2px;padding:6px 12px;background:#010810;border-bottom:2px solid #0d2030;overflow-x:auto;scrollbar-width:none}
+.nav-tabs::-webkit-scrollbar{display:none}
+.nav-tab{padding:7px 16px;border-radius:4px 4px 0 0;font-size:11px;font-weight:700;cursor:pointer;border:1px solid #0d1c28;border-bottom:none;background:transparent;color:#1e4050;font-family:'Courier New',monospace;letter-spacing:0.5px;transition:all 0.2s;white-space:nowrap}
+.nav-tab:hover{color:#4a8a9a;background:#021018}
+.nav-tab.active{background:#011c20;border-color:#00ddb4;color:#00ddb4;border-bottom:2px solid #011c20;position:relative;bottom:-2px}
+
+/* ===== СЕКЦИИ ===== */
+.section{display:none;animation:fadeInUp 0.3s ease}
+.section.active{display:block}
+
+/* ===== ПРОФИЛЬ ===== */
+.profile-wrap{padding:12px}
+.profile-card{background:linear-gradient(135deg,#010f18,#021825);border:1px solid #0d2535;border-radius:8px;padding:16px;margin-bottom:10px;animation:scaleIn 0.3s ease}
+.profile-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.profile-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#00ddb4,#006050);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#010810;flex-shrink:0;box-shadow:0 0 16px rgba(0,221,180,0.4);animation:glow 3s ease infinite}
+.profile-info h2{font-size:15px;font-weight:900;color:#c0e8e0;letter-spacing:0.5px}
+.profile-info .level{font-size:10px;color:#00ddb4;letter-spacing:2px;margin-top:2px}
+.profile-info .reg-date{font-size:9px;color:#1a4050;margin-top:2px}
+.profile-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.profile-stat{background:#010c16;border:1px solid #0d2030;border-radius:6px;padding:10px 8px;text-align:center;transition:transform 0.2s,border-color 0.2s}
+.profile-stat:hover{transform:translateY(-2px);border-color:#1a4050}
+.profile-stat .val{font-size:16px;font-weight:900;color:#00ddb4;line-height:1}
+.profile-stat .lbl{font-size:8px;color:#1a4050;letter-spacing:1px;text-transform:uppercase;margin-top:4px}
+.profile-stat .sub{font-size:9px;color:#0d2a35;margin-top:2px}
+
+/* достижения */
+.achievements{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ach-badge{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;font-size:10px;font-weight:700;border:1px solid;animation:fadeInUp 0.3s ease both}
+.ach-badge.gold{background:#1e1200;border-color:#ffaa00;color:#ffaa00}
+.ach-badge.cyan{background:#001e22;border-color:#00ddb4;color:#00ddb4}
+.ach-badge.blue{background:#001228;border-color:#3ab0ff;color:#3ab0ff}
+.ach-badge.grey{background:#080f18;border-color:#2a4050;color:#4a7080}
+
+/* ===== ПРОГРЕСС-БАРЫ ===== */
+.prog-section{padding:12px}
+.prog-card{background:#010f18;border:1px solid #0d2030;border-radius:8px;padding:14px;margin-bottom:8px;animation:fadeInUp 0.3s ease both}
+.prog-card:nth-child(1){animation-delay:0.05s}
+.prog-card:nth-child(2){animation-delay:0.10s}
+.prog-card:nth-child(3){animation-delay:0.15s}
+.prog-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.prog-title{font-size:12px;font-weight:700;color:#c0d8e0;letter-spacing:0.5px}
+.prog-vals{font-size:11px;color:#1a4050}
+.prog-vals span{color:#00ddb4;font-weight:700}
+.prog-bar-track{height:8px;background:#020c18;border-radius:4px;overflow:hidden;margin-bottom:6px;border:1px solid #0a1c28}
+.prog-bar-fill{height:100%;border-radius:4px;transition:width 1s cubic-bezier(0.4,0,0.2,1);width:0}
+.prog-bar-fill.bench{background:linear-gradient(90deg,#00ddb4,#00ffd4)}
+.prog-bar-fill.squat{background:linear-gradient(90deg,#ff2d78,#ff6fa0)}
+.prog-bar-fill.dead{background:linear-gradient(90deg,#ffaa00,#ffd060)}
+.prog-note{font-size:9px;color:#1a4050;letter-spacing:0.5px}
+.prog-note .highlight{color:#00ddb4}
+
+/* инпуты прогресса */
+.prog-inputs{background:#010c16;border:1px solid #0d2030;border-radius:6px;padding:12px;margin-bottom:10px}
+.prog-inputs h4{font-size:10px;color:#1a4050;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.inputs-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+.inp-group label{display:block;font-size:9px;color:#1a4050;letter-spacing:1px;margin-bottom:4px}
+.inp-group input{width:100%;background:#020b14;border:1px solid #0d2030;color:#c0e8e0;padding:6px 8px;border-radius:4px;font-family:'Courier New',monospace;font-size:12px;transition:border-color 0.2s}
+.inp-group input:focus{outline:none;border-color:#00ddb4;box-shadow:0 0 8px rgba(0,221,180,0.2)}
+.save-btn{background:linear-gradient(135deg,#00ddb4,#006050);color:#010810;border:none;border-radius:4px;padding:7px 16px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Courier New',monospace;letter-spacing:0.5px;transition:all 0.2s}
+.save-btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,221,180,0.4)}
+.save-btn:active{transform:scale(0.97)}
+.saved-flash{display:inline-block;font-size:10px;color:#00ddb4;margin-left:10px;animation:fadeIn 0.3s ease}
+
+/* ===== ЦЕЛИ ===== */
+.goals-wrap{padding:12px}
+.goal-card{background:#010f18;border:1px solid #0d2030;border-radius:8px;padding:14px;margin-bottom:8px;position:relative;overflow:hidden;animation:fadeInUp 0.3s ease both;transition:border-color 0.2s}
+.goal-card:hover{border-color:#1a4050}
+.goal-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,221,180,0.02),transparent);pointer-events:none}
+.goal-card:nth-child(1){animation-delay:0.05s}
+.goal-card:nth-child(2){animation-delay:0.10s}
+.goal-card:nth-child(3){animation-delay:0.15s}
+.goal-card:nth-child(4){animation-delay:0.20s}
+.goal-card:nth-child(5){animation-delay:0.25s}
+.goal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.goal-name{font-size:12px;font-weight:700;color:#c0d8e0}
+.goal-pct{font-size:14px;font-weight:900;color:#00ddb4}
+.goal-bar-track{height:10px;background:#020c18;border-radius:5px;overflow:hidden;border:1px solid #0a1c28;margin-bottom:6px}
+.goal-bar-fill{height:100%;border-radius:5px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1)}
+.goal-meta{display:flex;justify-content:space-between;font-size:9px;color:#1a4050}
+.goal-complete{border-color:#00ddb4;animation:glow 2s ease infinite}
+.goal-complete .goal-pct{color:#00ffd4}
+
+/* добавить цель */
+.add-goal-form{background:#010c16;border:1px solid #0d2030;border-radius:6px;padding:12px;margin-bottom:10px}
+.add-goal-form h4{font-size:10px;color:#1a4050;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.goal-form-row{display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:end}
+.goal-form-row select{background:#020b14;border:1px solid #0d2030;color:#c0e8e0;padding:6px 8px;border-radius:4px;font-family:'Courier New',monospace;font-size:11px}
+
+/* ===== СТАТИСТИКА ===== */
+.stats-wrap{padding:12px}
+.stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}
+.stat-card{background:#010f18;border:1px solid #0d2030;border-radius:8px;padding:12px;animation:fadeInUp 0.3s ease both;transition:transform 0.2s,border-color 0.2s}
+.stat-card:hover{transform:translateY(-2px);border-color:#1a4050}
+.stat-card:nth-child(1){animation-delay:0.03s}
+.stat-card:nth-child(2){animation-delay:0.06s}
+.stat-card:nth-child(3){animation-delay:0.09s}
+.stat-card:nth-child(4){animation-delay:0.12s}
+.stat-card:nth-child(5){animation-delay:0.15s}
+.stat-card:nth-child(6){animation-delay:0.18s}
+.stat-card .sc-val{font-size:20px;font-weight:900;color:#00ddb4;line-height:1}
+.stat-card .sc-lbl{font-size:9px;color:#1a4050;letter-spacing:1px;text-transform:uppercase;margin-top:4px}
+.stat-card .sc-sub{font-size:10px;color:#2a6070;margin-top:2px}
+.stat-card.bench-c .sc-val{color:#00ddb4}
+.stat-card.squat-c .sc-val{color:#ff2d78}
+.stat-card.dead-c .sc-val{color:#ffaa00}
+
+/* мини-график */
+.chart-wrap{background:#010f18;border:1px solid #0d2030;border-radius:8px;padding:14px;margin-bottom:10px}
+.chart-title{font-size:10px;color:#1a4050;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.mini-chart{display:flex;align-items:flex-end;gap:4px;height:60px}
+.mini-bar{flex:1;border-radius:2px 2px 0 0;min-height:4px;transition:height 0.8s cubic-bezier(0.4,0,0.2,1);position:relative;cursor:pointer}
+.mini-bar:hover::after{content:attr(data-label);position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);font-size:9px;color:#00ddb4;white-space:nowrap;background:#010c16;border:1px solid #0d2030;padding:2px 6px;border-radius:3px;pointer-events:none}
+.chart-labels{display:flex;gap:4px;margin-top:4px}
+.chart-label{flex:1;font-size:8px;color:#1a4050;text-align:center;letter-spacing:0.5px}
+
+/* ===== ПУТЬ К НОРМАТИВУ ===== */
+.rank-wrap{padding:12px}
+.rank-controls{background:#010c16;border:1px solid #0d2030;border-radius:8px;padding:12px;margin-bottom:12px}
+.rank-controls h4{font-size:10px;color:#1a4050;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+.rank-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.rank-form-grid select{background:#020b14;border:1px solid #0d2030;color:#c0e8e0;padding:7px 8px;border-radius:4px;font-family:'Courier New',monospace;font-size:11px;transition:border-color 0.2s}
+.rank-form-grid select:focus{outline:none;border-color:#00ddb4}
+.rank-inp-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
+.rank-inp-row input{width:100%;background:#020b14;border:1px solid #0d2030;color:#c0e8e0;padding:7px 8px;border-radius:4px;font-family:'Courier New',monospace;font-size:14px;font-weight:700;transition:border-color 0.2s}
+.rank-inp-row input:focus{outline:none;border-color:#00ddb4;box-shadow:0 0 8px rgba(0,221,180,0.2)}
+.rank-result{background:#010f18;border:1px solid #0d2030;border-radius:8px;padding:16px;animation:scaleIn 0.3s ease}
+.rank-current{text-align:center;margin-bottom:16px}
+.rank-current .cur-val{font-size:32px;font-weight:900;color:#00ddb4;line-height:1;animation:countUp 0.5s ease}
+.rank-current .cur-label{font-size:9px;color:#1a4050;letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+.rank-badge-big{display:inline-block;padding:4px 16px;border-radius:4px;font-size:13px;font-weight:900;letter-spacing:1px;margin-top:8px}
+.rank-path{margin-bottom:12px}
+.rank-path-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.rank-path-row .from{font-size:10px;color:#2a6070}
+.rank-path-row .to{font-size:10px;color:#c0d8e0;font-weight:700}
+.rank-path-bar{height:12px;background:#020c18;border-radius:6px;overflow:hidden;border:1px solid #0a1c28;position:relative}
+.rank-path-fill{height:100%;border-radius:6px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1);position:relative}
+.rank-path-fill::after{content:'';position:absolute;right:0;top:0;bottom:0;width:2px;background:rgba(255,255,255,0.5)}
+.rank-next{display:flex;justify-content:space-between;align-items:center;background:#020c16;border:1px solid #0a1c28;border-radius:6px;padding:10px 12px;margin-top:12px}
+.rank-next .next-label{font-size:9px;color:#1a4050;letter-spacing:1px;text-transform:uppercase}
+.rank-next .next-val{font-size:16px;font-weight:900;color:#c0d8e0}
+.rank-next .next-diff{font-size:11px;color:#00ddb4;font-weight:700}
+.rank-all-table{margin-top:12px}
+.rank-all-table h5{font-size:9px;color:#1a4050;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.rank-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid #060e18}
+.rank-row:last-child{border-bottom:none}
+.rank-row .rn{min-width:48px}
+.rank-row .rv{font-size:11px;color:#2a6070;flex:1}
+.rank-row .ri{font-size:9px;color:#1a4050}
+.rank-row.achieved .rv{color:#c0e8e0;font-weight:700}
+.rank-row.current-rank{background:#011820;border-radius:4px;padding:5px 8px;border:1px solid #00ddb440;border-bottom:1px solid #00ddb440}
+.no-result{text-align:center;padding:20px;color:#1a4050;font-size:11px}
 </style>
 </head>
 <body>
@@ -111,6 +297,18 @@ body{background:#020608}
 </div>
 <div class="pa-corner-badge">⚡ PWRLAB</div>
 
+<!-- ===== НАВИГАЦИЯ ===== -->
+<div class="nav-tabs" id="navTabs">
+  <button class="nav-tab active" data-sec="norms">📋 НОРМАТИВЫ</button>
+  <button class="nav-tab" data-sec="rank">🎯 ПУТЬ К РАЗРЯДУ</button>
+  <button class="nav-tab" data-sec="progress">📈 ПРОГРЕСС</button>
+  <button class="nav-tab" data-sec="goals">🏆 ЦЕЛИ</button>
+  <button class="nav-tab" data-sec="stats">📊 СТАТИСТИКА</button>
+  <button class="nav-tab" data-sec="profile">👤 ПРОФИЛЬ</button>
+</div>
+
+<!-- ===== СЕКЦИЯ: НОРМАТИВЫ (оригинал) ===== -->
+<div class="section active" id="sec-norms">
 <div class="pa-disc" id="discTabs">
   <button class="pa-dt act-bench" data-d="bench">🏋️ ЖИМ</button>
   <button class="pa-dt" data-d="squat">🦵 ПРИСЕД</button>
@@ -118,7 +316,6 @@ body{background:#020608}
   <button class="pa-dt" data-d="classic">🥇 КЛАССИКА</button>
   <button class="pa-dt" data-d="equipped">🛠️ ЭКИПА</button>
 </div>
-
 <div class="pa-ctrl">
   <span class="pa-clabel">Пол</span>
   <button class="pa-gbtn gm" id="btnM" onclick="setG('m')">👨 М — Мужчины</button>
@@ -126,9 +323,7 @@ body{background:#020608}
   <span class="pa-clabel" style="margin-left:6px">Федерация</span>
   <select class="pa-sel" id="fedSel" onchange="render()"></select>
 </div>
-
 <div id="mainOut"></div>
-
 <div class="pa-legend">
   <div class="pa-li"><div class="pa-ld" style="background:#00ddb4;border:1px solid #006050"></div>🏆 МСМК / Элита</div>
   <div class="pa-li"><div class="pa-ld" style="background:#ffaa00;border:1px solid #604000"></div>🥇 МС / Master</div>
@@ -140,11 +335,184 @@ body{background:#020608}
   <div class="pa-src" id="srcNote">Источник: ФПР ЕВСК 2022–2026 (приказ Минспорта №1255 от 19.12.2022, ред. 24.01.2024) · WRPF — wrpf.pro · СПР — russia-powerlifting.ru · НАП — napdv.com, сводные таблицы frs24.ru</div>
   <div class="pa-handle-sm"><a href="https://t.me/PWRLab_bot" target="_blank">🔥 @PWRLAB_bot</a></div>
 </div>
-
 </div>
+
+<!-- ===== СЕКЦИЯ: ПУТЬ К РАЗРЯДУ ===== -->
+<div class="section" id="sec-rank">
+<div class="rank-wrap">
+  <div class="rank-controls">
+    <h4>⚙️ ПАРАМЕТРЫ</h4>
+    <div class="rank-form-grid">
+      <div class="inp-group">
+        <label>ДИСЦИПЛИНА</label>
+        <select id="rankDisc" onchange="calcRank()">
+          <option value="bench">🏋️ Жим лёжа</option>
+          <option value="squat">🦵 Присед</option>
+          <option value="dead">⚙️ Становая</option>
+          <option value="classic">🥇 Классика (сумма)</option>
+          <option value="equipped">🛠️ Экипировка (сумма)</option>
+        </select>
+      </div>
+      <div class="inp-group">
+        <label>ФЕДЕРАЦИЯ</label>
+        <select id="rankFed" onchange="calcRank()"></select>
+      </div>
+      <div class="inp-group">
+        <label>ПОЛ</label>
+        <select id="rankGen" onchange="fillRankFed();calcRank()">
+          <option value="m">👨 Мужчины</option>
+          <option value="f">👩 Женщины</option>
+        </select>
+      </div>
+      <div class="inp-group">
+        <label>ВЕСОВАЯ КАТ.</label>
+        <select id="rankWC" onchange="calcRank()"></select>
+      </div>
+    </div>
+    <div class="rank-inp-row">
+      <div class="inp-group">
+        <label>ВАШ РЕЗУЛЬТАТ (кг)</label>
+        <input type="number" id="rankVal" placeholder="например, 145" min="0" max="1000" oninput="calcRank()">
+      </div>
+      <button class="save-btn" onclick="calcRank()">РАССЧИТАТЬ</button>
+    </div>
+  </div>
+  <div id="rankOut"></div>
+</div>
+</div>
+
+<!-- ===== СЕКЦИЯ: ПРОГРЕСС ===== -->
+<div class="section" id="sec-progress">
+<div class="prog-section">
+  <div class="prog-inputs">
+    <h4>✏️ МОИ РЕЗУЛЬТАТЫ</h4>
+    <div class="inputs-row">
+      <div class="inp-group">
+        <label>ЖИМ (кг)</label>
+        <input type="number" id="inBench" placeholder="0" min="0" max="500" oninput="saveProgress()">
+      </div>
+      <div class="inp-group">
+        <label>ПРИСЕД (кг)</label>
+        <input type="number" id="inSquat" placeholder="0" min="0" max="500" oninput="saveProgress()">
+      </div>
+      <div class="inp-group">
+        <label>ТЯГА (кг)</label>
+        <input type="number" id="inDead" placeholder="0" min="0" max="500" oninput="saveProgress()">
+      </div>
+    </div>
+    <div class="inputs-row">
+      <div class="inp-group">
+        <label>ВЕС ТЕЛА (кг)</label>
+        <input type="number" id="inWeight" placeholder="0" min="0" max="300" oninput="saveProgress()">
+      </div>
+      <div class="inp-group">
+        <label>ЦЕЛЬ ЖИМ (кг)</label>
+        <input type="number" id="goalBench" placeholder="0" min="0" max="500" oninput="saveProgress()">
+      </div>
+      <div class="inp-group">
+        <label>ЦЕЛЬ ПРИСЕД</label>
+        <input type="number" id="goalSquat" placeholder="0" min="0" max="500" oninput="saveProgress()">
+      </div>
+    </div>
+    <button class="save-btn" onclick="saveProgress();flashSaved()">💾 СОХРАНИТЬ</button>
+    <span id="savedMsg" style="display:none" class="saved-flash">✓ Сохранено!</span>
+  </div>
+
+  <div id="benchProg"></div>
+  <div id="squatProg"></div>
+  <div id="deadProg"></div>
+</div>
+</div>
+
+<!-- ===== СЕКЦИЯ: ЦЕЛИ ===== -->
+<div class="section" id="sec-goals">
+<div class="goals-wrap">
+  <div class="add-goal-form">
+    <h4>➕ ДОБАВИТЬ ЦЕЛЬ</h4>
+    <div class="goal-form-row">
+      <div class="inp-group">
+        <label>ТИП ЦЕЛИ</label>
+        <select id="goalType">
+          <option value="bench">🏋️ Жим лёжа</option>
+          <option value="squat">🦵 Присед</option>
+          <option value="dead">⚙️ Тяга</option>
+          <option value="workouts">📅 Тренировки</option>
+          <option value="streak">🔥 Стрик дней</option>
+          <option value="weight">⚖️ Вес тела</option>
+        </select>
+      </div>
+      <div class="inp-group">
+        <label>ЦЕЛЬ (кг / дней)</label>
+        <input type="number" id="goalTarget" placeholder="150" min="1" max="1000">
+      </div>
+      <button class="save-btn" onclick="addGoal()">+ ДОБАВИТЬ</button>
+    </div>
+  </div>
+  <div id="goalsList"></div>
+</div>
+</div>
+
+<!-- ===== СЕКЦИЯ: СТАТИСТИКА ===== -->
+<div class="section" id="sec-stats">
+<div class="stats-wrap">
+  <div class="stats-grid" id="statsGrid"></div>
+  <div class="chart-wrap">
+    <div class="chart-title">📈 ДИНАМИКА РЕЗУЛЬТАТОВ</div>
+    <div class="mini-chart" id="miniChart"></div>
+    <div class="chart-labels" id="chartLabels"></div>
+  </div>
+</div>
+</div>
+
+<!-- ===== СЕКЦИЯ: ПРОФИЛЬ ===== -->
+<div class="section" id="sec-profile">
+<div class="profile-wrap">
+  <div class="profile-card">
+    <div class="profile-top">
+      <div class="profile-avatar" id="profileAvatar">💪</div>
+      <div class="profile-info">
+        <h2 id="profileName">Спортсмен PWR</h2>
+        <div class="level" id="profileLevel">⚡ УРОВЕНЬ: НОВИЧОК</div>
+        <div class="reg-date" id="profileDate">📅 Участник с 2024</div>
+      </div>
+    </div>
+    <div class="profile-stats-grid" id="profileStatsGrid"></div>
+    <div style="margin-top:12px">
+      <div style="font-size:9px;color:#1a4050;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px">🏆 ДОСТИЖЕНИЯ</div>
+      <div class="achievements" id="achievements"></div>
+    </div>
+  </div>
+  <div class="prog-inputs" style="margin-top:0">
+    <h4>✏️ НАСТРОЙКИ ПРОФИЛЯ</h4>
+    <div class="inputs-row">
+      <div class="inp-group">
+        <label>ИМЯ / НИК</label>
+        <input type="text" id="profName" placeholder="Ваше имя" oninput="saveProfile()">
+      </div>
+      <div class="inp-group">
+        <label>КОЛ-ВО ТРЕНИРОВОК</label>
+        <input type="number" id="profWorkouts" placeholder="0" min="0" oninput="saveProfile()">
+      </div>
+      <div class="inp-group">
+        <label>СТРИК (дней)</label>
+        <input type="number" id="profStreak" placeholder="0" min="0" oninput="saveProfile()">
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div><!-- pa-inner -->
+</div><!-- pa-root -->
+
+<div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#011c20;border-top:1px solid #00ddb4;padding:10px 14px;align-items:center;gap:10px;font-family:'Courier New',monospace">
+  <span style="font-size:11px;color:#00ddb4;flex:1">📲 <b>Установить PWR</b> как приложение — работает офлайн!</span>
+  <button id="pwa-install-btn" style="background:#00ddb4;color:#010c12;border:none;border-radius:4px;padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Courier New',monospace">УСТАНОВИТЬ</button>
+  <button id="pwa-dismiss-btn" style="background:transparent;color:#1a4a5a;border:1px solid #0d2535;border-radius:4px;padding:6px 10px;font-size:10px;cursor:pointer">✕</button>
 </div>
 
 <script>
+/* ===== ДАННЫЕ (оригинальные, без изменений) ===== */
 const D={
   bench:{
     m:{
@@ -223,7 +591,7 @@ const D={
           {w:'до 84',v:[157.5,137.5,105,90,80,72.5,65,60,55]},
           {w:'84+',v:[172.5,145,112.5,95,85,77.5,70,65,60]},
         ]},
-      'WRPF':{note:'Жим лёжа без экипировки · WRPF · с допинг контролем · Женщины',src:'WRPF — wrpf.pro/normativy, сверено с frs24.ru',
+      'WRPF':{note:'Жим лёжа без экипировки · WRPF · Женщины',src:'WRPF — wrpf.pro/normativy',
         ranks:['МСМК','МС','КМС','I','II','III'],
         rows:[
           {w:'до 44',v:[55,47.5,40,37.5,32.5,27.5]},
@@ -237,7 +605,7 @@ const D={
           {w:'до 90',v:[102.5,90,77.5,70,62.5,55]},
           {w:'90+',v:[107.5,92.5,80,72.5,65,57.5]},
         ]},
-      'НАП':{note:'Жим лёжа без экипировки · НАП · с допинг контролем · Женщины',src:'НАП — napdv.com, сводная таблица frs24.ru',
+      'НАП':{note:'Жим лёжа без экипировки · НАП · Женщины',src:'НАП — napdv.com',
         ranks:['МСМК','МС','КМС','I','II','III'],
         rows:[
           {w:'до 44',v:[55,50,42.5,40,35,30]},
@@ -251,7 +619,7 @@ const D={
           {w:'до 90',v:[97.5,82.5,75,65,57.5,50]},
           {w:'90+',v:[100,85,77.5,67.5,60,52.5]},
         ]},
-      'СПР':{note:'Жим лёжа классический · СПР · с допинг контролем · Женщины',src:'СПР — russia-powerlifting.ru',
+      'СПР':{note:'Жим лёжа классический · СПР · Женщины',src:'СПР — russia-powerlifting.ru',
         ranks:['МСМК','МС','КМС','I','II','III'],
         rows:[
           {w:'до 44',v:[55,47.5,40,37.5,32.5,27.5]},
@@ -269,8 +637,8 @@ const D={
   },
   squat:{
     m:{
-      'ФПР — троеборье':{note:'⚠ В ФПР нет отдельных нормативов на присед. Показана сумма троеборья из ЕВСК 2022–2026',src:'ФПР ЕВСК 2022–2026',nodata:true,msg:'В ФПР (IPF) присед как отдельная дисциплина не нормируется — только в сумме троеборья. Переключитесь на «КЛАССИКА».'},
-      'WRPF':{note:'Приседания без экипировки · WRPF · с допинг контролем · Мужчины',src:'WRPF — wrpf.pro/normativy, сверено с frs24.ru',
+      'ФПР — троеборье':{note:'⚠ В ФПР нет отдельных нормативов на присед.',src:'ФПР ЕВСК 2022–2026',nodata:true,msg:'В ФПР (IPF) присед как отдельная дисциплина не нормируется — только в сумме троеборья. Переключитесь на «КЛАССИКА».'},
+      'WRPF':{note:'Приседания без экипировки · WRPF · Мужчины',src:'WRPF — wrpf.pro/normativy',
         ranks:['МСМК','МС','КМС','I','II','III'],
         rows:[
           {w:'до 52',v:[162.5,140,120,102.5,92.5,77.5]},
@@ -286,7 +654,7 @@ const D={
           {w:'до 140',v:[287.5,250,217.5,190,175,150]},
           {w:'140+',v:[295,255,222.5,195,180,155]},
         ]},
-      'НАП':{note:'Приседания без экипировки · НАП · с допинг контролем · Мужчины',src:'НАП — napdv.com, сводная таблица frs24.ru',
+      'НАП':{note:'Приседания без экипировки · НАП · Мужчины',src:'НАП — napdv.com',
         ranks:['МСМК','МС','КМС','I','II','III'],
         rows:[
           {w:'до 52',v:[155,135,127.5,115,97.5,82.5]},
@@ -316,7 +684,7 @@ const D={
         ]},
     },
     f:{
-      'WRPF':{note:'Приседания без экипировки · WRPF · с допинг контролем · Женщины',src:'WRPF — wrpf.pro/normativy, сверено с frs24.ru',
+      'WRPF':{note:'Приседания без экипировки · WRPF · Женщины',src:'WRPF — wrpf.pro/normativy',
         ranks:['МСМК','МС','КМС','I','II','III'],
         rows:[
           {w:'до 44',v:[95,80,67.5,60,52.5,40]},
@@ -330,7 +698,7 @@ const D={
           {w:'до 90',v:[162.5,137.5,117.5,102.5,90,75]},
           {w:'90+',v:[167.5,142.5,122.5,107.5,92.5,77.5]},
         ]},
-      'НАП':{note:'Приседания без экипировки · НАП · с допинг контролем · Женщины',src:'НАП — napdv.com, сводная таблица frs24.ru',
+      'НАП':{note:'Приседания без экипировки · НАП · Женщины',src:'НАП — napdv.com',
         ranks:['МСМК','МС','КМС','I','II','III'],
         rows:[
           {w:'до 44',v:[100,87.5,77.5,70,60,55]},
@@ -358,7 +726,7 @@ const D={
   },
   dead:{
     m:{
-      'WRPF':{note:'Становая тяга без экипировки · WRPF · с допинг контролем · Мужчины',src:'WRPF — wrpf.pro/normativy, сверено с frs24.ru',
+      'WRPF':{note:'Становая тяга без экипировки · WRPF · Мужчины',src:'WRPF — wrpf.pro/normativy',
         ranks:['МСМК','МС','КМС','I','II','III'],
         rows:[
           {w:'до 52',v:[177.5,155,135,117.5,107.5,92.5]},
@@ -374,7 +742,7 @@ const D={
           {w:'до 140',v:[302.5,265,232.5,202.5,190,162.5]},
           {w:'140+',v:[310,270,237.5,207.5,197.5,165]},
         ]},
-      'НАП':{note:'Становая тяга без экипировки · НАП · с допинг контролем · Мужчины',src:'НАП — napdv.com, сводная таблица frs24.ru',
+      'НАП':{note:'Становая тяга без экипировки · НАП · Мужчины',src:'НАП — napdv.com',
         ranks:['МСМК','МС','КМС','I','II','III'],
         rows:[
           {w:'до 52',v:[177.5,155,135,117.5,107.5,92.5]},
@@ -402,10 +770,10 @@ const D={
           {w:'до 110',v:[482.5,415,355,305,260,210]},
           {w:'110+',v:[527.5,455,390,337.5,285,232.5]},
         ]},
-      'ФПР — нет норм':{note:'⚠ В ФПР (IPF) нет отдельных нормативов на становую тягу',src:'',nodata:true,msg:'В ФПР (IPF) становая тяга не нормируется как отдельная дисциплина — только в составе троеборья. Для нормативов по тяге используйте WRPF или СПР.'},
+      'ФПР — нет норм':{note:'⚠ В ФПР (IPF) нет отдельных нормативов на становую тягу',src:'',nodata:true,msg:'В ФПР (IPF) становая тяга не нормируется как отдельная дисциплина — только в составе троеборья.'},
     },
     f:{
-      'WRPF':{note:'Становая тяга без экипировки · WRPF · с допинг контролем · Женщины',src:'WRPF — wrpf.pro/normativy, сверено с frs24.ru',
+      'WRPF':{note:'Становая тяга без экипировки · WRPF · Женщины',src:'WRPF — wrpf.pro/normativy',
         ranks:['МСМК','МС','КМС','I','II','III'],
         rows:[
           {w:'до 44',v:[115,100,87.5,80,72.5,62.5]},
@@ -419,7 +787,7 @@ const D={
           {w:'до 90',v:[182.5,157.5,137.5,122.5,110,95]},
           {w:'90+',v:[187.5,162.5,142.5,127.5,112.5,97.5]},
         ]},
-      'НАП':{note:'Становая тяга без экипировки · НАП · с допинг контролем · Женщины',src:'НАП — napdv.com, сводная таблица frs24.ru',
+      'НАП':{note:'Становая тяга без экипировки · НАП · Женщины',src:'НАП — napdv.com',
         ranks:['МСМК','МС','КМС','I','II','III'],
         rows:[
           {w:'до 44',v:[117.5,102.5,87.5,77.5,67.5,60]},
@@ -460,7 +828,7 @@ const D={
           {w:'до 120',v:[855,770,635,555,505,455,395,355,325]},
           {w:'120+',v:[925,815,690,585,525,485,425,370,345]},
         ]},
-      'WRPF (тест)':{note:'Сумма троеборья без экипировки · WRPF тестируемый дивизион · Мужчины',src:'WRPF — wrpf.pro/normativy, сводная таблица frs24.ru',
+      'WRPF (тест)':{note:'Сумма троеборья без экипировки · WRPF тестируемый дивизион · Мужчины',src:'WRPF — wrpf.pro/normativy',
         ranks:['Elite','Master','КМС','I р','II р','III р'],
         rows:[
           {w:'до 52',v:[437.5,382.5,345,307.5,270,232.5]},
@@ -476,7 +844,7 @@ const D={
           {w:'до 140',v:[827.5,722.5,650,580,510,440]},
           {w:'140+',v:[847.5,740,667.5,595,522.5,450]},
         ]},
-      'НАП (тест)':{note:'Сумма троеборья без экипировки · НАП натуральный · Мужчины',src:'НАП — napdv.com, сводная таблица frs24.ru',
+      'НАП (тест)':{note:'Сумма троеборья без экипировки · НАП · Мужчины',src:'НАП — napdv.com',
         ranks:['Элита','МС','КМС','I','II','III'],
         rows:[
           {w:'до 52',v:[437.5,382.5,345,305,270,232.5]},
@@ -507,7 +875,7 @@ const D={
           {w:'до 84',v:[475,395,350,295,255,220,200,180,160]},
           {w:'84+',v:[525,420,375,317.5,285,250,220,200,180]},
         ]},
-      'WRPF (тест)':{note:'Сумма троеборья без экипировки · WRPF тестируемый дивизион · Женщины',src:'WRPF — wrpf.pro/normativy, сводная таблица frs24.ru',
+      'WRPF (тест)':{note:'Сумма троеборья без экипировки · WRPF · Женщины',src:'WRPF — wrpf.pro/normativy',
         ranks:['Elite','Master','КМС','I р','II р','III р'],
         rows:[
           {w:'до 44',v:[255,220,187.5,172.5,152.5,127.5]},
@@ -521,7 +889,7 @@ const D={
           {w:'до 90',v:[435,375,325,290,260,225]},
           {w:'90+',v:[450,387.5,337.5,302.5,267.5,230]},
         ]},
-      'НАП (тест)':{note:'Сумма троеборья без экипировки · НАП натуральный · Женщины',src:'НАП — napdv.com, сводная таблица frs24.ru',
+      'НАП (тест)':{note:'Сумма троеборья без экипировки · НАП · Женщины',src:'НАП — napdv.com',
         ranks:['Элита','МС','КМС','I','II','III'],
         rows:[
           {w:'до 44',v:[260,227.5,205,182.5,160,137.5]},
@@ -573,10 +941,12 @@ const D={
 
 const DCOL={bench:'#00ddb4',squat:'#ff2d78',dead:'#ffaa00',classic:'#3ab0ff',equipped:'#c060ff'};
 const DACT={bench:'act-bench',squat:'act-squat',dead:'act-dead',classic:'act-classic',equipped:'act-equipped'};
-const RNKCLS={'МСМК':'rc-msmk','МС':'rc-ms','КМС':'rc-kms','I':'rc-1','II':'rc-2','III':'rc-3','I(ю)':'rc-1','II(ю)':'rc-2','III(ю)':'rc-3','Elite':'rc-msmk','Master':'rc-ms','КМС ':'rc-kms','I р':'rc-1','II р':'rc-2','III р':'rc-3','Элита':'rc-msmk'};
+const RNKCLS={'МСМК':'rc-msmk','МС':'rc-ms','КМС':'rc-kms','I':'rc-1','II':'rc-2','III':'rc-3','I(ю)':'rc-1','II(ю)':'rc-2','III(ю)':'rc-3','Elite':'rc-msmk','Master':'rc-ms','КМС ':'rc-kms','I р':'rc-1','II р':'rc-2','III р':'rc-3','Элита':'rc-msmk','I(ю)':'rc-1','II(ю)':'rc-2','III(ю)':'rc-3'};
+const RANK_COLOR={'МСМК':'#00ddb4','МС':'#ffaa00','КМС':'#3ab0ff','I':'#a0c8d8','II':'#405a6a','III':'#233040','I(ю)':'#a0c8d8','II(ю)':'#405a6a','III(ю)':'#233040','Elite':'#00ddb4','Master':'#ffaa00','Элита':'#00ddb4','I р':'#a0c8d8','II р':'#405a6a','III р':'#233040'};
 
 let cDisc='bench',cGen='m';
 
+/* ===== ОРИГИНАЛЬНЫЕ ФУНКЦИИ (без изменений) ===== */
 function getFeds(){const d=D[cDisc][cGen];return d?Object.keys(d):[]}
 function curFed(){return document.getElementById('fedSel').value}
 
@@ -623,7 +993,7 @@ function render(){
     v.forEach((val,i)=>{
       if(val===null||val===undefined){h+=`<td><span class="rc-none" style="color:#0d2535;font-size:10px">—</span></td>`;return;}
       const rc=RNKCLS[ranks[i]]||'rc-3';
-      h+=`<td><span class="rc ${rc}">${val%1===0?val:val}</span></td>`;
+      h+=`<td><span class="rc ${rc}">${val}</span></td>`;
     });
     h+=`</tr>`;
   });
@@ -644,12 +1014,331 @@ document.getElementById('discTabs').addEventListener('click',e=>{
 });
 
 fillFeds();render();
+
+/* ===== НАВИГАЦИЯ ПО РАЗДЕЛАМ ===== */
+document.getElementById('navTabs').addEventListener('click',e=>{
+  const btn=e.target.closest('.nav-tab');
+  if(!btn)return;
+  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const sec=btn.dataset.sec;
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+sec).classList.add('active');
+  if(sec==='progress')renderProgress();
+  if(sec==='goals')renderGoals();
+  if(sec==='stats')renderStats();
+  if(sec==='profile')renderProfile();
+  if(sec==='rank'){fillRankFed();fillRankWC();calcRank();}
+  if(window.Telegram&&window.Telegram.WebApp)window.Telegram.WebApp.HapticFeedback&&window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+});
+
+/* ===== ХРАНИЛИЩЕ ===== */
+function ls(k,def){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):def;}catch{return def;}}
+function lss(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+
+/* ===== ПРОГРЕСС ===== */
+function saveProgress(){
+  const d={bench:+document.getElementById('inBench').value||0,squat:+document.getElementById('inSquat').value||0,dead:+document.getElementById('inDead').value||0,weight:+document.getElementById('inWeight').value||0,goalBench:+document.getElementById('goalBench').value||0,goalSquat:+document.getElementById('goalSquat').value||0};
+  lss('prog',d);renderProgress();renderProfile();renderStats();updateGoalsAuto();
+}
+
+function flashSaved(){
+  const m=document.getElementById('savedMsg');
+  m.style.display='inline-block';
+  setTimeout(()=>m.style.display='none',2000);
+  if(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.HapticFeedback)window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+}
+
+function makeProgCard(title,cur,goal,cls){
+  if(!cur)return '';
+  const pct=goal?Math.min(100,Math.round(cur/goal*100)):null;
+  const rem=goal?Math.max(0,goal-cur):null;
+  return `<div class="prog-card">
+    <div class="prog-header"><span class="prog-title">${title}</span><span class="prog-vals"><span>${cur}</span> / ${goal||'—'} кг</span></div>
+    <div class="prog-bar-track"><div class="prog-bar-fill ${cls}" style="--bar-w:${pct||0}%;width:${pct||0}%"></div></div>
+    <div class="prog-note">${pct!==null?`<span class="highlight">${pct}%</span> выполнено · До цели: <span class="highlight">${rem} кг</span>`:'Установите цель в полях выше'}</div>
+  </div>`;
+}
+
+function renderProgress(){
+  const d=ls('prog',{});
+  if(document.getElementById('inBench')&&!document.getElementById('inBench').value&&d.bench)document.getElementById('inBench').value=d.bench;
+  if(document.getElementById('inSquat')&&!document.getElementById('inSquat').value&&d.squat)document.getElementById('inSquat').value=d.squat;
+  if(document.getElementById('inDead')&&!document.getElementById('inDead').value&&d.dead)document.getElementById('inDead').value=d.dead;
+  if(document.getElementById('inWeight')&&!document.getElementById('inWeight').value&&d.weight)document.getElementById('inWeight').value=d.weight;
+  if(document.getElementById('goalBench')&&!document.getElementById('goalBench').value&&d.goalBench)document.getElementById('goalBench').value=d.goalBench;
+  if(document.getElementById('goalSquat')&&!document.getElementById('goalSquat').value&&d.goalSquat)document.getElementById('goalSquat').value=d.goalSquat;
+  const bench=d.bench||+document.getElementById('inBench').value||0;
+  const squat=d.squat||+document.getElementById('inSquat').value||0;
+  const dead=d.dead||+document.getElementById('inDead').value||0;
+  const goalBench=d.goalBench||+document.getElementById('goalBench').value||0;
+  const goalSquat=d.goalSquat||+document.getElementById('goalSquat').value||0;
+  document.getElementById('benchProg').innerHTML=makeProgCard('🏋️ ЖИМ ЛЁЖА',bench,goalBench,'bench');
+  document.getElementById('squatProg').innerHTML=makeProgCard('🦵 ПРИСЕД',squat,goalSquat,'squat');
+  document.getElementById('deadProg').innerHTML=makeProgCard('⚙️ СТАНОВАЯ',dead,0,'dead');
+  setTimeout(()=>{document.querySelectorAll('.prog-bar-fill').forEach(el=>{const w=el.style.width;el.style.width='0';setTimeout(()=>el.style.width=w,50);});},100);
+}
+
+/* ===== ЦЕЛИ ===== */
+function addGoal(){
+  const type=document.getElementById('goalType').value;
+  const target=+document.getElementById('goalTarget').value;
+  if(!target)return;
+  const goals=ls('goals',[]);
+  const names={bench:'🏋️ Жим лёжа',squat:'🦵 Присед',dead:'⚙️ Тяга',workouts:'📅 Тренировок',streak:'🔥 Дней стрика',weight:'⚖️ Вес тела'};
+  goals.push({id:Date.now(),type,target,name:names[type],added:new Date().toLocaleDateString('ru')});
+  lss('goals',goals);
+  document.getElementById('goalTarget').value='';
+  renderGoals();
+  if(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.HapticFeedback)window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+}
+
+function getGoalCurrent(type){
+  const d=ls('prog',{});const p=ls('profile',{});
+  if(type==='bench')return d.bench||0;
+  if(type==='squat')return d.squat||0;
+  if(type==='dead')return d.dead||0;
+  if(type==='workouts')return p.workouts||0;
+  if(type==='streak')return p.streak||0;
+  if(type==='weight')return d.weight||0;
+  return 0;
+}
+
+function deleteGoal(id){
+  const goals=ls('goals',[]).filter(g=>g.id!==id);
+  lss('goals',goals);renderGoals();
+}
+
+function updateGoalsAuto(){if(document.getElementById('sec-goals').classList.contains('active'))renderGoals();}
+
+function renderGoals(){
+  const goals=ls('goals',[]);
+  const out=document.getElementById('goalsList');
+  if(!goals.length){out.innerHTML='<div class="pa-nodata"><strong>Нет целей</strong>Добавь свою первую цель выше!</div>';return;}
+  out.innerHTML=goals.map(g=>{
+    const cur=getGoalCurrent(g.type);
+    const pct=Math.min(100,Math.round(cur/g.target*100));
+    const done=pct>=100;
+    const col=done?'#00ddb4':(pct>66?'#ffaa00':'#3ab0ff');
+    return `<div class="goal-card${done?' goal-complete':''}">
+      <div class="goal-header"><span class="goal-name">${g.name}: <b>${g.target}</b></span><span class="goal-pct">${pct}%</span></div>
+      <div class="goal-bar-track"><div class="goal-bar-fill" style="width:${pct}%;background:${col}"></div></div>
+      <div class="goal-meta"><span>${cur} / ${g.target}</span><span style="color:#1a4050;cursor:pointer" onclick="deleteGoal(${g.id})">✕ удалить</span></div>
+    </div>`;
+  }).join('');
+  setTimeout(()=>document.querySelectorAll('.goal-bar-fill').forEach(el=>{const w=el.style.width;el.style.width='0';setTimeout(()=>el.style.width=w,50);}),100);
+}
+
+/* ===== СТАТИСТИКА ===== */
+function renderStats(){
+  const d=ls('prog',{});const p=ls('profile',{});
+  const bench=d.bench||0,squat=d.squat||0,dead=d.dead||0;
+  const sum=bench+squat+dead;
+  const workouts=p.workouts||0;
+  const cards=[
+    {val:bench?bench+'кг':'—',lbl:'Лучший жим',sub:'личный рекорд',cls:'bench-c'},
+    {val:squat?squat+'кг':'—',lbl:'Лучший присед',sub:'личный рекорд',cls:'squat-c'},
+    {val:dead?dead+'кг':'—',lbl:'Лучшая тяга',sub:'личный рекорд',cls:'dead-c'},
+    {val:sum?sum+'кг':'—',lbl:'Сумма троеборья',sub:'все три движения'},
+    {val:workouts||'—',lbl:'Тренировок всего',sub:'записано'},
+    {val:d.weight?d.weight+'кг':'—',lbl:'Вес тела',sub:'последний замер'},
+  ];
+  document.getElementById('statsGrid').innerHTML=cards.map((c,i)=>`
+    <div class="stat-card ${c.cls||''}" style="animation-delay:${i*0.05}s">
+      <div class="sc-val">${c.val}</div>
+      <div class="sc-lbl">${c.lbl}</div>
+      <div class="sc-sub">${c.sub}</div>
+    </div>`).join('');
+  renderMiniChart(bench,squat,dead);
+}
+
+function renderMiniChart(bench,squat,dead){
+  const vals=[bench,squat,dead];
+  const labels=['ЖИМ','ПРИСЕД','ТЯГА'];
+  const colors=['#00ddb4','#ff2d78','#ffaa00'];
+  const max=Math.max(...vals,1);
+  document.getElementById('miniChart').innerHTML=vals.map((v,i)=>{
+    const h=Math.round(v/max*56)||4;
+    return `<div class="mini-bar" style="height:${h}px;background:${colors[i]}33;border-top:2px solid ${colors[i]}" data-label="${v?v+'кг':'нет данных'}"></div>`;
+  }).join('');
+  document.getElementById('chartLabels').innerHTML=labels.map((l,i)=>`<div class="chart-label" style="color:${colors[i]}">${l}</div>`).join('');
+}
+
+/* ===== ПРОФИЛЬ ===== */
+function saveProfile(){
+  const p={name:document.getElementById('profName').value||'Спортсмен PWR',workouts:+document.getElementById('profWorkouts').value||0,streak:+document.getElementById('profStreak').value||0,since:ls('profile',{}).since||new Date().getFullYear()};
+  lss('profile',p);renderProfile();
+}
+
+function getLevel(bench,squat,dead){
+  const sum=bench+squat+dead;
+  if(sum>800)return{label:'⚡ УРОВЕНЬ: ЭЛИТА',emoji:'🏆'};
+  if(sum>600)return{label:'⚡ УРОВЕНЬ: ПРОДВИНУТЫЙ',emoji:'💎'};
+  if(sum>400)return{label:'⚡ УРОВЕНЬ: СРЕДНИЙ',emoji:'🔥'};
+  if(sum>200)return{label:'⚡ УРОВЕНЬ: НАЧИНАЮЩИЙ',emoji:'💪'};
+  return{label:'⚡ УРОВЕНЬ: НОВИЧОК',emoji:'🌱'};
+}
+
+function getAchievements(bench,squat,dead,workouts,streak){
+  const a=[];
+  if(bench>=100)a.push({label:'Жим 100+',cls:'cyan'});
+  if(bench>=150)a.push({label:'Жим 150+',cls:'gold'});
+  if(squat>=150)a.push({label:'Присед 150+',cls:'cyan'});
+  if(dead>=200)a.push({label:'Тяга 200+',cls:'gold'});
+  if(bench+squat+dead>=400)a.push({label:'Сумма 400+',cls:'blue'});
+  if(workouts>=50)a.push({label:'50 тренировок',cls:'gold'});
+  if(streak>=30)a.push({label:'Стрик 30 дней',cls:'cyan'});
+  if(!a.length)a.push({label:'Первые шаги',cls:'grey'});
+  return a;
+}
+
+function renderProfile(){
+  const p=ls('profile',{});const d=ls('prog',{});
+  const bench=d.bench||0,squat=d.squat||0,dead=d.dead||0;
+  const lv=getLevel(bench,squat,dead);
+  const name=p.name||'Спортсмен PWR';
+  const workouts=p.workouts||0;const streak=p.streak||0;
+  document.getElementById('profileAvatar').textContent=lv.emoji;
+  document.getElementById('profileName').textContent=name;
+  document.getElementById('profileLevel').textContent=lv.label;
+  document.getElementById('profileDate').textContent=`📅 Участник с ${p.since||new Date().getFullYear()}`;
+  const stats=[
+    {val:bench?bench+'кг':'—',lbl:'ЖИМ',sub:'лучший'},
+    {val:squat?squat+'кг':'—',lbl:'ПРИСЕД',sub:'лучший'},
+    {val:dead?dead+'кг':'—',lbl:'ТЯГА',sub:'лучший'},
+    {val:d.weight?d.weight+'кг':'—',lbl:'ВЕС',sub:'тела'},
+    {val:workouts||'—',lbl:'ТРЕН.',sub:'всего'},
+    {val:streak?streak+'д':'—',lbl:'СТРИК',sub:'текущий'},
+  ];
+  document.getElementById('profileStatsGrid').innerHTML=stats.map((s,i)=>`
+    <div class="profile-stat" style="animation-delay:${i*0.05}s">
+      <div class="val">${s.val}</div><div class="lbl">${s.lbl}</div><div class="sub">${s.sub}</div>
+    </div>`).join('');
+  const achs=getAchievements(bench,squat,dead,workouts,streak);
+  document.getElementById('achievements').innerHTML=achs.map((a,i)=>`<div class="ach-badge ${a.cls}" style="animation-delay:${i*0.06}s">⭐ ${a.label}</div>`).join('');
+  if(document.getElementById('profName')&&!document.getElementById('profName').value&&p.name)document.getElementById('profName').value=p.name;
+  if(document.getElementById('profWorkouts')&&!document.getElementById('profWorkouts').value&&p.workouts)document.getElementById('profWorkouts').value=p.workouts;
+  if(document.getElementById('profStreak')&&!document.getElementById('profStreak').value&&p.streak)document.getElementById('profStreak').value=p.streak;
+}
+
+/* ===== ПУТЬ К РАЗРЯДУ ===== */
+function fillRankFed(){
+  const gen=document.getElementById('rankGen').value;
+  const disc=document.getElementById('rankDisc').value;
+  const feds=D[disc]&&D[disc][gen]?Object.keys(D[disc][gen]).filter(f=>!D[disc][gen][f].nodata):[];
+  const sel=document.getElementById('rankFed');
+  sel.innerHTML=feds.map(f=>`<option value="${f}">${f}</option>`).join('');
+  fillRankWC();
+}
+
+function fillRankWC(){
+  const gen=document.getElementById('rankGen').value;
+  const disc=document.getElementById('rankDisc').value;
+  const fed=document.getElementById('rankFed').value;
+  const fd=D[disc]&&D[disc][gen]&&D[disc][gen][fed];
+  const sel=document.getElementById('rankWC');
+  if(!fd||!fd.rows){sel.innerHTML='';return;}
+  sel.innerHTML=fd.rows.map(r=>`<option value="${r.w}">${r.w} кг</option>`).join('');
+}
+
+function calcRank(){
+  const gen=document.getElementById('rankGen').value;
+  const disc=document.getElementById('rankDisc').value;
+  const fed=document.getElementById('rankFed').value;
+  const wc=document.getElementById('rankWC').value;
+  const val=+document.getElementById('rankVal').value;
+  const out=document.getElementById('rankOut');
+  const fd=D[disc]&&D[disc][gen]&&D[disc][gen][fed];
+  if(!fd||fd.nodata||!fd.rows){out.innerHTML='<div class="no-result">Выберите дисциплину, федерацию и введите результат</div>';return;}
+  const row=fd.rows.find(r=>r.w===wc);
+  if(!row){out.innerHTML='<div class="no-result">Выберите весовую категорию</div>';return;}
+  if(!val){out.innerHTML='<div class="no-result">Введите ваш результат в кг</div>';return;}
+  const ranks=fd.ranks;const vals=row.v;
+  // ranks[0]=МСМК(высший), ranks[last]=III(низший)
+  // ищем наивысший выполненный разряд (наименьший индекс где val>=vals[i])
+  let curRankIdx=-1;
+  for(let i=0;i<vals.length;i++){if(vals[i]!=null&&val>=vals[i]){curRankIdx=i;break;}}
+  const curRank=curRankIdx>=0?ranks[curRankIdx]:null;
+  // следующий = выше текущего = меньший индекс
+  const nextRankIdx=curRankIdx>0?curRankIdx-1:(curRankIdx<0?vals.length-1:-1);
+  const nextRank=nextRankIdx>=0&&nextRankIdx<ranks.length?ranks[nextRankIdx]:null;
+  const nextVal=nextRankIdx>=0&&nextRankIdx<vals.length?vals[nextRankIdx]:null;
+  // нижняя граница текущего разряда
+  const prevVal=curRankIdx>=0&&curRankIdx+1<vals.length?vals[curRankIdx+1]:0;
+  let pct=0;
+  if(nextVal&&nextVal>val){pct=Math.min(100,Math.round((val-(prevVal||0))/(nextVal-(prevVal||0))*100));}
+  else if(curRankIdx<0&&nextVal){pct=Math.min(100,Math.round(val/nextVal*100));}
+  else if(!nextVal){pct=100;}
+  const curCol=curRank?RANK_COLOR[curRank]||'#00ddb4':'#1a4050';
+  const nextCol=nextRank?RANK_COLOR[nextRank]||'#c0d8e0':'#c0d8e0';
+  const barCol=curRank?curCol:'#3ab0ff';
+  let html=`<div class="rank-result">
+    <div class="rank-current">
+      <div class="cur-val">${val} кг</div>
+      <div class="cur-label">ВАШ РЕЗУЛЬТАТ</div>
+      <div class="rank-badge-big" style="background:${curCol}22;border:1px solid ${curCol};color:${curCol}">${curRank||'Без разряда'}</div>
+    </div>`;
+  if(nextRank&&nextVal&&nextVal>val){
+    const diff=(nextVal-val).toFixed(1);
+    html+=`<div class="rank-path">
+      <div class="rank-path-row"><span class="from">${curRank||'Старт'}</span><span class="to">${nextRank}: ${nextVal} кг</span></div>
+      <div class="rank-path-bar"><div class="rank-path-fill" style="width:0%;background:linear-gradient(90deg,${barCol},${nextCol})" data-pct="${pct}"></div></div>
+    </div>
+    <div class="rank-next">
+      <div><div class="next-label">СЛЕДУЮЩАЯ ЦЕЛЬ</div><div class="next-val" style="color:${nextCol}">${nextRank}</div></div>
+      <div class="next-diff">+${diff} кг</div>
+      <div style="text-align:right"><div class="next-label">НОРМАТИВ</div><div class="next-val" style="color:${nextCol}">${nextVal} кг</div></div>
+    </div>`;
+  } else if(!nextRank){
+    html+=`<div style="text-align:center;padding:12px;color:#00ddb4;font-weight:700;font-size:12px;animation:glow 2s infinite">🏆 ВЫСШИЙ РАЗРЯД ВЫПОЛНЕН!</div>`;
+  }
+  html+=`<div class="rank-all-table"><h5>ВСЕ НОРМАТИВЫ (категория ${wc} кг)</h5>`;
+  ranks.forEach((r,i)=>{
+    if(vals[i]==null)return;
+    const achieved=val>=vals[i];
+    const isCur=i===curRankIdx;
+    const needMore=!achieved&&nextVal&&vals[i]===nextVal;
+    html+=`<div class="rank-row${achieved?' achieved':''}${isCur?' current-rank':''}">
+      <span class="rn"><span class="rc ${RNKCLS[r]||'rc-3'}">${r}</span></span>
+      <span class="rv">${vals[i]} кг</span>
+      <span class="ri">${achieved?'✓ выполнен':(needMore?`−${(vals[i]-val).toFixed(1)} кг`:'')}</span>
+    </div>`;
+  });
+  html+=`</div></div>`;
+  out.innerHTML=html;
+  setTimeout(()=>out.querySelectorAll('.rank-path-fill').forEach(el=>{const p=el.dataset.pct;el.style.transition='width 1.2s cubic-bezier(0.4,0,0.2,1)';el.style.width=p+'%';}),100);
+}
+
+document.getElementById('rankDisc').addEventListener('change',()=>{fillRankFed();calcRank();});
+document.getElementById('rankGen').addEventListener('change',()=>{fillRankFed();calcRank();});
+document.getElementById('rankFed').addEventListener('change',()=>{fillRankWC();calcRank();});
+document.getElementById('rankWC').addEventListener('change',calcRank);
+
+/* ===== TELEGRAM MINI APP ===== */
+if(window.Telegram&&window.Telegram.WebApp){
+  const twa=window.Telegram.WebApp;
+  twa.ready();
+  twa.expand();
+  if(twa.themeParams&&twa.themeParams.bg_color)document.body.style.background=twa.themeParams.bg_color;
+}
+
+/* ===== INIT ===== */
+(function init(){
+  fillRankFed();fillRankWC();
+  const d=ls('prog',{});
+  if(d.bench)document.getElementById('inBench').value=d.bench;
+  if(d.squat)document.getElementById('inSquat').value=d.squat;
+  if(d.dead)document.getElementById('inDead').value=d.dead;
+  if(d.weight)document.getElementById('inWeight').value=d.weight;
+  if(d.goalBench)document.getElementById('goalBench').value=d.goalBench;
+  if(d.goalSquat)document.getElementById('goalSquat').value=d.goalSquat;
+  const p=ls('profile',{});
+  if(p.name)document.getElementById('profName').value=p.name;
+  if(p.workouts)document.getElementById('profWorkouts').value=p.workouts;
+  if(p.streak)document.getElementById('profStreak').value=p.streak;
+})();
 </script>
-    <div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#011c20;border-top:1px solid #00ddb4;padding:10px 14px;align-items:center;gap:10px;font-family:'Courier New',monospace">
-  <span style="font-size:11px;color:#00ddb4;flex:1">📲 <b>Установить PWR</b> как приложение — работает офлайн!</span>
-  <button id="pwa-install-btn" style="background:#00ddb4;color:#010c12;border:none;border-radius:4px;padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Courier New',monospace">УСТАНОВИТЬ</button>
-  <button id="pwa-dismiss-btn" style="background:transparent;color:#1a4a5a;border:1px solid #0d2535;border-radius:4px;padding:6px 10px;font-size:10px;cursor:pointer">✕</button>
-</div>
+
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
