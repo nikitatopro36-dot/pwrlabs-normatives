@@ -1291,7 +1291,7 @@ console.log(`Всего URL в sitemap: ${allUrls.length}`);
 // Шаг 1: придумай ключ (32+ символа, только буквы и цифры)
 // Шаг 2: создай файл <ключ>.txt в корне репо, содержимое = сам ключ
 // Шаг 3: вставь ключ в строку ниже
-const INDEXNOW_KEY = 'ВСТАВЬ_СВОЙ_КЛЮЧ_СЮДА';
+const INDEXNOW_KEY = 'a7f3k9d2m1p8q4r6s5twiofgalfhgzdr';
 
 if(process.argv.includes('--submit')){
   if(INDEXNOW_KEY === 'ВСТАВЬ_СВОЙ_КЛЮЧ_СЮДА'){
