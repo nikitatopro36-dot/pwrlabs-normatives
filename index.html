@@ -4,7 +4,6 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta name="yandex-verification" content="7f710d36dd0d9342" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PWR Нормативы — пауэрлифтинг</title>
@@ -279,19 +278,6 @@ body{background:#020608}
 .rank-row.current-rank{background:#011820;border-radius:4px;padding:5px 8px;border:1px solid #00ddb440;border-bottom:1px solid #00ddb440}
 .no-result{text-align:center;padding:20px;color:#1a4050;font-size:11px}
 </style>
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-   (function(m,e,t,r,i,k,a){
-       m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-       m[i].l=1*new Date();
-       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-   (window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=110115293', 'ym');
-
-   ym(110115293, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/110115293" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
 </head>
 <body>
 
@@ -321,6 +307,7 @@ body{background:#020608}
   <button class="nav-tab" data-sec="progress">📈 ПРОГРЕСС</button>
   <button class="nav-tab" data-sec="goals">🏆 ЦЕЛИ</button>
   <button class="nav-tab" data-sec="stats">📊 СТАТИСТИКА</button>
+  <button class="nav-tab" data-sec="calc">⚖️ КОЭФ.</button>
   <button class="nav-tab" data-sec="profile">👤 ПРОФИЛЬ</button>
 </div>
 
@@ -351,7 +338,6 @@ body{background:#020608}
 <div class="pa-footer">
   <div class="pa-src" id="srcNote">Источник: ФПР ЕВСК 2022–2026 (приказ Минспорта №1255 от 19.12.2022, ред. 24.01.2024) · WRPF — wrpf.pro · СПР — russia-powerlifting.ru · НАП — napdv.com, сводные таблицы frs24.ru</div>
   <div class="pa-handle-sm"><a href="https://t.me/PWRLab_bot" target="_blank">🔥 @PWRLAB_bot</a></div>
-  <div class="pa-handle-sm"><a href="normativy/">📊 Все нормативы по весам и разрядам</a></div>
 </div>
 </div>
 
@@ -479,6 +465,75 @@ body{background:#020608}
     <div class="mini-chart" id="miniChart"></div>
     <div class="chart-labels" id="chartLabels"></div>
   </div>
+</div>
+</div>
+
+<!-- ===== СЕКЦИЯ: КАЛЬКУЛЯТОР КОЭФФИЦИЕНТА ===== -->
+<div class="section" id="sec-calc">
+<div class="rank-wrap">
+  <div class="rank-controls">
+    <h4>⚖️ КАЛЬКУЛЯТОР WILKS / DOTS</h4>
+    <p style="font-size:10px;color:#1a4050;margin-bottom:10px;line-height:1.5">Сравни себя с другим атлетом — кто сильнее относительно своего веса</p>
+    <div class="rank-form-grid">
+      <div class="inp-group">
+        <label>ПОЛ</label>
+        <select id="calcGen">
+          <option value="m">👨 Мужчины</option>
+          <option value="f">👩 Женщины</option>
+        </select>
+      </div>
+      <div class="inp-group">
+        <label>ФОРМУЛА</label>
+        <select id="calcFormula">
+          <option value="wilks">Wilks (классика)</option>
+          <option value="dots">DOTS (IPF 2020)</option>
+        </select>
+      </div>
+    </div>
+    <div style="font-size:9px;color:#1a4050;letter-spacing:1px;margin:8px 0 6px">АТЛЕТ 1</div>
+    <div class="rank-form-grid">
+      <div class="inp-group">
+        <label>ВЕС ТЕЛА (кг)</label>
+        <input type="number" id="c1bw" placeholder="75" min="40" max="250" oninput="calcCoef()">
+      </div>
+      <div class="inp-group">
+        <label>ЖИМ (кг)</label>
+        <input type="number" id="c1bench" placeholder="100" min="0" max="500" oninput="calcCoef()">
+      </div>
+      <div class="inp-group">
+        <label>ПРИСЕД (кг)</label>
+        <input type="number" id="c1squat" placeholder="140" min="0" max="500" oninput="calcCoef()">
+      </div>
+    </div>
+    <div class="rank-form-grid" style="margin-top:6px">
+      <div class="inp-group">
+        <label>ТЯГА (кг)</label>
+        <input type="number" id="c1dead" placeholder="160" min="0" max="500" oninput="calcCoef()">
+      </div>
+    </div>
+    <div style="font-size:9px;color:#1a4050;letter-spacing:1px;margin:10px 0 6px">АТЛЕТ 2 (для сравнения)</div>
+    <div class="rank-form-grid">
+      <div class="inp-group">
+        <label>ВЕС ТЕЛА (кг)</label>
+        <input type="number" id="c2bw" placeholder="180" min="40" max="250" oninput="calcCoef()">
+      </div>
+      <div class="inp-group">
+        <label>ЖИМ (кг)</label>
+        <input type="number" id="c2bench" placeholder="335" min="0" max="500" oninput="calcCoef()">
+      </div>
+      <div class="inp-group">
+        <label>ПРИСЕД (кг)</label>
+        <input type="number" id="c2squat" placeholder="0" min="0" max="500" oninput="calcCoef()">
+      </div>
+    </div>
+    <div class="rank-form-grid" style="margin-top:6px">
+      <div class="inp-group">
+        <label>ТЯГА (кг)</label>
+        <input type="number" id="c2dead" placeholder="0" min="0" max="500" oninput="calcCoef()">
+      </div>
+    </div>
+  </div>
+  <div id="calcOut"></div>
 </div>
 </div>
 
@@ -1045,7 +1100,8 @@ document.getElementById('navTabs').addEventListener('click',e=>{
   if(sec==='progress')renderProgress();
   if(sec==='goals')renderGoals();
   if(sec==='stats')renderStats();
-  if(sec==='profile')renderProfile();
+  if(sec==='profile'){renderProfile();setTimeout(initNotifications,300);}
+  if(sec==='calc')calcCoef();
   if(sec==='rank'){fillRankFed();fillRankWC();calcRank();}
   if(window.Telegram&&window.Telegram.WebApp)window.Telegram.WebApp.HapticFeedback&&window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
 });
@@ -1332,7 +1388,144 @@ document.getElementById('rankGen').addEventListener('change',()=>{fillRankFed();
 document.getElementById('rankFed').addEventListener('change',()=>{fillRankWC();calcRank();});
 document.getElementById('rankWC').addEventListener('change',calcRank);
 
-/* ===== TELEGRAM MINI APP ===== */
+/* ===== КАЛЬКУЛЯТОР WILKS / DOTS ===== */
+function wilksCoef(bw,gen){
+  const M={a:-216.0475144,b:16.2606339,c:-0.002388645,d:-0.00113732,e:7.01863e-6,f:-1.291e-8};
+  const F={a:594.31747775582,b:-27.23842536447,c:0.82112226871,d:-0.00930733913,e:4.731582e-5,f:-9.054e-8};
+  const co=gen==='m'?M:F;
+  const x=bw;
+  const denom=co.a+co.b*x+co.c*x**2+co.d*x**3+co.e*x**4+co.f*x**5;
+  return 500/denom;
+}
+function dotsCoef(bw,gen){
+  // DOTS formula (2020)
+  const M={a:-307.75076,b:24.0900756,c:-0.1918759,d:7.391293e-4,e:-1.093e-6};
+  const F={a:-57.96288,b:13.6175032,c:-0.1126655,d:4.65098e-4,e:-7.0496e-7};
+  const co=gen==='m'?M:F;
+  const x=bw;
+  const denom=co.a+co.b*x+co.c*x**2+co.d*x**3+co.e*x**4;
+  return 500/denom;
+}
+function getScore(bw,bench,squat,dead,gen,formula){
+  if(!bw||bw<40)return null;
+  const total=(bench||0)+(squat||0)+(dead||0);
+  if(!total)return null;
+  const coef=formula==='wilks'?wilksCoef(bw,gen):dotsCoef(bw,gen);
+  return{score:+(total*coef).toFixed(1),total,coef:+coef.toFixed(4)};
+}
+function scoreLevel(score,formula){
+  // пороги одинаковые для Wilks и DOTS (приблизительно)
+  if(score>=500)return{lbl:'🌍 МИРОВОЙ КЛАСС',col:'#00ddb4'};
+  if(score>=450)return{lbl:'⚡ ЭЛИТА',col:'#00ddb4'};
+  if(score>=400)return{lbl:'🏆 ПРОДВИНУТЫЙ',col:'#ffaa00'};
+  if(score>=350)return{lbl:'💪 ХОРОШИЙ',col:'#3ab0ff'};
+  if(score>=300)return{lbl:'📈 СРЕДНИЙ',col:'#a0c8d8'};
+  if(score>=200)return{lbl:'🌱 НАЧИНАЮЩИЙ',col:'#405a6a'};
+  return{lbl:'🏁 НОВИЧОК',col:'#233040'};
+}
+function calcCoef(){
+  const gen=document.getElementById('calcGen').value;
+  const formula=document.getElementById('calcFormula').value;
+  const bw1=+document.getElementById('c1bw').value;
+  const bench1=+document.getElementById('c1bench').value||0;
+  const squat1=+document.getElementById('c1squat').value||0;
+  const dead1=+document.getElementById('c1dead').value||0;
+  const bw2=+document.getElementById('c2bw').value;
+  const bench2=+document.getElementById('c2bench').value||0;
+  const squat2=+document.getElementById('c2squat').value||0;
+  const dead2=+document.getElementById('c2dead').value||0;
+  const out=document.getElementById('calcOut');
+  const r1=getScore(bw1,bench1,squat1,dead1,gen,formula);
+  const r2=getScore(bw2,bench2,squat2,dead2,gen,formula);
+  if(!r1&&!r2){out.innerHTML='<div class="no-result">Введи вес тела и хотя бы одно упражнение</div>';return;}
+  const fname=formula==='wilks'?'Wilks':'DOTS';
+  let html='<div class="rank-result">';
+  function card(r,n){
+    if(!r)return'';
+    const lv=scoreLevel(r.score,formula);
+    return`<div style="background:#010c16;border:1px solid #0d2030;border-radius:8px;padding:14px;margin-bottom:10px">
+      <div style="font-size:9px;color:#1a4050;letter-spacing:2px;margin-bottom:8px">АТЛЕТ ${n}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div>
+          <div style="font-size:28px;font-weight:900;color:${lv.col};line-height:1">${r.score}</div>
+          <div style="font-size:9px;color:#1a4050;letter-spacing:1px;margin-top:2px">${fname} SCORE</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:11px;font-weight:700;color:${lv.col}">${lv.lbl}</div>
+          <div style="font-size:9px;color:#1a4050;margin-top:4px">Сумма: ${r.total} кг</div>
+          <div style="font-size:9px;color:#1a4050">Коэф: ${r.coef}</div>
+        </div>
+      </div>
+    </div>`;
+  }
+  html+=card(r1,1)+card(r2,2);
+  if(r1&&r2){
+    const winner=r1.score>r2.score?1:2;
+    const diff=Math.abs(r1.score-r2.score).toFixed(1);
+    const wCol=winner===1?'#00ddb4':'#ffaa00';
+    html+=`<div style="background:#011820;border:1px solid ${wCol}44;border-radius:8px;padding:14px;text-align:center">
+      <div style="font-size:11px;color:${wCol};font-weight:700">🏆 АТЛЕТ ${winner} СИЛЬНЕЕ</div>
+      <div style="font-size:9px;color:#1a4050;margin-top:4px">Разница: ${diff} очков ${fname}</div>
+      <div style="font-size:9px;color:#1a4050;margin-top:2px">Несмотря на разный вес тела — это объективное сравнение</div>
+    </div>`;
+  }
+  html+='</div>';
+  out.innerHTML=html;
+}
+
+/* ===== PWA УВЕДОМЛЕНИЯ ===== */
+const NOTIF_MSGS={
+  1:['💪 Новая неделя — новый рекорд?','Открой PWR и проверь свои нормативы!'],
+  3:['🏋️ Проверь нормативы перед тренировкой','Узнай что нужно для следующего разряда!'],
+  5:['📈 Итоги недели','Вырос ли твой результат? Проверь прогресс!'],
+};
+async function initNotifications(){
+  if(!('Notification' in window)||!('serviceWorker' in navigator))return;
+  // проверяем нужно ли показать кнопку
+  const perm=Notification.permission;
+  if(perm==='default'){
+    // добавляем кнопку в профиль если ещё не добавили
+    if(!document.getElementById('notifBtn')){
+      const wrap=document.querySelector('.profile-wrap');
+      if(wrap){
+        const btn=document.createElement('button');
+        btn.id='notifBtn';
+        btn.className='save-btn';
+        btn.style.cssText='width:100%;margin-top:10px';
+        btn.textContent='🔔 Включить уведомления (Пн/Ср/Пт)';
+        btn.onclick=requestNotifPermission;
+        wrap.appendChild(btn);
+      }
+    }
+  }
+  if(perm==='granted')scheduleNotifications();
+}
+async function requestNotifPermission(){
+  const perm=await Notification.requestPermission();
+  if(perm==='granted'){
+    scheduleNotifications();
+    document.getElementById('notifBtn')&&(document.getElementById('notifBtn').textContent='✅ Уведомления включены');
+    new Notification('PWR Нормативы',{body:'Уведомления подключены! 💪',icon:'./favicon.png'});
+  }
+}
+function scheduleNotifications(){
+  // Используем localStorage для отслеживания последнего уведомления
+  const last=+localStorage.getItem('last_notif')||0;
+  const now=Date.now();
+  const day=new Date().getDay(); // 0=вс,1=пн,3=ср,5=пт
+  const msgs=NOTIF_MSGS[day];
+  // показываем раз в день если сегодня Пн/Ср/Пт
+  if(msgs&&(now-last)>23*60*60*1000&&Notification.permission==='granted'){
+    setTimeout(()=>{
+      new Notification(msgs[0],{body:msgs[1],icon:'./favicon.png',badge:'./favicon.png'});
+      localStorage.setItem('last_notif',now);
+    },3000);
+  }
+}
+// Запуск при загрузке
+window.addEventListener('load',()=>setTimeout(initNotifications,2000));
+
+
 if(window.Telegram&&window.Telegram.WebApp){
   const twa=window.Telegram.WebApp;
   twa.ready();
@@ -1359,26 +1552,7 @@ if(window.Telegram&&window.Telegram.WebApp){
 
 <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', async () => {
-    const reg = await navigator.serviceWorker.register('./sw.js');
-
-    /* Если найдена новая версия SW — обновляемся автоматически */
-    reg.addEventListener('updatefound', () => {
-      const newSW = reg.installing;
-      newSW.addEventListener('statechange', () => {
-        if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
-          /* Новая версия готова — перезагружаем страницу чтобы получить свежий контент */
-          newSW.postMessage('SKIP_WAITING');
-          navigator.serviceWorker.addEventListener('controllerchange', () => {
-            window.location.reload();
-          });
-        }
-      });
-    });
-
-    /* Принудительная проверка обновлений каждый раз при открытии */
-    reg.update();
-  });
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
 }
 let deferredPrompt;
 const banner = document.getElementById('pwa-banner');
