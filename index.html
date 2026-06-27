@@ -1416,11 +1416,11 @@ function getScore(bw,bench,squat,dead,gen,formula){
 function scoreLevel(score,formula){
   // пороги одинаковые для Wilks и DOTS (приблизительно)
   if(score>=500)return{lbl:'🌍 МИРОВОЙ КЛАСС',col:'#00ddb4'};
-  if(score>=450)return{lbl:'⚡ ЭЛИТА',col:'#00ddb4'};
-  if(score>=400)return{lbl:'🏆 ПРОДВИНУТЫЙ',col:'#ffaa00'};
-  if(score>=350)return{lbl:'💪 ХОРОШИЙ',col:'#3ab0ff'};
-  if(score>=300)return{lbl:'📈 СРЕДНИЙ',col:'#a0c8d8'};
-  if(score>=200)return{lbl:'🌱 НАЧИНАЮЩИЙ',col:'#405a6a'};
+  if(score>=400)return{lbl:'⚡ ЭЛИТА / ТОП СОРЕВН.',col:'#00ddb4'};
+  if(score>=300)return{lbl:'🏆 ПРОДВИНУТЫЙ',col:'#ffaa00'};
+  if(score>=200)return{lbl:'💪 ХОРОШИЙ УРОВЕНЬ',col:'#3ab0ff'};
+  if(score>=150)return{lbl:'📈 СРЕДНИЙ',col:'#a0c8d8'};
+  if(score>=100)return{lbl:'🌱 НАЧИНАЮЩИЙ',col:'#405a6a'};
   return{lbl:'🏁 НОВИЧОК',col:'#233040'};
 }
 function calcCoef(){
