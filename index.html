@@ -308,6 +308,8 @@ body{background:#020608}
   <button class="nav-tab" data-sec="goals">🏆 ЦЕЛИ</button>
   <button class="nav-tab" data-sec="stats">📊 СТАТИСТИКА</button>
   <button class="nav-tab" data-sec="calc">⚖️ КОЭФ.</button>
+  <button class="nav-tab" data-sec="streak">🔥 PWR</button>
+  <button class="nav-tab" data-sec="kcal">🍽 КБЖУ</button>
   <button class="nav-tab" data-sec="profile">👤 ПРОФИЛЬ</button>
 </div>
 
@@ -537,6 +539,70 @@ body{background:#020608}
 </div>
 </div>
 
+<!-- ===== СЕКЦИЯ: СТРИК PWR ===== -->
+<div class="section" id="sec-streak">
+<div class="rank-wrap">
+  <div class="rank-controls" style="text-align:center">
+    <div id="streakFire" style="font-size:64px;margin:10px 0;animation:glow 2s infinite">🔥</div>
+    <div id="streakCount" style="font-size:48px;font-weight:900;color:#00ddb4;line-height:1">0</div>
+    <div style="font-size:10px;color:#1a4050;letter-spacing:2px;margin:4px 0 16px">ДНЕЙ ПОДРЯД</div>
+    <button id="streakBtn" onclick="doStreak()" style="background:linear-gradient(135deg,#00ddb4,#006050);color:#010810;border:none;border-radius:8px;padding:14px 32px;font-size:14px;font-weight:900;cursor:pointer;font-family:'Courier New',monospace;letter-spacing:1px;width:100%;max-width:300px;transition:all 0.2s">💪 ТРЕНИРОВКА ВЫПОЛНЕНА</button>
+    <div id="streakMsg" style="font-size:10px;color:#1a4050;margin-top:10px;letter-spacing:1px"></div>
+    <div style="margin-top:20px;background:#010c16;border:1px solid #0d2030;border-radius:8px;padding:12px">
+      <div style="font-size:9px;color:#1a4050;letter-spacing:2px;margin-bottom:10px">🏆 РЕКОРДЫ СТРИКА</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div style="text-align:center"><div id="streakBest" style="font-size:20px;font-weight:900;color:#ffaa00">0</div><div style="font-size:8px;color:#1a4050;letter-spacing:1px">ЛУЧШИЙ</div></div>
+        <div style="text-align:center"><div id="streakTotal" style="font-size:20px;font-weight:900;color:#3ab0ff">0</div><div style="font-size:8px;color:#1a4050;letter-spacing:1px">ВСЕГО ТРЕНИРОВОК</div></div>
+      </div>
+    </div>
+    <div style="margin-top:10px;background:#010c16;border:1px solid #0d2030;border-radius:8px;padding:12px">
+      <div style="font-size:9px;color:#1a4050;letter-spacing:2px;margin-bottom:8px">📅 ПОСЛЕДНИЕ 7 ДНЕЙ</div>
+      <div id="streakCalendar" style="display:flex;justify-content:center;gap:6px"></div>
+    </div>
+  </div>
+  <div style="margin-top:10px">
+    <div style="font-size:9px;color:#1a4050;letter-spacing:2px;margin-bottom:8px;padding:0 4px">⚡ КВЕСТЫ МЕСЯЦА</div>
+    <div id="questsList"></div>
+  </div>
+</div>
+</div>
+
+<!-- ===== СЕКЦИЯ: КБЖУ ===== -->
+<div class="section" id="sec-kcal">
+<div class="rank-wrap">
+  <div class="rank-controls">
+    <h4>🍽 КАЛЬКУЛЯТОР КБЖУ</h4>
+    <div class="rank-form-grid">
+      <div class="inp-group"><label>ПОЛ</label>
+        <select id="kcalGen"><option value="m">👨 Мужчина</option><option value="f">👩 Женщина</option></select>
+      </div>
+      <div class="inp-group"><label>ЦЕЛЬ</label>
+        <select id="kcalGoal"><option value="bulk">💪 Набор массы</option><option value="cut">🔥 Сушка</option><option value="keep">⚖️ Поддержание</option></select>
+      </div>
+      <div class="inp-group"><label>ВОЗРАСТ</label>
+        <input type="number" id="kcalAge" placeholder="20" min="10" max="80" oninput="calcKcal()">
+      </div>
+      <div class="inp-group"><label>ВЕС ТЕЛА (кг)</label>
+        <input type="number" id="kcalWeight" placeholder="75" min="30" max="250" oninput="calcKcal()">
+      </div>
+      <div class="inp-group"><label>РОСТ (см)</label>
+        <input type="number" id="kcalHeight" placeholder="175" min="100" max="250" oninput="calcKcal()">
+      </div>
+      <div class="inp-group"><label>АКТИВНОСТЬ</label>
+        <select id="kcalActivity" onchange="calcKcal()">
+          <option value="1.2">🛋 Сидячий</option>
+          <option value="1.375">🚶 Лёгкая (1-3 раза/нед)</option>
+          <option value="1.55" selected>🏋️ Средняя (3-5 раз/нед)</option>
+          <option value="1.725">⚡ Высокая (6-7 раз/нед)</option>
+          <option value="1.9">🔥 Очень высокая</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div id="kcalOut"></div>
+</div>
+</div>
+
 <!-- ===== СЕКЦИЯ: ПРОФИЛЬ ===== -->
 <div class="section" id="sec-profile">
 <div class="profile-wrap">
@@ -571,6 +637,25 @@ body{background:#020608}
         <input type="number" id="profStreak" placeholder="0" min="0" oninput="saveProfile()">
       </div>
     </div>
+  <div class="prog-inputs" style="margin-top:10px">
+    <h4>🔔 НАПОМИНАНИЕ О ТРЕНИРОВКЕ</h4>
+    <div class="rank-form-grid">
+      <div class="inp-group">
+        <label>ВРЕМЯ</label>
+        <input type="time" id="reminderTime" value="10:00" style="width:100%;background:#020b14;border:1px solid #0d2030;color:#c0e8e0;padding:6px 8px;border-radius:4px;font-family:'Courier New',monospace;font-size:12px">
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0">
+      <label style="display:flex;align-items:center;gap:4px;font-size:10px;color:#2a6070;cursor:pointer"><input type="checkbox" id="rd0" style="accent-color:#00ddb4"> Вс</label>
+      <label style="display:flex;align-items:center;gap:4px;font-size:10px;color:#2a6070;cursor:pointer"><input type="checkbox" id="rd1" style="accent-color:#00ddb4"> Пн</label>
+      <label style="display:flex;align-items:center;gap:4px;font-size:10px;color:#2a6070;cursor:pointer"><input type="checkbox" id="rd2" style="accent-color:#00ddb4"> Вт</label>
+      <label style="display:flex;align-items:center;gap:4px;font-size:10px;color:#2a6070;cursor:pointer"><input type="checkbox" id="rd3" style="accent-color:#00ddb4"> Ср</label>
+      <label style="display:flex;align-items:center;gap:4px;font-size:10px;color:#2a6070;cursor:pointer"><input type="checkbox" id="rd4" style="accent-color:#00ddb4"> Чт</label>
+      <label style="display:flex;align-items:center;gap:4px;font-size:10px;color:#2a6070;cursor:pointer"><input type="checkbox" id="rd5" style="accent-color:#00ddb4"> Пт</label>
+      <label style="display:flex;align-items:center;gap:4px;font-size:10px;color:#2a6070;cursor:pointer"><input type="checkbox" id="rd6" style="accent-color:#00ddb4"> Сб</label>
+    </div>
+    <button class="save-btn" onclick="saveReminder()">💾 СОХРАНИТЬ НАПОМИНАНИЕ</button>
+    <span id="reminderMsg" style="display:none;font-size:10px;color:#00ddb4;margin-left:8px" class="saved-flash">✓ Сохранено!</span>
   </div>
 </div>
 </div>
@@ -1102,6 +1187,8 @@ document.getElementById('navTabs').addEventListener('click',e=>{
   if(sec==='stats')renderStats();
   if(sec==='profile'){renderProfile();setTimeout(initNotifications,300);}
   if(sec==='calc')calcCoef();
+  if(sec==='streak'){loadStreak();}
+  if(sec==='kcal')calcKcal();
   if(sec==='rank'){fillRankFed();fillRankWC();calcRank();}
   if(window.Telegram&&window.Telegram.WebApp)window.Telegram.WebApp.HapticFeedback&&window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
 });
@@ -1255,14 +1342,36 @@ function getLevel(bench,squat,dead){
 
 function getAchievements(bench,squat,dead,workouts,streak){
   const a=[];
-  if(bench>=100)a.push({label:'Жим 100+',cls:'cyan'});
-  if(bench>=150)a.push({label:'Жим 150+',cls:'gold'});
-  if(squat>=150)a.push({label:'Присед 150+',cls:'cyan'});
-  if(dead>=200)a.push({label:'Тяга 200+',cls:'gold'});
-  if(bench+squat+dead>=400)a.push({label:'Сумма 400+',cls:'blue'});
-  if(workouts>=50)a.push({label:'50 тренировок',cls:'gold'});
-  if(streak>=30)a.push({label:'Стрик 30 дней',cls:'cyan'});
-  if(!a.length)a.push({label:'Первые шаги',cls:'grey'});
+  const s=ls('streak2',{count:0,best:0,total:0});
+  const sum=bench+squat+dead;
+  // жим
+  if(bench>=50)a.push({label:'Жим 50кг',cls:'grey'});
+  if(bench>=100)a.push({label:'Жим 100кг 💯',cls:'cyan'});
+  if(bench>=120)a.push({label:'Жим 120кг',cls:'cyan'});
+  if(bench>=150)a.push({label:'Жим 150кг 🔥',cls:'gold'});
+  if(bench>=200)a.push({label:'Жим 200кг 👑',cls:'gold'});
+  // присед
+  if(squat>=100)a.push({label:'Присед 100кг',cls:'grey'});
+  if(squat>=150)a.push({label:'Присед 150кг',cls:'cyan'});
+  if(squat>=200)a.push({label:'Присед 200кг 🔥',cls:'gold'});
+  // тяга
+  if(dead>=100)a.push({label:'Тяга 100кг',cls:'grey'});
+  if(dead>=150)a.push({label:'Тяга 150кг',cls:'cyan'});
+  if(dead>=200)a.push({label:'Тяга 200кг 🔥',cls:'gold'});
+  if(dead>=250)a.push({label:'Тяга 250кг 👑',cls:'gold'});
+  // сумма
+  if(sum>=200)a.push({label:'Сумма 200кг',cls:'grey'});
+  if(sum>=400)a.push({label:'Сумма 400кг',cls:'blue'});
+  if(sum>=600)a.push({label:'Сумма 600кг 🔥',cls:'gold'});
+  if(sum>=800)a.push({label:'Сумма 800кг 👑',cls:'gold'});
+  // стрик
+  if(s.total>=1)a.push({label:'Первая тренировка 🌱',cls:'grey'});
+  if(s.total>=10)a.push({label:'10 тренировок',cls:'grey'});
+  if(s.total>=50)a.push({label:'50 тренировок 💪',cls:'cyan'});
+  if(s.total>=100)a.push({label:'100 тренировок 🏆',cls:'gold'});
+  if(s.best>=7)a.push({label:'Стрик 7 дней 🔥',cls:'cyan'});
+  if(s.best>=30)a.push({label:'Стрик 30 дней ⚡',cls:'gold'});
+  if(!a.length)a.push({label:'Первые шаги 🌱',cls:'grey'});
   return a;
 }
 
@@ -1388,7 +1497,167 @@ document.getElementById('rankGen').addEventListener('change',()=>{fillRankFed();
 document.getElementById('rankFed').addEventListener('change',()=>{fillRankWC();calcRank();});
 document.getElementById('rankWC').addEventListener('change',calcRank);
 
-/* ===== КАЛЬКУЛЯТОР WILKS / DOTS ===== */
+/* ===== СТРИК ===== */
+function loadStreak(){
+  const s=ls('streak2',{count:0,best:0,total:0,lastDate:'',days:[]});
+  const today=new Date().toDateString();
+  const yesterday=new Date(Date.now()-86400000).toDateString();
+  // сброс если пропустил день
+  if(s.lastDate&&s.lastDate!==today&&s.lastDate!==yesterday&&s.count>0){
+    s.count=0;lss('streak2',s);
+  }
+  document.getElementById('streakCount').textContent=s.count;
+  document.getElementById('streakBest').textContent=s.best;
+  document.getElementById('streakTotal').textContent=s.total;
+  document.getElementById('streakFire').textContent=s.count>=30?'🏆':s.count>=14?'⚡':s.count>=7?'🔥':'💪';
+  const btn=document.getElementById('streakBtn');
+  const msg=document.getElementById('streakMsg');
+  if(s.lastDate===today){
+    btn.style.opacity='0.5';btn.disabled=true;
+    msg.textContent='✅ Тренировка сегодня засчитана! Возвращайся завтра';
+  } else {
+    btn.style.opacity='1';btn.disabled=false;
+    msg.textContent=s.count>0?`🔥 Не теряй стрик ${s.count} дней!`:'Нажми после тренировки!';
+  }
+  // календарь 7 дней
+  const cal=document.getElementById('streakCalendar');
+  const days=s.days||[];
+  cal.innerHTML=[...Array(7)].map((_,i)=>{
+    const d=new Date(Date.now()-i*86400000).toDateString();
+    const done=days.includes(d);
+    return`<div style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;border:1px solid ${done?'#00ddb4':'#0d2030'};background:${done?'#011c20':'#010810'}">${done?'✅':'·'}</div>`;
+  }).reverse().join('');
+  renderQuests(s);
+}
+
+function doStreak(){
+  const s=ls('streak2',{count:0,best:0,total:0,lastDate:'',days:[]});
+  const today=new Date().toDateString();
+  if(s.lastDate===today)return;
+  const yesterday=new Date(Date.now()-86400000).toDateString();
+  s.count=s.lastDate===yesterday?s.count+1:1;
+  s.best=Math.max(s.best,s.count);
+  s.total=(s.total||0)+1;
+  s.lastDate=today;
+  s.days=([...(s.days||[]),today]).slice(-30);
+  lss('streak2',s);
+  loadStreak();
+  if(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.HapticFeedback)window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+}
+
+/* ===== КВЕСТЫ ===== */
+const QUESTS=[
+  // Первые шаги
+  {id:'q_1',   name:'🌱 Первая тренировка',      check:s=>s.total>=1,   reward:'Начало пути'},
+  {id:'q_3',   name:'💧 3 тренировки',            check:s=>s.total>=3,   reward:'Втягиваешься'},
+  {id:'q_5',   name:'✊ 5 тренировок',            check:s=>s.total>=5,   reward:'Уже привычка'},
+  {id:'q_10',  name:'🔥 10 тренировок',           check:s=>s.total>=10,  reward:'10 тренировок'},
+  {id:'q_20',  name:'💪 20 тренировок',           check:s=>s.total>=20,  reward:'20 тренировок'},
+  {id:'q_30',  name:'🏅 30 тренировок',           check:s=>s.total>=30,  reward:'30 тренировок'},
+  {id:'q_50',  name:'⭐ 50 тренировок',           check:s=>s.total>=50,  reward:'50 тренировок'},
+  {id:'q_75',  name:'🌟 75 тренировок',           check:s=>s.total>=75,  reward:'75 тренировок'},
+  {id:'q_100', name:'💯 100 тренировок',          check:s=>s.total>=100, reward:'Сотня!'},
+  {id:'q_150', name:'🥈 150 тренировок',          check:s=>s.total>=150, reward:'150 тренировок'},
+  {id:'q_200', name:'🥇 200 тренировок',          check:s=>s.total>=200, reward:'200 тренировок'},
+  {id:'q_300', name:'🏆 300 тренировок',          check:s=>s.total>=300, reward:'300 тренировок'},
+  {id:'q_365', name:'📅 365 тренировок — год!',   check:s=>s.total>=365, reward:'Год тренировок'},
+  {id:'q_500', name:'💎 500 тренировок',          check:s=>s.total>=500, reward:'Легенда'},
+  {id:'q_600', name:'👑 600 тренировок — ЭЛИТА', check:s=>s.total>=600, reward:'ЭЛИТА PWR'},
+  // Стрик подряд
+  {id:'s_3',   name:'🔥 Стрик 3 дня',            check:s=>s.best>=3,   reward:'3 дня подряд'},
+  {id:'s_7',   name:'🔥 Стрик 7 дней',           check:s=>s.best>=7,   reward:'Неделя подряд'},
+  {id:'s_14',  name:'⚡ Стрик 14 дней',          check:s=>s.best>=14,  reward:'2 недели подряд'},
+  {id:'s_21',  name:'💥 Стрик 21 день',          check:s=>s.best>=21,  reward:'3 недели подряд'},
+  {id:'s_30',  name:'🏅 Стрик 30 дней',          check:s=>s.best>=30,  reward:'Месяц подряд'},
+  {id:'s_45',  name:'⭐ Стрик 45 дней',          check:s=>s.best>=45,  reward:'45 дней подряд'},
+  {id:'s_60',  name:'🌟 Стрик 60 дней',          check:s=>s.best>=60,  reward:'2 месяца подряд'},
+  {id:'s_90',  name:'🏆 Стрик 90 дней',          check:s=>s.best>=90,  reward:'Квартал подряд'},
+  {id:'s_180', name:'💎 Стрик 180 дней',         check:s=>s.best>=180, reward:'Полгода подряд'},
+  {id:'s_365', name:'📅 Стрик 365 дней — год!',  check:s=>s.best>=365, reward:'Год подряд!'},
+  {id:'s_600', name:'👑 Стрик 600 дней — ЛЕГЕНДА',check:s=>s.best>=600,reward:'ЛЕГЕНДА PWR'},
+];
+function renderQuests(s){
+  const out=document.getElementById('questsList');
+  if(!out)return;
+  out.innerHTML=QUESTS.map(q=>{
+    const done=q.check(s);
+    return`<div style="background:#010f18;border:1px solid ${done?'#00ddb4':'#0d2030'};border-radius:8px;padding:10px 12px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:11px;color:${done?'#c0e8e0':'#2a6070'}">${q.name}</span>
+      <span style="font-size:10px;color:${done?'#00ddb4':'#1a4050'};font-weight:700">${done?'✅ ВЫПОЛНЕН':'⏳'}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ===== КАЛЬКУЛЯТОР КБЖУ ===== */
+function calcKcal(){
+  const gen=document.getElementById('kcalGen').value;
+  const age=+document.getElementById('kcalAge').value;
+  const weight=+document.getElementById('kcalWeight').value;
+  const height=+document.getElementById('kcalHeight').value;
+  const act=+document.getElementById('kcalActivity').value;
+  const goal=document.getElementById('kcalGoal').value;
+  const out=document.getElementById('kcalOut');
+  if(!age||!weight||!height){out.innerHTML='<div class="no-result">Заполни все поля</div>';return;}
+  // Миффлин-Сан Жеор
+  const bmr=gen==='m'?10*weight+6.25*height-5*age+5:10*weight+6.25*height-5*age-161;
+  const tdee=Math.round(bmr*act);
+  const kcal=goal==='bulk'?tdee+300:goal==='cut'?tdee-400:tdee;
+  const protein=Math.round(weight*2.2);
+  const fat=Math.round(kcal*0.25/9);
+  const carbs=Math.round((kcal-protein*4-fat*9)/4);
+  const goalName=goal==='bulk'?'💪 НАБОР МАССЫ':goal==='cut'?'🔥 СУШКА':'⚖️ ПОДДЕРЖАНИЕ';
+  const goalCol=goal==='bulk'?'#00ddb4':goal==='cut'?'#ff2d78':'#ffaa00';
+  out.innerHTML=`<div class="rank-result">
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:9px;color:#1a4050;letter-spacing:2px">${goalName}</div>
+      <div style="font-size:40px;font-weight:900;color:${goalCol};line-height:1.2">${kcal}</div>
+      <div style="font-size:10px;color:#1a4050">ККАЛ В ДЕНЬ</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+      <div style="background:#010c16;border:1px solid #00ddb4;border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:20px;font-weight:900;color:#00ddb4">${protein}г</div>
+        <div style="font-size:8px;color:#1a4050;letter-spacing:1px">БЕЛОК</div>
+      </div>
+      <div style="background:#010c16;border:1px solid #ffaa00;border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:20px;font-weight:900;color:#ffaa00">${carbs}г</div>
+        <div style="font-size:8px;color:#1a4050;letter-spacing:1px">УГЛЕВОДЫ</div>
+      </div>
+      <div style="background:#010c16;border:1px solid #ff2d78;border-radius:8px;padding:10px;text-align:center">
+        <div style="font-size:20px;font-weight:900;color:#ff2d78">${fat}г</div>
+        <div style="font-size:8px;color:#1a4050;letter-spacing:1px">ЖИРЫ</div>
+      </div>
+    </div>
+    <div style="background:#010c16;border:1px solid #0d2030;border-radius:6px;padding:10px;font-size:9px;color:#1a4050;line-height:1.8">
+      BMR (базовый обмен): <span style="color:#2a6070">${Math.round(bmr)} ккал</span><br>
+      TDEE (с активностью): <span style="color:#2a6070">${tdee} ккал</span><br>
+      Формула: <span style="color:#2a6070">Миффлин-Сан Жеор</span>
+    </div>
+  </div>`;
+}
+
+/* ===== НАПОМИНАНИЯ О ТРЕНИРОВКЕ ===== */
+function initTrainReminder(){
+  if(!('Notification' in window))return;
+  const saved=ls('trainReminder',{days:[],time:'10:00'});
+  // проверяем нужно ли уведомить сегодня
+  const today=new Date().getDay();
+  const now=new Date();
+  const [h,m]=saved.time.split(':').map(Number);
+  const lastNotif=ls('lastTrainNotif','');
+  const todayStr=new Date().toDateString();
+  if(saved.days.includes(today)&&Notification.permission==='granted'&&lastNotif!==todayStr){
+    const notifTime=new Date();notifTime.setHours(h,m,0);
+    const delay=notifTime-now;
+    if(delay>0&&delay<86400000){
+      setTimeout(()=>{
+        new Notification('💪 PWR — Время тренироваться!',{body:'Не забудь про тренировку сегодня!',icon:'./favicon.png'});
+        lss('lastTrainNotif',todayStr);
+      },delay);
+    }
+  }
+}
+
+
 function wilksCoef(bw,gen){
   const M={a:-216.0475144,b:16.2606339,c:-0.002388645,d:-0.00113732,e:7.01863e-6,f:-1.291e-8};
   const F={a:594.31747775582,b:-27.23842536447,c:0.82112226871,d:-0.00930733913,e:4.731582e-5,f:-9.054e-8};
@@ -1533,6 +1802,22 @@ if(window.Telegram&&window.Telegram.WebApp){
   if(twa.themeParams&&twa.themeParams.bg_color)document.body.style.background=twa.themeParams.bg_color;
 }
 
+function saveReminder(){
+  const time=document.getElementById('reminderTime').value;
+  const days=[0,1,2,3,4,5,6].filter(i=>document.getElementById('rd'+i)?.checked);
+  lss('trainReminder',{days,time});
+  if(Notification.permission==='default')Notification.requestPermission();
+  const m=document.getElementById('reminderMsg');
+  if(m){m.style.display='inline';setTimeout(()=>m.style.display='none',2000);}
+  initTrainReminder();
+}
+function loadReminder(){
+  const s=ls('trainReminder',{days:[],time:'10:00'});
+  const ti=document.getElementById('reminderTime');
+  if(ti)ti.value=s.time;
+  s.days.forEach(i=>{const el=document.getElementById('rd'+i);if(el)el.checked=true;});
+}
+
 /* ===== INIT ===== */
 (function init(){
   fillRankFed();fillRankWC();
@@ -1547,6 +1832,8 @@ if(window.Telegram&&window.Telegram.WebApp){
   if(p.name)document.getElementById('profName').value=p.name;
   if(p.workouts)document.getElementById('profWorkouts').value=p.workouts;
   if(p.streak)document.getElementById('profStreak').value=p.streak;
+  loadReminder();
+  initTrainReminder();
 })();
 </script>
 
