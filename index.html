@@ -31,6 +31,8 @@ body{background:#020608}
 .pa-corner-badge{position:absolute;top:8px;right:10px;z-index:2;background:linear-gradient(135deg,#001c20,#0a0a14);border:1px solid #00ddb4;border-radius:5px;padding:3px 9px;font-size:10px;font-weight:900;color:#00ddb4;letter-spacing:1px;box-shadow:0 0 10px rgba(0,221,180,0.35);pointer-events:none}
 .pa-inner{position:relative;z-index:1}
 .pa-header{background:#020608;border-bottom:1px solid #0d2030;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.pa-logo-img{width:30px;height:30px;border-radius:50%;animation:logoGlow 2s ease-in-out infinite}
+@keyframes logoGlow{0%,100%{box-shadow:0 0 6px rgba(120,200,255,.5),0 0 4px rgba(255,255,255,.4)}50%{box-shadow:0 0 16px rgba(120,200,255,.9),0 0 10px rgba(255,255,255,.7)}}
 .pa-logo{display:flex;align-items:center;gap:9px}
 .pa-sym{font-size:22px;line-height:1;filter:drop-shadow(0 0 6px rgba(0,221,180,.7));animation:pulse 2.4s ease-in-out infinite}
 .pa-logo-text{display:flex;flex-direction:row;align-items:baseline;gap:8px}
@@ -349,7 +351,7 @@ body{background:linear-gradient(160deg,#0a1420,#0d1f2e 60%,#0a1420);background-i
 
 <div class="pa-header">
   <div class="pa-logo">
-    <img src="favicon.png" alt="PWR LAB" style="width:30px;height:30px;border-radius:50%;box-shadow:0 0 8px rgba(0,221,180,.5)">
+    <img src="favicon.png" alt="PWR LAB" class="pa-logo-img">
     <span class="pa-logo-text"><span class="pa-logo-main">POWER ATLAS</span><span class="pa-logo-sub">Нормативы 2022–2026</span></span>
   </div>
   <div class="pa-badges">
