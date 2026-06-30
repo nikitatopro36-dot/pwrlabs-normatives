@@ -455,6 +455,18 @@ const FED_SHORT = {
 };
 const SEX_SLUG = {m:'muzhchiny',f:'zhenshchiny'};
 const SEX_RU = {m:'мужчины',f:'женщины'};
+const RANK_SLUG_MAP = {
+  'МСМК':'msmk','МС':'ms','КМС':'kms','I':'1','II':'2','III':'3',
+  'I(ю)':'1yu','II(ю)':'2yu','III(ю)':'3yu',
+  'Elite':'elite','Master':'master','I р':'1r','II р':'2r','III р':'3r',
+  'Элита':'elita'
+};
+const RANK_RU = {
+  'МСМК':'МСМК','МС':'МС','КМС':'КМС','I':'I','II':'II','III':'III',
+  'I(ю)':'I(ю)','II(ю)':'II(ю)','III(ю)':'III(ю)',
+  'Elite':'Элита','Master':'Мастер','I р':'I','II р':'II','III р':'III',
+  'Элита':'Элита'
+};
 
 function wSlug(w){
   return w
@@ -514,14 +526,10 @@ function writeFile(filename, html){
   allUrls.push(`${BASE_URL}/normativy/${filename}`);
 }
 
-// ─── ТИП 1: Таблица для конкретного разряда+вес (1800+ страниц) ─────────────
-// Формат: zhim-fpr-muzhchiny-do-83-kg-kms.html
+// ─── ТИП 1-8 (существующие функции) ──────────────────────────────────────
+
 function rankSlug(rank){
-  const m = {'МСМК':'msmk','МС':'ms','КМС':'kms','I':'1','II':'2','III':'3',
-    'I(ю)':'1yu','II(ю)':'2yu','III(ю)':'3yu',
-    'Elite':'elite','Master':'master','I р':'1r','II р':'2r','III р':'3r',
-    'Элита':'elita'};
-  return m[rank] || rank.toLowerCase().replace(/[^a-z0-9]/g,'');
+  return RANK_SLUG_MAP[rank] || rank.toLowerCase().replace(/[^a-z0-9]/g,'');
 }
 
 function genRankWeightPages(){
@@ -550,13 +558,11 @@ function genRankWeightPages(){
             const canonUrl = `${BASE_URL}/normativy/${fname}`;
             const parentUrl = `${BASE_URL}/normativy/${slug(disc,fed,sex,w)}`;
 
-            // Соседние разряды
             const prevRank = ri > 0 ? ranks[ri-1] : null;
             const nextRank = ri < ranks.length-1 ? ranks[ri+1] : null;
             const prevVal = prevRank ? v[ri-1] : null;
             const nextVal = nextRank ? v[ri+1] : null;
 
-            // Другие весовые категории для того же разряда
             const otherWeights = rows.filter(r=>r!==row).map(r=>{
               const ov = r.v[ri];
               if(ov===null) return '';
@@ -676,12 +682,9 @@ ${footer()}
   return count;
 }
 
-// ─── ТИП 2: Сравнение федераций для дисциплины+пол+вес ───────────────────
-// Формат: sravnenie-zhim-muzhchiny-do-83-kg.html
 function genComparisonPages(){
   let count = 0;
-  // Собираем все уникальные комбинации disc+sex+weight из данных
-  const combos = new Map(); // key: disc-sex-weight -> {disc,sex,w,feds:[{fed,data}]}
+  const combos = new Map();
   for(const [disc,sexes] of Object.entries(D)){
     for(const [sex,feds] of Object.entries(sexes)){
       for(const [fed,data] of Object.entries(feds)){
@@ -697,7 +700,7 @@ function genComparisonPages(){
 
   for(const [,combo] of combos){
     const {disc,sex,w,feds: fedList} = combo;
-    if(fedList.length < 2) continue; // нечего сравнивать
+    if(fedList.length < 2) continue;
 
     const discRu = DISC_RU[disc];
     const sexRu = SEX_RU[sex];
@@ -706,7 +709,6 @@ function genComparisonPages(){
     const fname = `sravnenie-${discSlug}-${sexSlug}-${wSlug(w)}-kg.html`;
     const canonUrl = `${BASE_URL}/normativy/${fname}`;
 
-    // Собираем все уникальные разряды из всех федераций
     const allRanks = [];
     const seen = new Set();
     for(const {data} of fedList){
@@ -719,7 +721,6 @@ function genComparisonPages(){
     const title = `Сравнение нормативов ${discRu} ${w} кг — ${fedNames}, ${sexRu}`;
     const desc = `Сравнительная таблица нормативов разрядов в ${discRu} весовой категории ${w} кг (${sexRu}): ${fedNames}. Кто требует больше — МСМК, МС, КМС, I, II, III.`;
 
-    // Строки таблицы: для каждого разряда — значения по всем федерациям
     let tableRows = '';
     const faqItems = [];
     for(const rank of allRanks){
@@ -730,7 +731,6 @@ function genComparisonPages(){
         return val===null ? '<td class="val" style="color:var(--muted)">—</td>' : `<td class="val">${val} кг</td>`;
       }).join('');
 
-      // Найти максимум для вопроса FAQ
       const vals = fedList.map(({fed,data,row})=>{
         const ri = data.ranks.indexOf(rank);
         if(ri===-1) return null;
@@ -822,16 +822,12 @@ ${footer()}
   return count;
 }
 
-// ─── ТИП 3: Обратный поиск "сколько это разряд" — по упражнению ──────────
-// Страница: какой-razryad-zhim-muzhchiny.html — для заданного упражнения+пол
-// Это интерактивный справочник с JS для ввода результата
 function genReversePages(){
   let count = 0;
   for(const disc of Object.keys(D)){
     for(const sex of ['m','f']){
       const feds = D[disc][sex];
       if(!feds) continue;
-      // Собираем все данные из всех федераций (без nodata)
       const fedDataList = Object.entries(feds).filter(([,d])=>!d.nodata);
       if(fedDataList.length === 0) continue;
 
@@ -845,7 +841,6 @@ function genReversePages(){
       const title = `Какой разряд в ${discRu} — ${sexRu}? Калькулятор по результату`;
       const desc = `Введите свой результат в ${discRu} и узнайте, какому разряду он соответствует по всем весовым категориям и федерациям (${sexRu}). Быстрый обратный поиск норматива.`;
 
-      // Данные для JS на странице
       const jsData = JSON.stringify(fedDataList.map(([fed,data])=>({
         fed: FED_SHORT[fed],
         ranks: data.ranks,
@@ -970,8 +965,6 @@ document.getElementById('kg-input').addEventListener('keydown',function(e){if(e.
   return count;
 }
 
-// ─── ТИП 4: Полные таблицы по дисциплине+пол (обзорные хабы) ─────────────
-// Формат: zhim-muzhchiny-vse-federacii.html
 function genDiscSexHubPages(){
   let count = 0;
   for(const disc of Object.keys(D)){
@@ -1073,8 +1066,6 @@ ${footer()}
   return count;
 }
 
-// ─── ТИП 5: Страницы для конкретного разряда по всем весам и федерациям ──
-// Формат: kms-zhim-muzhchiny.html — "Норматив КМС жим лёжа мужчины — все веса"
 function genRankDiscPages(){
   let count = 0;
   for(const disc of Object.keys(D)){
@@ -1084,7 +1075,6 @@ function genRankDiscPages(){
       const fedDataList = Object.entries(feds).filter(([,d])=>!d.nodata);
       if(!fedDataList.length) continue;
 
-      // Собираем все уникальные разряды
       const rankSet = new Set();
       for(const [,data] of fedDataList) data.ranks.forEach(r=>rankSet.add(r));
 
@@ -1097,7 +1087,6 @@ function genRankDiscPages(){
         const fname = `${rSlug}-${discSlug}-${sexSlug}.html`;
         const canonUrl = `${BASE_URL}/normativy/${fname}`;
 
-        // Для каждой федерации — таблица по весовым категориям для этого разряда
         let tablesHtml = '';
         const faqItems = [];
 
@@ -1114,7 +1103,6 @@ function genRankDiscPages(){
 <table><thead><tr><th>Весовая категория</th><th style="text-align:right">Норматив</th></tr></thead>
 <tbody>${rows}</tbody></table>\n`;
 
-          // FAQ
           const validRows = data.rows.filter(r=>{const v=r.v[ri]; return v!==null;});
           if(validRows.length > 0){
             const minRow = validRows[validRows.length-1];
@@ -1146,7 +1134,6 @@ function genRankDiscPages(){
           ]
         });
 
-        // Ссылки на конкретные страницы разряд+вес
         const weightLinks = fedDataList.map(([fed,data])=>{
           const ri = data.ranks.indexOf(rank);
           if(ri===-1) return '';
@@ -1211,9 +1198,343 @@ ${footer()}
   return count;
 }
 
+// ─── ТИП 6: ГОРОДА (ОСТАВЛЯЕМ) ─────────────────────────────────────────────
+const CITIES=[
+  {slug:'moskva',name:'Москва'},{slug:'sankt-peterburg',name:'Санкт-Петербург'},
+  {slug:'novosibirsk',name:'Новосибирск'},{slug:'ekaterinburg',name:'Екатеринбург'},
+  {slug:'kazan',name:'Казань'},{slug:'nizhnij-novgorod',name:'Нижний Новгород'},
+  {slug:'chelyabinsk',name:'Челябинск'},{slug:'omsk',name:'Омск'},
+  {slug:'samara',name:'Самара'},{slug:'rostov-na-donu',name:'Ростов-на-Дону'},
+  {slug:'ufa',name:'Уфа'},{slug:'krasnoyarsk',name:'Красноярск'},
+  {slug:'perm',name:'Пермь'},{slug:'voronezh',name:'Воронеж'},
+  {slug:'volgograd',name:'Волгоград'},{slug:'krasnodar',name:'Краснодар'},
+  {slug:'saratov',name:'Саратов'},{slug:'tyumen',name:'Тюмень'},
+  {slug:'tolyatti',name:'Тольятти'},{slug:'izhevsk',name:'Ижевск'},
+  {slug:'barnaul',name:'Барнаул'},{slug:'irkutsk',name:'Иркутск'},
+  {slug:'habarovsk',name:'Хабаровск'},{slug:'yaroslavl',name:'Ярославль'},
+  {slug:'vladivostok',name:'Владивосток'},{slug:'mahachkala',name:'Махачкала'},
+  {slug:'tomsk',name:'Томск'},{slug:'orenburg',name:'Оренбург'},
+  {slug:'kemerovo',name:'Кемерово'},{slug:'ryazan',name:'Рязань'},
+];
+
+function genCityPages(){
+  let count=0;
+  for(const city of CITIES){
+    for(const disc of Object.keys(D)){
+      for(const sex of ['m','f']){
+        const feds=D[disc][sex];
+        if(!feds) continue;
+        const fedDataList=Object.entries(feds).filter(([,d])=>!d.nodata);
+        if(!fedDataList.length) continue;
+        const discRu=DISC_RU[disc],sexRu=SEX_RU[sex],discSlug=DISC_SLUG[disc],sexSlug=SEX_SLUG[sex];
+        const fname=`normativy-${discSlug}-${sexSlug}-${city.slug}.html`;
+        const canonUrl=`${BASE_URL}/normativy/${fname}`;
+        const title=`Нормативы ${discRu} ${sexRu} ${city.name} 2025–2026 — таблица разрядов`;
+        const desc=`Нормативы разрядов по ${discRu} для ${sexRu} в ${city.name}. ФПР, WRPF, НАП, СПР. МСМК, МС, КМС, I, II, III разряды 2025–2026.`;
+        const fedLinks=fedDataList.map(([fed,data])=>{
+          const rows=data.rows.map(r=>`<a href="${slug(disc,fed,sex,r.w)}">${r.w} кг</a>`).join('\n');
+          return `<h3 style="font-size:15px;margin:20px 0 8px;color:#cfeee8">${FED_SHORT[fed]}</h3><div class="links">${rows}</div>`;
+        }).join('\n');
+        const html=`<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${title}</title><meta name="description" content="${desc}"><link rel="canonical" href="${canonUrl}"><link rel="icon" type="image/png" href="../favicon.png">${css()}</head><body>${header()}<div class="wrap"><nav class="crumbs"><a href="../">Главная</a> / <a href="./">Нормативы</a> / ${city.name}</nav><h1>Нормативы ${discRu} — ${sexRu} <span class="badge">${city.name}</span></h1><p class="lead">Таблицы разрядных нормативов по <strong>${discRu}</strong> для <strong>${sexRu}</strong> в <strong>${city.name}</strong> по всем федерациям 2025–2026.</p>${fedLinks}${cta()}</div>${footer()}</body></html>`;
+        writeFile(fname,html);count++;
+      }
+    }
+  }
+  console.log(`Тип 6 (города): ${count} страниц`);return count;
+}
+
+// ─── ТИП 7: УДАЛЁН (ВОЗРАСТ) ─────────────────────────────────────────────
+// genAgeCatPages() — УДАЛЕНА
+
+// ─── ОБЩИЕ СПИСКИ ДЛЯ ТИПОВ 9 и 10 ─────────────────────────────────────
+const RANKS = [
+  {slug:'kms', name:'КМС', title:'Нормативы КМС по пауэрлифтингу'},
+  {slug:'ms', name:'МС', title:'Нормативы МС по пауэрлифтингу'},
+  {slug:'msmk', name:'МСМК', title:'Нормативы МСМК по пауэрлифтингу'},
+  {slug:'1-razryad', name:'1 разряд', title:'Нормативы 1 разряда по пауэрлифтингу'},
+  {slug:'2-razryad', name:'2 разряд', title:'Нормативы 2 разряда по пауэрлифтингу'},
+  {slug:'3-razryad', name:'3 разряд', title:'Нормативы 3 разряда по пауэрлифтингу'},
+];
+const DISCS = [
+  {slug:'zhim', name:'жиму лёжа', ru:'жим лёжа'},
+  {slug:'prised', name:'приседу', ru:'присед'},
+  {slug:'tyaga', name:'становой тяге', ru:'становая тяга'},
+  {slug:'troeborye', name:'троеборью классика', ru:'троеборье классика'},
+  {slug:'ekipirovka', name:'троеборью экипировка', ru:'троеборье экипировка'},
+];
+const FEDS = [
+  {slug:'fpr', name:'ФПР'},
+  {slug:'wrpf', name:'WRPF'},
+  {slug:'nap', name:'НАП'},
+  {slug:'spr', name:'СПР'},
+];
+const SEXES = [
+  {slug:'muzhchiny', name:'мужчины'},
+  {slug:'zhenshchiny', name:'женщины'},
+];
+const WEIGHTS_BENCH = ['до 59', 'до 66', 'до 74', 'до 83', 'до 93', 'до 105', 'до 120', '120+'];
+const WEIGHTS_SQUAT = ['до 52', 'до 56', 'до 60', 'до 67.5', 'до 75', 'до 82.5', 'до 90', 'до 100', 'до 110', 'до 125', 'до 140', '140+'];
+const WEIGHTS_DEAD = ['до 52', 'до 56', 'до 60', 'до 67.5', 'до 75', 'до 82.5', 'до 90', 'до 100', 'до 110', 'до 125', 'до 140', '140+'];
+const WEIGHTS_CLASSIC = ['до 53', 'до 59', 'до 66', 'до 74', 'до 83', 'до 93', 'до 105', 'до 120', '120+'];
+
+// ─── ТИП 9: НОВЫЙ — БЕЗВОПРОСНЫЕ ЗАПРОСЫ (~900 страниц) ─────────────────
+function genQueryPages(){
+  let count = 0;
+
+  // 1. РАЗРЯД + ДИСЦИПЛИНА (30 страниц)
+  for(const rank of RANKS){
+    for(const disc of DISCS){
+      const slug = `${rank.slug}-${disc.slug}`;
+      const title = `Нормативы ${rank.name} по ${disc.ru} — все весовые категории`;
+      const desc = `Нормативы разряда ${rank.name} по ${disc.ru}. Все весовые категории, все федерации. Таблица 2025–2026.`;
+      const fname = `${slug}.html`;
+      const html = generateQueryPage(slug, title, desc, rank, disc, null, null);
+      writeFile(fname, html);
+      count++;
+    }
+  }
+  
+  // 2. РАЗРЯД + ФЕДЕРАЦИЯ (24 страницы)
+  for(const rank of RANKS){
+    for(const fed of FEDS){
+      const slug = `${rank.slug}-${fed.slug}`;
+      const title = `Нормативы ${rank.name} по ${fed.name} — все дисциплины`;
+      const desc = `Нормативы разряда ${rank.name} по федерации ${fed.name}. Все дисциплины, все весовые категории. Таблица 2025–2026.`;
+      const fname = `${slug}.html`;
+      const html = generateQueryPage(slug, title, desc, rank, null, fed, null);
+      writeFile(fname, html);
+      count++;
+    }
+  }
+  
+  // 3. РАЗРЯД + ДИСЦИПЛИНА + ФЕДЕРАЦИЯ (120 страниц)
+  for(const rank of RANKS){
+    for(const disc of DISCS){
+      for(const fed of FEDS){
+        const slug = `${rank.slug}-${disc.slug}-${fed.slug}`;
+        const title = `Нормативы ${rank.name} по ${disc.ru} — ${fed.name}, все весовые категории`;
+        const desc = `Нормативы разряда ${rank.name} по ${disc.ru} по версии ${fed.name}. Все весовые категории. Таблица 2025–2026.`;
+        const fname = `${slug}.html`;
+        const html = generateQueryPage(slug, title, desc, rank, disc, fed, null);
+        writeFile(fname, html);
+        count++;
+      }
+    }
+  }
+  
+  // 4. РАЗРЯД + ДИСЦИПЛИНА + ФЕДЕРАЦИЯ + ПОЛ (240 страниц)
+  for(const rank of RANKS){
+    for(const disc of DISCS){
+      for(const fed of FEDS){
+        for(const sex of SEXES){
+          const slug = `${rank.slug}-${disc.slug}-${fed.slug}-${sex.slug}`;
+          const title = `Нормативы ${rank.name} по ${disc.ru} — ${fed.name}, ${sex.name}, все весовые категории`;
+          const desc = `Нормативы разряда ${rank.name} по ${disc.ru} по версии ${fed.name} для ${sex.name}. Все весовые категории. Таблица 2025–2026.`;
+          const fname = `${slug}.html`;
+          const html = generateQueryPage(slug, title, desc, rank, disc, fed, sex);
+          writeFile(fname, html);
+          count++;
+        }
+      }
+    }
+  }
+  
+  console.log(`Тип 9 (безвопросные запросы): ${count} страниц`);
+  return count;
+}
+
+function generateQueryPage(slug, title, desc, rank, disc, fed, sex){
+  const canonUrl = `${BASE_URL}/normativy/${slug}.html`;
+  
+  let h1 = title;
+  let lead = desc;
+  let content = '';
+  
+  // Собираем данные для таблицы
+  let tableHtml = '';
+  let allRanks = [];
+  const fedShort = fed ? fed.name : 'все федерации';
+  const sexRu = sex ? sex.name : 'все полы';
+  const discRu = disc ? disc.ru : 'все дисциплины';
+  
+  // Если есть диск, федерация и пол — собираем конкретные данные
+  if(disc && fed && sex){
+    const sexKey = sex.slug === 'muzhchiny' ? 'm' : 'f';
+    const discKey = disc.slug === 'zhim' ? 'bench' : 
+                    disc.slug === 'prised' ? 'squat' :
+                    disc.slug === 'tyaga' ? 'dead' :
+                    disc.slug === 'troeborye' ? 'classic' : 'equipped';
+    const fedKey = Object.keys(D[discKey]?.[sexKey] || {}).find(k => FED_SLUG[k] === fed.slug);
+    
+    if(fedKey && D[discKey]?.[sexKey]?.[fedKey] && D[discKey][sexKey][fedKey].ranks){
+      const data = D[discKey][sexKey][fedKey];
+      const rankIndex = data.ranks.findIndex(r => rankSlug(r) === rank.slug || RANK_RU[r] === rank.name || r === rank.name);
+      if(rankIndex !== -1){
+        tableHtml = `<table><thead><tr><th>Весовая категория</th><th>Норматив ${rank.name}</th></tr></thead><tbody>`;
+        for(const row of data.rows){
+          const val = row.v[rankIndex];
+          if(val !== null){
+            tableHtml += `<tr><td>${row.w}</td><td class="val">${val} кг</td></tr>`;
+          }
+        }
+        tableHtml += `</tbody></table>`;
+        allRanks = data.ranks;
+      }
+    }
+  } else if(rank && disc && !fed){
+    // Разряд + дисциплина, все федерации
+    tableHtml = `<p>Таблицы по всем федерациям:</p><div class="links">`;
+    for(const f of FEDS){
+      tableHtml += `<a href="${rank.slug}-${disc.slug}-${f.slug}.html">${f.name}</a> `;
+    }
+    tableHtml += `</div>`;
+  } else if(rank && fed && !disc){
+    // Разряд + федерация, все дисциплины
+    tableHtml = `<p>Таблицы по всем дисциплинам:</p><div class="links">`;
+    for(const d of DISCS){
+      tableHtml += `<a href="${rank.slug}-${d.slug}-${fed.slug}.html">${d.ru}</a> `;
+    }
+    tableHtml += `</div>`;
+  }
+  
+  // Формируем ссылки на связанные страницы
+  let relatedLinks = '';
+  if(rank){
+    relatedLinks += `<a href="normativy-${rank.slug}.html">Все нормативы ${rank.name}</a> `;
+  }
+  if(disc){
+    relatedLinks += `<a href="${disc.slug}-muzhchiny-vse-federacii.html">${disc.ru} мужчины</a> `;
+    relatedLinks += `<a href="${disc.slug}-zhenshchiny-vse-federacii.html">${disc.ru} женщины</a> `;
+  }
+  if(fed){
+    relatedLinks += `<a href="normativy-${fed.slug}.html">Все нормативы ${fed.name}</a> `;
+  }
+  
+  const html = `<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${title}</title>
+<meta name="description" content="${desc}">
+<link rel="canonical" href="${canonUrl}">
+<link rel="icon" type="image/png" href="../favicon.png">
+${css()}
+</head>
+<body>
+${header()}
+<div class="wrap">
+<nav class="crumbs">
+  <a href="../">Главная</a> / <a href="./">Нормативы</a> / ${rank ? rank.name : ''} ${disc ? disc.ru : ''} ${fed ? fed.name : ''} ${sex ? sex.name : ''}
+</nav>
+<h1>${h1}</h1>
+<p class="lead">${lead}</p>
+
+${tableHtml}
+
+<div class="note">Данные актуальны на 2025–2026 год. Все нормативы приведены в килограммах.</div>
+
+${cta()}
+
+<h2>Связанные страницы</h2>
+<div class="links">
+${relatedLinks}
+</div>
+
+<h2>Часто задаваемые вопросы</h2>
+<div class="faq-item">
+  <div class="faq-q">Что такое ${rank ? rank.name : 'разряд'} в пауэрлифтинге?</div>
+  <div class="faq-a">${rank ? rank.name : 'Разряд'} — это спортивное звание, которое присваивается за выполнение нормативов в соревнованиях. ${rank ? rank.name : 'Разряды'} делятся на: МСМК, МС, КМС, I, II, III.</div>
+</div>
+<div class="faq-item">
+  <div class="faq-q">Как получить ${rank ? rank.name : 'разряд'}?</div>
+  <div class="faq-a">Для получения ${rank ? rank.name : 'разряда'} нужно выступить на официальных соревнованиях и показать результат не ниже норматива для вашей весовой категории и федерации.</div>
+</div>
+<div class="faq-item">
+  <div class="faq-q">Какие федерации учитываются?</div>
+  <div class="faq-a">На сайте представлены нормативы ФПР (IPF), WRPF, НАП и СПР. Выберите свою федерацию в калькуляторе выше.</div>
+</div>
+
+</div>
+${footer()}
+</body>
+</html>`;
+  return html;
+}
+
+// ─── ТИП 10: ВОПРОСИТЕЛЬНЫЕ СТРАНИЦЫ (~40 шт) ────────────────────────────
+function genQuestionPages(){
+  let count = 0;
+  
+  const QUESTIONS = [
+    {slug:'skolko-nuzhno-zhat-na-kms', title:'Сколько нужно жать на КМС?', answer:'Для получения КМС по жиму лёжа нужно показать результат от 82.5 до 240 кг в зависимости от весовой категории и федерации. Подробнее в таблице выше.'},
+    {slug:'kak-vypolnit-kms-zhim', title:'Как выполнить КМС по жиму лёжа?', answer:'Чтобы выполнить КМС по жиму лёжа: 1) Выберите федерацию. 2) Узнайте свой норматив по весовой категории. 3) Выступите на официальных соревнованиях. 4) Покажите результат не ниже норматива.'},
+    {slug:'fpr-ili-wrpf-chto-legche', title:'ФПР или WRPF — где легче получить разряд?', answer:'WRPF часто имеет более низкие нормативы в лёгких весовых категориях, но в тяжёлых категориях ФПР может быть проще. Сравните таблицы на сайте.'},
+    {slug:'kakie-vesovye-kategorii-v-pauerliftinge', title:'Какие весовые категории в пауэрлифтинге?', answer:'Весовые категории зависят от федерации. В ФПР для мужчин: до 59, 66, 74, 83, 93, 105, 120, 120+ кг. В WRPF: до 52, 56, 60, 67.5, 75, 82.5, 90, 100, 110, 125, 140, 140+ кг.'},
+    {slug:'chto-takoe-kms-v-pauerliftinge', title:'Что такое КМС в пауэрлифтинге?', answer:'КМС (кандидат в мастера спорта) — это второй по значимости разряд в пауэрлифтинге. Он следует за МСМК и МС, но выше I, II и III разрядов.'},
+    {slug:'kak-chasto-byvayut-sorevnovaniya', title:'Как часто бывают соревнования по пауэрлифтингу?', answer:'Соревнования проводятся регулярно: чемпионаты городов (2-3 раза в год), региональные турниры, чемпионаты России (ежегодно), международные турниры.'},
+    {slug:'mozhno-li-vystupat-bez-ekipirovki', title:'Можно ли выступать без экипировки в пауэрлифтинге?', answer:'Да, существует классический пауэрлифтинг (без экипировки). Он представлен в ФПР, WRPF, НАП и СПР. В экипировочном дивизионе разрешены бинты и комбинезоны.'},
+    {slug:'kakoy-razryad-na-150-kg-zhim', title:'Какой разряд в жиме на 150 кг?', answer:'150 кг в жиме лёжа может дать разряд от КМС до МС в зависимости от вашего веса и федерации. Например, в WRPF для веса до 75 кг это КМС, а для веса до 67.5 кг — МС.'},
+    {slug:'raznica-mezhdu-ms-i-kms', title:'Разница между МС и КМС в пауэрлифтинге', answer:'МС (мастер спорта) — это более высокий разряд, чем КМС. Нормативы МС выше на 20-30% в зависимости от федерации и весовой категории.'},
+    {slug:'kak-podgotovitsya-k-sorevnovaniyam', title:'Как подготовиться к соревнованиям по пауэрлифтингу?', answer:'Подготовка включает: 1) Выбор федерации и весовой категории. 2) Тренировки по плану. 3) Подгонка экипировки. 4) Сгонка веса (при необходимости). 5) Психологическая подготовка.'},
+    {slug:'shtanga-20-kg-ili-15-kg', title:'Сколько весит штанга в пауэрлифтинге?', answer:'Стандартная штанга для пауэрлифтинга весит 20 кг для мужчин и 15 кг для женщин (в некоторых федерациях). Гриф имеет длину 220 см и диаметр 28-29 мм.'},
+    {slug:'kakie-federacii-v-pauerliftinge', title:'Какие федерации бывают в пауэрлифтинге?', answer:'Основные федерации: ФПР (IPF) — официальная, WRPF — без допинга и с допингом, НАП, СПР. Также есть WPA, GPC, AWPC и другие.'},
+    {slug:'kak-prohodyat-sorevnovaniya', title:'Как проходят соревнования по пауэрлифтингу?', answer:'Соревнования проходят в 3 этапа: присед, жим лёжа, становая тяга. У каждого атлета 3 попытки на каждое упражнение. Побеждает тот, кто набрал наибольшую сумму.'},
+    {slug:'nuzhno-li-sogonyat-ves', title:'Нужно ли сгонять вес перед соревнованиями?', answer:'Сгонка веса помогает попасть в более лёгкую весовую категорию, где нормативы ниже. Однако она требует осторожности и профессионального подхода, чтобы не потерять силу.'},
+    {slug:'kakaya-ekipirovka-nuzhna', title:'Какая экипировка нужна для пауэрлифтинга?', answer:'Для классики: штангетки, пояс, бинты на колени (опционально). Для экипировки: комбинезон для приседа и тяги, майка для жима, бинты. Всё должно быть сертифицировано федерацией.'},
+    {slug:'s-kakogo-vozrasta-zanimayutsya', title:'С какого возраста занимаются пауэрлифтингом?', answer:'Официально — с 13-14 лет (юношеские разряды). Взрослые разряды — с 16 лет. Ветераны — с 40 лет. Многие начинают и в 30-40 лет, главное — здоровье и правильная техника.'},
+  ];
+  
+  for(const q of QUESTIONS){
+    const fname = `${q.slug}.html`;
+    const canonUrl = `${BASE_URL}/normativy/${fname}`;
+    const html = `<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${q.title}</title>
+<meta name="description" content="${q.answer}">
+<link rel="canonical" href="${canonUrl}">
+<link rel="icon" type="image/png" href="../favicon.png">
+${css()}
+</head>
+<body>
+${header()}
+<div class="wrap">
+<nav class="crumbs">
+  <a href="../">Главная</a> / <a href="./">Нормативы</a> / Вопросы
+</nav>
+<h1>${q.title}</h1>
+<p class="lead">${q.answer}</p>
+
+<h2>Связанные нормативы</h2>
+<div class="links">
+  <a href="normativy-kms.html">Все нормативы КМС</a>
+  <a href="normativy-ms.html">Все нормативы МС</a>
+  <a href="razryady-pauerlifting.html">Все разряды пауэрлифтинг</a>
+</div>
+
+${cta()}
+
+<h2>Похожие вопросы</h2>
+<div class="links">
+${QUESTIONS.filter(item => item.slug !== q.slug).slice(0,8).map(item => `<a href="${item.slug}.html">${item.title}</a>`).join('')}
+</div>
+</div>
+${footer()}
+</body>
+</html>`;
+    writeFile(fname, html);
+    count++;
+  }
+  
+  console.log(`Тип 10 (вопросительные страницы): ${count} страниц`);
+  return count;
+}
+
 // ─── ОБНОВИТЬ index.html нормативов ──────────────────────────────────────
 function updateNormativyIndex(existingUrls){
-  // Просто дополняем существующий index.html ссылками на новые разделы
   const indexPath = path.join(OUT_DIR, 'index.html');
   let html = fs.readFileSync(indexPath, 'utf8');
   
@@ -1244,9 +1565,36 @@ ${Object.keys(D).map(disc=>{
   }).filter(Boolean).join('\n');
 }).filter(Boolean).join('\n')}
 </div>
+
+<h2 id="ranks">Все разряды</h2>
+<div class="links">
+  <a href="normativy-kms.html">КМС</a>
+  <a href="normativy-ms.html">МС</a>
+  <a href="normativy-msmk.html">МСМК</a>
+  <a href="1-razryad-pauerlifting.html">1 разряд</a>
+  <a href="2-razryad-pauerlifting.html">2 разряд</a>
+  <a href="3-razryad-pauerlifting.html">3 разряд</a>
+</div>
+
+<h2 id="feds">Все федерации</h2>
+<div class="links">
+  <a href="normativy-fpr.html">ФПР</a>
+  <a href="normativy-wrpf.html">WRPF</a>
+  <a href="normativy-nap.html">НАП</a>
+  <a href="normativy-spr.html">СПР</a>
+</div>
+
+<h2 id="questions">Частые вопросы</h2>
+<div class="links">
+  <a href="skolko-nuzhno-zhat-na-kms.html">Сколько нужно жать на КМС?</a>
+  <a href="kak-vypolnit-kms-zhim.html">Как выполнить КМС по жиму?</a>
+  <a href="fpr-ili-wrpf-chto-legche.html">ФПР или WRPF — что легче?</a>
+  <a href="kakie-vesovye-kategorii-v-pauerliftinge.html">Какие весовые категории?</a>
+  <a href="raznica-mezhdu-ms-i-kms.html">Разница между МС и КМС</a>
+  <a href="kak-podgotovitsya-k-sorevnovaniyam.html">Как подготовиться к соревнованиям?</a>
+</div>
 `;
 
-  // Вставляем перед закрывающим </div> финального блока
   if(!html.includes('Новые разделы SEO v2')){
     html = html.replace('<footer>', newSections + '<footer>');
     fs.writeFileSync(indexPath, html, 'utf8');
@@ -1260,13 +1608,111 @@ function genSitemap(allUrls){
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${allUrls.map(u=>`  <url><loc>${u}</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>`).join('\n')}
 </urlset>`;
-  fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), xml, 'utf8');  console.log(`Sitemap: ${allUrls.length} URL`);
+  fs.writeFileSync(path.join(__dirname, 'sitemap.xml'), xml, 'utf8');
+  console.log(`Sitemap: ${allUrls.length} URL`);
 }
+
+// ─── РАСШИРЕННАЯ generateQueryPage С ПОДДЕРЖКОЙ ВЕСА ──────────────────────
+// Переопределяем функцию, добавляя необязательный параметр weight.
+// Старые вызовы (без weight) продолжают работать как раньше.
+generateQueryPage = function(slug, title, desc, rank, disc, fed, sex, weight) {
+  const canonUrl = `${BASE_URL}/normativy/${slug}.html`;
+  const rankName = rank ? rank.name : '';
+  const discRu = disc ? disc.ru : '';
+  const fedName = fed ? fed.name : '';
+  const sexName = sex ? sex.name : '';
+  const weightText = weight ? ` ${weight}` : '';
+  
+  let tableHtml = '';
+  let faqItems = [];
+  
+  if(rank && disc && fed && sex && weight) {
+    const sexKey = sex.slug === 'muzhchiny' ? 'm' : 'f';
+    const discKey = disc.slug === 'zhim' ? 'bench' : 
+                    disc.slug === 'prised' ? 'squat' :
+                    disc.slug === 'tyaga' ? 'dead' :
+                    disc.slug === 'troeborye' ? 'classic' : 'equipped';
+    const fedKey = Object.keys(D[discKey]?.[sexKey] || {}).find(k => FED_SLUG[k] === fed.slug);
+    
+    if(fedKey && D[discKey]?.[sexKey]?.[fedKey] && D[discKey][sexKey][fedKey].ranks) {
+      const data = D[discKey][sexKey][fedKey];
+      const rankIndex = data.ranks.findIndex(r => rankSlug(r) === rank.slug || RANK_RU[r] === rank.name || r === rank.name);
+      if(rankIndex !== -1) {
+        const row = data.rows.find(r => r.w === weight);
+        if(row && row.v[rankIndex] !== null) {
+          tableHtml = `<div style="background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;margin:14px 0">
+            <h3 style="margin:0 0 8px;color:var(--text)">Норматив ${rankName} по ${discRu} (${fedName}, ${sexName}, ${weight})</h3>
+            <div style="font-size:28px;font-weight:900;color:var(--accent)">${row.v[rankIndex]} кг</div>
+          </div>`;
+          
+          faqItems.push({
+            q: `Сколько нужно поднять на ${rankName} по ${discRu} при весе ${weight} (${fedName})?`,
+            a: `Для получения разряда ${rankName} в ${discRu} весовой категории ${weight} по нормативам ${fedName} (${sexName}) необходимо поднять ${row.v[rankIndex]} кг.`
+          });
+        }
+      }
+    }
+  }
+  
+  let relatedLinks = '';
+  if(rank) relatedLinks += `<a href="normativy-${rank.slug}.html">Все нормативы ${rank.name}</a> `;
+  if(disc) {
+    relatedLinks += `<a href="${disc.slug}-muzhchiny-vse-federacii.html">${disc.ru} мужчины</a> `;
+    relatedLinks += `<a href="${disc.slug}-zhenshchiny-vse-federacii.html">${disc.ru} женщины</a> `;
+  }
+  if(fed) relatedLinks += `<a href="normativy-${fed.slug}.html">Все нормативы ${fed.name}</a> `;
+  
+  if(!faqItems.length) {
+    faqItems = [
+      { q: `Что такое ${rankName || 'разряд'} в пауэрлифтинге?`, a: `${rankName || 'Разряд'} — это спортивное звание, которое присваивается за выполнение нормативов в соревнованиях. Разряды делятся на: МСМК, МС, КМС, I, II, III.` },
+      { q: `Как получить ${rankName || 'разряд'}?`, a: `Для получения ${rankName || 'разряда'} нужно выступить на официальных соревнованиях и показать результат не ниже норматива для вашей весовой категории и федерации.` },
+      { q: `Какие федерации учитываются?`, a: `На сайте представлены нормативы ФПР (IPF), WRPF, НАП и СПР. Выберите свою федерацию в калькуляторе выше.` },
+    ];
+  }
+  
+  const html = `<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${title}</title>
+<meta name="description" content="${desc}">
+<link rel="canonical" href="${canonUrl}">
+<link rel="icon" type="image/png" href="../favicon.png">
+${css()}
+</head>
+<body>
+${header()}
+<div class="wrap">
+<nav class="crumbs">
+  <a href="../">Главная</a> / <a href="./">Нормативы</a> / ${rankName} ${discRu} ${fedName} ${sexName} ${weightText}
+</nav>
+<h1>${title}</h1>
+<p class="lead">${desc}</p>
+
+${tableHtml}
+
+${cta()}
+
+<h2>Связанные страницы</h2>
+<div class="links">
+${relatedLinks}
+</div>
+
+<h2>Часто задаваемые вопросы</h2>
+${faqItems.map(f => `<div class="faq-item"><div class="faq-q">${f.q}</div><div class="faq-a">${f.a}</div></div>`).join('')}
+
+</div>
+${footer()}
+</body>
+</html>`;
+  return html;
+};
 
 // ─── MAIN ────────────────────────────────────────────────────────────────
 console.log('Генерация SEO-страниц...\n');
 
-// Добавляем существующие 279 URL в sitemap
+// Добавляем существующие URL
 const existingFiles = fs.readdirSync(OUT_DIR).filter(f=>f.endsWith('.html') && f!=='index.html');
 for(const f of existingFiles){
   allUrls.push(`${BASE_URL}/normativy/${f}`);
@@ -1279,17 +1725,22 @@ const t2 = genComparisonPages();
 const t3 = genReversePages();
 const t4 = genDiscSexHubPages();
 const t5 = genRankDiscPages();
+const t6 = genCityPages();
+const t8 = genKeywordPages();
+const t9 = genQueryPages();
+const t10 = genQuestionPages();
+const t11 = genType11();
+const t12 = genType12();
+const t13 = genType13();
 
 updateNormativyIndex(allUrls);
 genSitemap(allUrls);
 
-console.log(`\n✅ Итого новых страниц: ${t1+t2+t3+t4+t5}`);
+const TOTAL_NEW = t1+t2+t3+t4+t5+t6+t8+t9+t10+t11+t12+t13;
+console.log(`\n✅ Итого новых страниц: ${TOTAL_NEW}`);
 console.log(`Всего URL в sitemap: ${allUrls.length}`);
 
 // ─── INDEXNOW SUBMIT ────────────────────────────────────────────────────────
-// Шаг 1: придумай ключ (32+ символа, только буквы и цифры)
-// Шаг 2: создай файл <ключ>.txt в корне репо, содержимое = сам ключ
-// Шаг 3: вставь ключ в строку ниже
 const INDEXNOW_KEY = 'a7f3k9d2m1p8q4r6s5twiofgalfhgzdr';
 
 if(process.argv.includes('--submit')){
@@ -1322,4 +1773,261 @@ if(process.argv.includes('--submit')){
   req.on('error', e => console.error('Ошибка запроса:', e.message));
   req.write(body);
   req.end();
+}
+
+// ─── ГЕНЕРАЦИЯ KEYWORD PAGES (ТИП 8) ──────────────────────────────────────
+// ВАЖНО: Этот массив должен быть таким же, как в твоём исходном файле.
+// Я добавляю его сюда для полноты, но если он уже есть в твоём файле — 
+// просто убедись, что он определён до вызова genKeywordPages().
+function genKeywordPages(){
+  let count = 0;
+  const KEYWORD_PAGES_LOCAL = [
+    {slug:'normativy-pauerlifting', title:'Нормативы пауэрлифтинг 2025–2026', desc:'Все нормативы по пауэрлифтингу: жим лёжа, присед, становая тяга, троеборье. ФПР, WRPF, НАП, СПР. Разряды МСМК, МС, КМС, I, II, III.',h1:'Нормативы пауэрлифтинг'},
+    {slug:'razryady-pauerlifting', title:'Разряды пауэрлифтинг — таблица 2025–2026', desc:'Таблица разрядов по пауэрлифтингу. МСМК, МС, КМС, I, II, III разряды по всем дисциплинам и федерациям.',h1:'Разряды пауэрлифтинг'},
+    {slug:'kms-pauerlifting', title:'КМС пауэрлифтинг — норматив кандидата в мастера спорта', desc:'Норматив КМС по пауэрлифтингу: жим лёжа, присед, становая тяга. Все весовые категории, все федерации. Таблица 2025–2026.',h1:'КМС пауэрлифтинг'},
+    {slug:'ms-pauerlifting', title:'МС пауэрлифтинг — норматив мастера спорта', desc:'Норматив МС по пауэрлифтингу. Жим лёжа, присед, становая тяга, троеборье. Все весовые категории и федерации.',h1:'МС пауэрлифтинг'},
+    {slug:'msmk-pauerlifting', title:'МСМК пауэрлифтинг — мастер спорта международного класса', desc:'Норматив МСМК по пауэрлифтингу. Жим лёжа, присед, становая тяга, троеборье. Все весовые категории.',h1:'МСМК пауэрлифтинг'},
+    {slug:'1-razryad-pauerlifting', title:'1 разряд пауэрлифтинг — норматив', desc:'Норматив 1 разряда по пауэрлифтингу. Жим лёжа, присед, становая тяга, троеборье. Все весовые категории и федерации.',h1:'1 разряд пауэрлифтинг'},
+    {slug:'2-razryad-pauerlifting', title:'2 разряд пауэрлифтинг — норматив', desc:'Норматив 2 разряда по пауэрлифтингу по всем дисциплинам, весовым категориям и федерациям.',h1:'2 разряд пауэрлифтинг'},
+    {slug:'3-razryad-pauerlifting', title:'3 разряд пауэрлифтинг — норматив', desc:'Норматив 3 разряда по пауэрлифтингу по всем дисциплинам, весовым категориям и федерациям.',h1:'3 разряд пауэрлифтинг'},
+    {slug:'normativy-zhim-lezha', title:'Нормативы жим лёжа 2025–2026 — таблица', desc:'Нормативы разрядов по жиму лёжа. ФПР, WRPF, НАП, СПР. Все весовые категории мужчины и женщины.',h1:'Нормативы жим лёжа'},
+    {slug:'kms-zhim-lezha', title:'КМС жим лёжа — норматив по всем весам', desc:'Норматив КМС по жиму лёжа во всех весовых категориях. ФПР, WRPF, НАП, СПР. Мужчины и женщины.',h1:'КМС жим лёжа'},
+    {slug:'ms-zhim-lezha', title:'МС жим лёжа — норматив мастера спорта', desc:'Норматив МС по жиму лёжа во всех весовых категориях по всем федерациям. Мужчины и женщины.',h1:'МС жим лёжа'},
+    {slug:'zhim-lezha-muzhchiny', title:'Жим лёжа мужчины — нормативы и разряды', desc:'Нормативы жима лёжа для мужчин по всем весовым категориям и федерациям. МСМК, МС, КМС, I, II, III.',h1:'Жим лёжа мужчины нормативы'},
+    {slug:'zhim-lezha-zhenshchiny', title:'Жим лёжа женщины — нормативы и разряды', desc:'Нормативы жима лёжа для женщин по всем весовым категориям и федерациям. МСМК, МС, КМС, I, II, III.',h1:'Жим лёжа женщины нормативы'},
+    {slug:'normativy-prised', title:'Нормативы присед пауэрлифтинг 2025–2026', desc:'Нормативы разрядов по приседаниям со штангой. WRPF, НАП, СПР. Все весовые категории мужчины и женщины.',h1:'Нормативы присед'},
+    {slug:'kms-prised', title:'КМС присед — норматив кандидата в мастера спорта', desc:'Норматив КМС по приседаниям со штангой во всех весовых категориях. WRPF, НАП, СПР.',h1:'КМС присед'},
+    {slug:'normativy-stanovaya-tyaga', title:'Нормативы становая тяга 2025–2026 — таблица', desc:'Нормативы разрядов по становой тяге. WRPF, НАП, СПР. Все весовые категории мужчины и женщины.',h1:'Нормативы становая тяга'},
+    {slug:'kms-stanovaya-tyaga', title:'КМС становая тяга — норматив', desc:'Норматив КМС по становой тяге во всех весовых категориях. WRPF, НАП, СПР. Мужчины и женщины.',h1:'КМС становая тяга'},
+    {slug:'normativy-troeborye', title:'Нормативы троеборье пауэрлифтинг 2025–2026', desc:'Нормативы сумм троеборья по пауэрлифтингу. ФПР, WRPF, НАП. Все весовые категории мужчины и женщины.',h1:'Нормативы троеборье'},
+    {slug:'kms-troeborye', title:'КМС троеборье пауэрлифтинг — норматив суммы', desc:'Норматив КМС в троеборье по пауэрлифтингу. ФПР, WRPF, НАП. Все весовые категории.',h1:'КМС троеборье'},
+    {slug:'normativy-fpr', title:'Нормативы ФПР (IPF) пауэрлифтинг 2025–2026', desc:'Официальные нормативы ФПР (IPF) по пауэрлифтингу. ЕВСК 2022–2026. Жим, троеборье классика и экипировка.',h1:'Нормативы ФПР'},
+    {slug:'normativy-wrpf', title:'Нормативы WRPF пауэрлифтинг 2025–2026', desc:'Нормативы WRPF по пауэрлифтингу: жим лёжа, присед, становая тяга, троеборье. Все весовые категории.',h1:'Нормативы WRPF'},
+    {slug:'normativy-nap', title:'Нормативы НАП пауэрлифтинг 2025–2026', desc:'Нормативы НАП по пауэрлифтингу: жим лёжа, присед, становая тяга, троеборье. Все весовые категории.',h1:'Нормативы НАП'},
+    {slug:'normativy-spr', title:'Нормативы СПР пауэрлифтинг 2025–2026', desc:'Нормативы СПР по пауэрлифтингу: жим лёжа, присед, становая тяга. Все весовые категории.',h1:'Нормативы СПР'},
+    {slug:'fpr-vs-wrpf', title:'ФПР vs WRPF — сравнение нормативов пауэрлифтинг', desc:'Сравнение нормативов ФПР и WRPF по пауэрлифтингу. Где легче получить разряд. Жим, присед, тяга, троеборье.',h1:'ФПР vs WRPF нормативы'},
+    {slug:'nap-vs-spr', title:'НАП vs СПР — сравнение нормативов', desc:'Сравнение нормативов НАП и СПР по пауэрлифтингу по всем дисциплинам и весовым категориям.',h1:'НАП vs СПР нормативы'},
+    {slug:'pwr-normativy', title:'PWR Нормативы — калькулятор разрядов пауэрлифтинг', desc:'PWR Нормативы: бесплатный калькулятор разрядов по пауэрлифтингу. ФПР, WRPF, НАП, СПР. Жим, присед, тяга.',h1:'PWR Нормативы'},
+    {slug:'pwrlab-kalkulator', title:'PWRLab — калькулятор нормативов пауэрлифтинг', desc:'PWRLab калькулятор нормативов и разрядов по пауэрлифтингу. Бесплатно. Все федерации и дисциплины.',h1:'PWRLab калькулятор'},
+    {slug:'kalkulator-normativov-pauerlifting', title:'Калькулятор нормативов пауэрлифтинг онлайн', desc:'Бесплатный онлайн калькулятор нормативов и разрядов по пауэрлифтингу. ФПР, WRPF, НАП, СПР.',h1:'Калькулятор нормативов пауэрлифтинг'},
+    {slug:'kalkulator-razryada-pauerlifting', title:'Калькулятор разряда пауэрлифтинг — узнай свой разряд', desc:'Калькулятор разряда по пауэрлифтингу онлайн. Введи результат и узнай какой разряд выполнен.',h1:'Калькулятор разряда пауэрлифтинг'},
+    {slug:'prilozhenie-dlya-zala', title:'Приложение для зала пауэрлифтинг — PWR Нормативы', desc:'PWR Нормативы: приложение для пауэрлифтинга. Нормативы, разряды, прогресс, цели, стрик тренировок.',h1:'Приложение для зала пауэрлифтинг'},
+    {slug:'prilozhenie-pauerlifting', title:'Приложение пауэрлифтинг — нормативы и разряды', desc:'Бесплатное приложение по пауэрлифтингу. Нормативы всех федераций, калькулятор разряда, отслеживание прогресса.',h1:'Приложение пауэрлифтинг'},
+    {slug:'kalkulator-wilks', title:'Калькулятор Wilks пауэрлифтинг онлайн', desc:'Онлайн калькулятор Wilks score по пауэрлифтингу. Сравни результаты с атлетами других весовых категорий.',h1:'Калькулятор Wilks пауэрлифтинг'},
+    {slug:'kalkulator-ipf-points', title:'Калькулятор IPF Points пауэрлифтинг', desc:'Онлайн калькулятор IPF Points. Рассчитай свои очки по формуле IPF для сравнения с другими атлетами.',h1:'Калькулятор IPF Points'},
+    {slug:'kalkulator-dots', title:'Калькулятор DOTS пауэрлифтинг', desc:'Онлайн калькулятор DOTS score по пауэрлифтингу. Объективное сравнение результатов разных весовых категорий.',h1:'Калькулятор DOTS'},
+    {slug:'kak-vypolnit-kms-zhim', title:'Как выполнить КМС по жиму лёжа — требования и советы', desc:'Что нужно чтобы выполнить КМС по жиму лёжа. Нормативы по весовым категориям, советы по подготовке.',h1:'Как выполнить КМС по жиму лёжа'},
+    {slug:'chto-takoe-troeborye', title:'Что такое троеборье в пауэрлифтинге', desc:'Троеборье в пауэрлифтинге: присед, жим лёжа, становая тяга. Правила, нормативы, федерации.',h1:'Что такое троеборье пауэрлифтинг'},
+    {slug:'chem-otlichaetsya-fpr-ot-wrpf', title:'Чем отличается ФПР от WRPF — сравнение федераций', desc:'Главные отличия ФПР (IPF) и WRPF: весовые категории, нормативы, допинг-контроль, экипировка.',h1:'ФПР vs WRPF отличия'},
+    {slug:'kak-podgotovitsya-k-sorevnovaniyam', title:'Как подготовиться к первым соревнованиям по пауэрлифтингу', desc:'Советы новичку перед первыми соревнованиями по пауэрлифтингу. Выбор федерации, весовая категория, подготовка.',h1:'Как подготовиться к соревнованиям пауэрлифтинг'},
+    {slug:'programma-trenirovok-kms-zhim', title:'Программа тренировок для КМС по жиму лёжа', desc:'Как тренироваться чтобы выполнить КМС по жиму лёжа. Программа, нормативы, советы.',h1:'Программа тренировок КМС жим'},
+    {slug:'programma-trenirovok-1-razryad', title:'Программа тренировок для 1 разряда пауэрлифтинг', desc:'Как выполнить 1 разряд по пауэрлифтингу. Нормативы, программа тренировок, советы.',h1:'Программа тренировок 1 разряд пауэрлифтинг'},
+    {slug:'normativy-pauerlifting-2025', title:'Нормативы пауэрлифтинг 2025 — актуальная таблица', desc:'Актуальные нормативы по пауэрлифтингу на 2025 год. ФПР ЕВСК 2022–2026, WRPF, НАП, СПР.',h1:'Нормативы пауэрлифтинг 2025'},
+    {slug:'normativy-pauerlifting-2026', title:'Нормативы пауэрлифтинг 2026 — таблица разрядов', desc:'Нормативы по пауэрлифтингу 2026. ФПР ЕВСК 2022–2026, WRPF, НАП, СПР. Жим, присед, тяга, троеборье.',h1:'Нормативы пауэрлифтинг 2026'},
+    {slug:'esk-pauerlifting', title:'ЕВСК пауэрлифтинг — единая всероссийская спортивная классификация', desc:'ЕВСК по пауэрлифтингу 2022–2026. Официальные нормативы ФПР по всем дисциплинам и весовым категориям.',h1:'ЕВСК пауэрлифтинг'},
+    {slug:'razryady-po-zhimu-lezha', title:'Разряды по жиму лёжа — таблица нормативов', desc:'Таблица разрядов по жиму лёжа: МСМК, МС, КМС, I, II, III. Все федерации и весовые категории.',h1:'Разряды по жиму лёжа'},
+    {slug:'razryady-po-prisedu', title:'Разряды по приседу пауэрлифтинг', desc:'Таблица разрядов по приседаниям со штангой. WRPF, НАП, СПР. Все весовые категории.',h1:'Разряды по приседу'},
+    {slug:'razryady-po-tyage', title:'Разряды по становой тяге пауэрлифтинг', desc:'Таблица разрядов по становой тяге. WRPF, НАП, СПР. Все весовые категории мужчины и женщины.',h1:'Разряды по становой тяге'},
+    {slug:'sportivnyj-razryad-pauerlifting', title:'Спортивный разряд пауэрлифтинг — как получить', desc:'Как получить спортивный разряд по пауэрлифтингу. Нормативы, требования, федерации.',h1:'Спортивный разряд пауэрлифтинг'},
+    {slug:'zhim-lezha-bez-ekipirovki', title:'Жим лёжа без экипировки — нормативы и разряды', desc:'Нормативы по жиму лёжа без экипировки. WRPF, НАП, СПР. Все весовые категории 2025–2026.',h1:'Жим лёжа без экипировки нормативы'},
+    {slug:'ekipirovochnyj-pauerlifting-normativy', title:'Экипировочный пауэрлифтинг — нормативы и разряды', desc:'Нормативы по экипировочному пауэрлифтингу. ФПР. Сумма троеборья, все весовые категории 2025–2026.',h1:'Экипировочный пауэрлифтинг нормативы'},
+  ];
+  
+  for(const kw of KEYWORD_PAGES_LOCAL){
+    const fname = `${kw.slug}.html`;
+    const canonUrl = `${BASE_URL}/normativy/${fname}`;
+    const discLinks=Object.keys(D).map(disc=>{
+      return ['m','f'].map(sex=>{
+        const feds=D[disc][sex];
+        if(!feds) return '';
+        const fedDataList=Object.entries(feds).filter(([,d])=>!d.nodata);
+        if(!fedDataList.length) return '';
+        return `<a href="${DISC_SLUG[disc]}-${SEX_SLUG[sex]}-vse-federacii.html">${DISC_RU[disc]} — ${SEX_RU[sex]}</a>`;
+      }).filter(Boolean).join('\n');
+    }).filter(Boolean).join('\n');
+    const html=`<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${kw.title}</title><meta name="description" content="${kw.desc}"><link rel="canonical" href="${canonUrl}"><link rel="icon" type="image/png" href="../favicon.png">${css()}</head><body>${header()}<div class="wrap"><nav class="crumbs"><a href="../">Главная</a> / <a href="./">Нормативы</a> / ${kw.h1}</nav><h1>${kw.h1}</h1><p class="lead">${kw.desc}</p><h2>Все нормативы по дисциплинам</h2><div class="links">${discLinks}</div>${cta()}<h2>Быстрый поиск</h2><div class="links"><a href="kakoj-razryad-zhim-muzhchiny.html">🔍 Какой разряд — жим (мужчины)</a><a href="kakoj-razryad-zhim-zhenshchiny.html">🔍 Какой разряд — жим (женщины)</a><a href="kakoj-razryad-prised-muzhchiny.html">🔍 Какой разряд — присед (мужчины)</a><a href="kakoj-razryad-tyaga-muzhchiny.html">🔍 Какой разряд — тяга (мужчины)</a></div></div>${footer()}</body></html>`;
+    writeFile(fname,html);count++;
+  }
+  console.log(`Тип 8 (ключевые страницы): ${count} страниц`);
+  return count;
+}
+
+
+// ─── ТИП 11: НОВЫЕ БЕЗВОПРОСНЫЕ ────────────────────────────────────────
+function genType11() {
+  let count = 0;
+  for (const rank of RANKS) {
+    for (const disc of DISCS) {
+      for (const sex of SEXES) {
+        const slug = `${rank.slug}-${disc.slug}-${sex.slug}`;
+        const title = `Нормативы ${rank.name} по ${disc.ru} — ${sex.name}, все весовые категории`;
+        const desc = `Нормативы разряда ${rank.name} по ${disc.ru} для ${sex.name}. Все весовые категории и федерации.`;
+        const html = generateQueryPage(slug, title, desc, rank, disc, null, sex, null);
+        writeFile(`${slug}.html`, html);
+        count++;
+      }
+    }
+  }
+  for (const fed of FEDS) {
+    for (const disc of DISCS) {
+      for (const sex of SEXES) {
+        const slug = `${fed.slug}-${disc.slug}-${sex.slug}`;
+        const title = `Нормативы ${fed.name} по ${disc.ru} — ${sex.name}, все весовые категории`;
+        const desc = `Нормативы по ${disc.ru} по версии ${fed.name} для ${sex.name}. Все весовые категории.`;
+        const html = generateQueryPage(slug, title, desc, null, disc, fed, sex, null);
+        writeFile(`${slug}.html`, html);
+        count++;
+      }
+    }
+  }
+  for (const rank of RANKS) {
+    for (const fed of FEDS) {
+      for (const sex of SEXES) {
+        const slug = `${rank.slug}-${fed.slug}-${sex.slug}`;
+        const title = `Нормативы ${rank.name} — ${fed.name}, ${sex.name}, все дисциплины`;
+        const desc = `Нормативы разряда ${rank.name} по версии ${fed.name} для ${sex.name}. Все дисциплины.`;
+        const html = generateQueryPage(slug, title, desc, rank, null, fed, sex, null);
+        writeFile(`${slug}.html`, html);
+        count++;
+      }
+    }
+  }
+  for (const disc of DISCS) {
+    for (const fed of FEDS) {
+      for (const sex of SEXES) {
+        const weights = disc.slug === 'zhim' ? WEIGHTS_BENCH.slice(0,6) :
+                        disc.slug === 'prised' ? WEIGHTS_SQUAT.slice(0,6) :
+                        disc.slug === 'tyaga' ? WEIGHTS_DEAD.slice(0,6) :
+                        WEIGHTS_CLASSIC.slice(0,6);
+        for (const w of weights) {
+          const slug = `${disc.slug}-${fed.slug}-${sex.slug}-${wSlug(w)}`;
+          const title = `Нормативы ${disc.ru} — ${fed.name}, ${sex.name}, ${w}`;
+          const desc = `Нормативы по ${disc.ru} по версии ${fed.name} для ${sex.name} в весовой категории ${w}.`;
+          const html = generateQueryPage(slug, title, desc, null, disc, fed, sex, w);
+          writeFile(`${slug}.html`, html);
+          count++;
+        }
+      }
+    }
+  }
+  console.log(`✅ Тип 11: ${count} страниц`);
+  return count;
+}
+
+// ─── ТИП 12: ТОЧНЫЕ ЗАПРОСЫ (С ВЕСОМ) ──────────────────────────────────
+function genType12() {
+  let count = 0;
+  for (const rank of RANKS) {
+    for (const disc of DISCS) {
+      const weights = disc.slug === 'zhim' ? WEIGHTS_BENCH :
+                      disc.slug === 'prised' ? WEIGHTS_SQUAT :
+                      disc.slug === 'tyaga' ? WEIGHTS_DEAD :
+                      WEIGHTS_CLASSIC;
+      for (const w of weights) {
+        const slug = `${rank.slug}-${disc.slug}-${wSlug(w)}`;
+        const title = `Нормативы ${rank.name} по ${disc.ru} — ${w}, все федерации`;
+        const desc = `Нормативы разряда ${rank.name} по ${disc.ru} в весовой категории ${w}. Все федерации.`;
+        const html = generateQueryPage(slug, title, desc, rank, disc, null, null, w);
+        writeFile(`${slug}.html`, html);
+        count++;
+      }
+    }
+  }
+  for (const rank of RANKS) {
+    for (const disc of DISCS) {
+      for (const sex of SEXES) {
+        const weights = disc.slug === 'zhim' ? WEIGHTS_BENCH.slice(0,6) :
+                        disc.slug === 'prised' ? WEIGHTS_SQUAT.slice(0,6) :
+                        disc.slug === 'tyaga' ? WEIGHTS_DEAD.slice(0,6) :
+                        WEIGHTS_CLASSIC.slice(0,6);
+        for (const w of weights) {
+          const slug = `${rank.slug}-${disc.slug}-${sex.slug}-${wSlug(w)}`;
+          const title = `Нормативы ${rank.name} по ${disc.ru} — ${sex.name}, ${w}`;
+          const desc = `Нормативы разряда ${rank.name} по ${disc.ru} для ${sex.name} в весовой категории ${w}. Все федерации.`;
+          const html = generateQueryPage(slug, title, desc, rank, disc, null, sex, w);
+          writeFile(`${slug}.html`, html);
+          count++;
+        }
+      }
+    }
+  }
+  for (const rank of RANKS) {
+    for (const fed of FEDS) {
+      for (const disc of DISCS) {
+        const weights = disc.slug === 'zhim' ? WEIGHTS_BENCH.slice(0,5) :
+                        disc.slug === 'prised' ? WEIGHTS_SQUAT.slice(0,5) :
+                        disc.slug === 'tyaga' ? WEIGHTS_DEAD.slice(0,5) :
+                        WEIGHTS_CLASSIC.slice(0,5);
+        for (const w of weights) {
+          const slug = `${rank.slug}-${fed.slug}-${disc.slug}-${wSlug(w)}`;
+          const title = `Нормативы ${rank.name} по ${disc.ru} — ${fed.name}, ${w}`;
+          const desc = `Нормативы разряда ${rank.name} по ${disc.ru} по версии ${fed.name} в весовой категории ${w}.`;
+          const html = generateQueryPage(slug, title, desc, rank, disc, fed, null, w);
+          writeFile(`${slug}.html`, html);
+          count++;
+        }
+      }
+    }
+  }
+  for (const rank of RANKS) {
+    for (const fed of FEDS) {
+      for (const disc of DISCS) {
+        for (const sex of SEXES) {
+          const weights = disc.slug === 'zhim' ? WEIGHTS_BENCH.slice(0,4) :
+                          disc.slug === 'prised' ? WEIGHTS_SQUAT.slice(0,4) :
+                          disc.slug === 'tyaga' ? WEIGHTS_DEAD.slice(0,4) :
+                          WEIGHTS_CLASSIC.slice(0,4);
+          for (const w of weights) {
+            const slug = `${rank.slug}-${fed.slug}-${disc.slug}-${sex.slug}-${wSlug(w)}`;
+            const title = `Нормативы ${rank.name} по ${disc.ru} — ${fed.name}, ${sex.name}, ${w}`;
+            const desc = `Нормативы разряда ${rank.name} по ${disc.ru} по версии ${fed.name} для ${sex.name} в весовой категории ${w}.`;
+            const html = generateQueryPage(slug, title, desc, rank, disc, fed, sex, w);
+            writeFile(`${slug}.html`, html);
+            count++;
+          }
+        }
+      }
+    }
+  }
+  console.log(`✅ Тип 12: ${count} страниц`);
+  return count;
+}
+
+// ─── ТИП 13: ГОРОДА + РАЗРЯДЫ + ДИСЦИПЛИНЫ ─────────────────────────────
+function genType13() {
+  let count = 0;
+  for (const city of CITIES) {
+    for (const rank of RANKS) {
+      for (const disc of DISCS) {
+        const slug = `${rank.slug}-${disc.slug}-${city.slug}`;
+        const title = `Нормативы ${rank.name} по ${disc.ru} в ${city.name} — таблица 2025–2026`;
+        const desc = `Нормативы разряда ${rank.name} по ${disc.ru} в ${city.name}. Все весовые категории и федерации.`;
+        const html = generateQueryPage(slug, title, desc, rank, disc, null, null, null);
+        writeFile(`${slug}.html`, html);
+        count++;
+      }
+    }
+  }
+  for (const city of CITIES) {
+    for (const rank of RANKS) {
+      const slug = `${rank.slug}-${city.slug}`;
+      const title = `Нормативы ${rank.name} в ${city.name} — все дисциплины 2025–2026`;
+      const desc = `Нормативы разряда ${rank.name} в ${city.name}. Все дисциплины и весовые категории.`;
+      const html = generateQueryPage(slug, title, desc, rank, null, null, null, null);
+      writeFile(`${slug}.html`, html);
+      count++;
+    }
+  }
+  for (const city of CITIES) {
+    for (const disc of DISCS) {
+      const slug = `${disc.slug}-${city.slug}`;
+      const title = `Нормативы ${disc.ru} в ${city.name} — все разряды 2025–2026`;
+      const desc = `Нормативы по ${disc.ru} в ${city.name}. Все разряды и весовые категории.`;
+      const html = generateQueryPage(slug, title, desc, null, disc, null, null, null);
+      writeFile(`${slug}.html`, html);
+      count++;
+    }
+  }
+  console.log(`✅ Тип 13: ${count} страниц`);
+  return count;
 }
