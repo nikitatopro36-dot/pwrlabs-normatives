@@ -27,6 +27,7 @@ body{background:#020608}
 .pa-root{background:#04090f;min-height:100vh;font-family:'Courier New',monospace;position:relative;overflow:hidden;max-width:960px;margin:0 auto}
 .pa-watermark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:0;overflow:hidden}
 .pa-watermark span{font-size:52px;font-weight:900;color:rgba(0,220,180,0.075);letter-spacing:-2px;white-space:nowrap;transform:rotate(-25deg);user-select:none;display:block;width:200%;text-align:center;line-height:1.6;text-shadow:0 0 18px rgba(0,220,180,0.06)}
+.pa-tagline{text-align:center;font-size:8px;letter-spacing:3px;color:rgba(0,221,180,0.35);padding-top:5px}
 .pa-corner-badge{position:absolute;top:8px;right:10px;z-index:2;background:linear-gradient(135deg,#001c20,#0a0a14);border:1px solid #00ddb4;border-radius:5px;padding:3px 9px;font-size:10px;font-weight:900;color:#00ddb4;letter-spacing:1px;box-shadow:0 0 10px rgba(0,221,180,0.35);pointer-events:none}
 .pa-inner{position:relative;z-index:1}
 .pa-header{background:#020608;border-bottom:1px solid #0d2030;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
@@ -306,7 +307,7 @@ body{background:linear-gradient(160deg,#0a1420,#0d1f2e 60%,#0a1420);background-i
 .pa-watermark{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;opacity:0.05}
 @keyframes breathe{0%,100%{box-shadow:0 0 28px rgba(79,195,247,0.45)}50%{box-shadow:0 0 42px rgba(79,195,247,0.75)}}
 .nav-tab.active{animation:breathe 3s ease-in-out infinite}
-.nav-tab:hover{transform:scale(1.04) translateY(-4px);box-shadow:0 10px 30px rgba(0,221,180,0.35)}
+.nav-tab:hover{transform:scale(1.04) translateY(-4px);box-shadow:0 0 36px rgba(0,221,180,0.55);border-color:#00ddb4}
 .section.active{animation:fadeIn .2s ease}
 .nav-tab+.nav-tab{border-left:1px solid rgba(79,195,247,0.08)}
 </style>
@@ -348,7 +349,8 @@ body{background:linear-gradient(160deg,#0a1420,#0d1f2e 60%,#0a1420);background-i
 
 <div class="pa-header">
   <div class="pa-logo">
-    <span class="pa-logo-text"><span class="pa-logo-main">💠 POWER ATLAS</span><span class="pa-logo-sub">Нормативы 2022–2026</span></span>
+    <img src="favicon.png" alt="PWR LAB" style="width:30px;height:30px;border-radius:50%;box-shadow:0 0 8px rgba(0,221,180,.5)">
+    <span class="pa-logo-text"><span class="pa-logo-main">POWER ATLAS</span><span class="pa-logo-sub">Нормативы 2022–2026</span></span>
   </div>
   <div class="pa-badges">
     <span class="pa-badge">ЕВСК 2022–2026</span>
@@ -356,6 +358,7 @@ body{background:linear-gradient(160deg,#0a1420,#0d1f2e 60%,#0a1420);background-i
     <span class="pa-handle"><a href="https://t.me/PWRLab_bot" target="_blank">🤖 @PWRLAB_bot</a></span>
   </div>
 </div>
+<div class="pa-tagline">POWERLIFTING DATABASE</div>
 <div class="pa-strip">🏆 500+ нормативов&nbsp;&nbsp;·&nbsp;&nbsp;⚡ Все федерации&nbsp;&nbsp;·&nbsp;&nbsp;📈 Тут всё о спорте</div>
 <div class="pa-corner-badge">⚡ PWRLAB</div>
 
