@@ -126,7 +126,7 @@ body{background:#020608}
 .skeleton{background:linear-gradient(90deg,#030d18 25%,#051525 50%,#030d18 75%);background-size:200% 100%;animation:shimmer 1.2s infinite;border-radius:3px}
 
 /* ===== НАВИГАЦИЯ-ТАБЫ (новые разделы) ===== */
-.nav-tabs{display:flex;gap:2px;padding:6px 12px;background:#010810;border-bottom:2px solid #0d2030;overflow-x:auto;scrollbar-width:none}
+.nav-tabs{display:flex;flex-wrap:wrap;gap:4px;padding:6px 12px;background:#010810;border-bottom:2px solid #0d2030}
 .nav-tabs::-webkit-scrollbar{display:none}
 .nav-tab{padding:7px 16px;border-radius:4px 4px 0 0;font-size:11px;font-weight:700;cursor:pointer;border:1px solid #0d1c28;border-bottom:none;background:transparent;color:#1e4050;font-family:'Courier New',monospace;letter-spacing:0.5px;transition:all 0.2s;white-space:nowrap}
 .nav-tab:hover{color:#4a8a9a;background:#021018}
@@ -277,13 +277,66 @@ body{background:#020608}
 .rank-row.achieved .rv{color:#c0e8e0;font-weight:700}
 .rank-row.current-rank{background:#011820;border-radius:4px;padding:5px 8px;border:1px solid #00ddb440;border-bottom:1px solid #00ddb440}
 .no-result{text-align:center;padding:20px;color:#1a4050;font-size:11px}
+
+/* ===== CLOUD REDESIGN OVERRIDE ===== */
+body{background:linear-gradient(160deg,#0a1420,#0d1f2e 60%,#0a1420)}
+.pa-root{max-width:1200px;background:transparent;overflow:visible}
+.pa-header,.pa-disc,.pa-ctrl,.pa-fed-bar,.pa-legend,.pa-footer{background:rgba(20,35,50,0.5);border-color:rgba(79,195,247,0.15);backdrop-filter:blur(6px)}
+.pa-header{border-radius:0 0 18px 18px;padding:18px 24px}
+.pa-logo-main{color:#4FC3F7;font-size:20px}
+.nav-tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;background:transparent;border:none;padding:22px 24px}
+.nav-tab{border-radius:16px;padding:20px 12px;font-size:12px;background:rgba(20,35,50,0.55);border:1px solid rgba(79,195,247,0.18);color:#7fb8d0;box-shadow:0 4px 18px rgba(0,0,0,0.25);transition:transform .25s,box-shadow .25s}
+.nav-tab:hover{transform:translateY(-4px);box-shadow:0 8px 26px rgba(0,221,180,0.25);color:#4FC3F7}
+.nav-tab.active{background:linear-gradient(135deg,rgba(0,221,180,0.18),rgba(79,195,247,0.12));border-color:#00ddb4;color:#00ddb4;box-shadow:0 0 22px rgba(0,221,180,0.35)}
+.section{background:rgba(15,28,42,0.5);border-radius:18px;margin:0 24px 24px;padding:22px;border:1px solid rgba(79,195,247,0.1)}
+.pa-dt,.pa-gbtn{border-radius:12px}
+.save-btn{border-radius:12px!important}
+.pa-footer{border-radius:18px 18px 0 0;margin-top:10px}.nav-tab.active{transform:scale(1.03);box-shadow:0 0 28px rgba(79,195,247,0.45);background:linear-gradient(135deg,rgba(79,195,247,0.22),rgba(0,221,180,0.12))}
+.nav-tab{animation:fadeInUp .4s ease both}
+.nav-tab:nth-child(1){animation-delay:.03s}.nav-tab:nth-child(2){animation-delay:.06s}.nav-tab:nth-child(3){animation-delay:.09s}.nav-tab:nth-child(4){animation-delay:.12s}.nav-tab:nth-child(5){animation-delay:.15s}.nav-tab:nth-child(6){animation-delay:.18s}.nav-tab:nth-child(7){animation-delay:.21s}.nav-tab:nth-child(8){animation-delay:.24s}.nav-tab:nth-child(9){animation-delay:.27s}.nav-tab:nth-child(10){animation-delay:.30s}.nav-tab:nth-child(11){animation-delay:.33s}
+.pa-logo-main{font-size:26px;letter-spacing:2px;text-shadow:0 0 18px rgba(79,195,247,0.4)}
+.pa-tbl tr:hover td{background:rgba(79,195,247,0.08);transition:background .25s}
+.pa-tbl td{padding:8px 6px}
+.pa-watermark{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden;opacity:0.05}
+@keyframes breathe{0%,100%{box-shadow:0 0 28px rgba(79,195,247,0.45)}50%{box-shadow:0 0 42px rgba(79,195,247,0.75)}}
+.nav-tab.active{animation:breathe 3s ease-in-out infinite}
+.nav-tab:hover{transform:scale(1.04) translateY(-4px);box-shadow:0 10px 30px rgba(0,221,180,0.35)}
+.section.active{animation:fadeIn .2s ease}
+.nav-tab+.nav-tab{border-left:1px solid rgba(79,195,247,0.08)}
 </style>
 </head>
 <body>
 
 <div class="pa-root">
 <div class="pa-watermark" aria-hidden="true">
-<span>@PWRLAB_bot &nbsp;&nbsp; @PWRLAB_bot &nbsp;&nbsp; @PWRLAB_bot<br>@PWRLAB_bot &nbsp;&nbsp; @PWRLAB_bot &nbsp;&nbsp; @PWRLAB_bot<br>@PWRLAB_bot &nbsp;&nbsp; @PWRLAB_bot &nbsp;&nbsp; @PWRLAB_bot<br>@PWRLAB_bot &nbsp;&nbsp; @PWRLAB_bot &nbsp;&nbsp; @PWRLAB_bot<br>@PWRLAB_bot &nbsp;&nbsp; @PWRLAB_bot &nbsp;&nbsp; @PWRLAB_bot</span>
+<svg width="100%" height="100%" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice" style="font-family:'Courier New',monospace">
+<g stroke="#4FC3F7" stroke-width="1.5" fill="none">
+<line x1="100" y1="200" x2="1100" y2="200"/>
+<circle cx="180" cy="200" r="70"/><circle cx="180" cy="200" r="40"/>
+<circle cx="1020" cy="200" r="70"/><circle cx="1020" cy="200" r="40"/>
+<rect x="250" y="185" width="700" height="30"/>
+<line x1="100" y1="600" x2="1100" y2="600"/>
+<rect x="300" y="560" width="600" height="80"/>
+<line x1="300" y1="540" x2="300" y2="660"/><line x1="900" y1="540" x2="900" y2="660"/>
+<circle cx="120" cy="820" r="55"/><circle cx="120" cy="820" r="30"/>
+<line x1="180" y1="200" x2="600" y2="40"/><line x1="1020" y1="200" x2="600" y2="40"/>
+</g>
+<g stroke="#00ddb4" stroke-width="0.5" opacity="0.5">
+<line x1="0" y1="50" x2="1200" y2="50"/><line x1="0" y1="350" x2="1200" y2="350"/><line x1="0" y1="750" x2="1200" y2="750"/>
+<line x1="60" y1="0" x2="60" y2="900"/><line x1="600" y1="0" x2="600" y2="900"/><line x1="1140" y1="0" x2="1140" y2="900"/>
+</g>
+<g fill="#00ddb4" font-size="14" letter-spacing="2">
+<text x="120" y="120">IPF · BENCH</text>
+<text x="850" y="160">20 KG</text>
+<text x="120" y="650">SQUAT</text>
+<text x="880" y="700">Ø450 mm</text>
+<text x="500" y="450">DEADLIFT</text>
+<text x="600" y="850">POWER ATLAS</text>
+<text x="40" y="780">25 mm</text>
+<text x="950" y="50">PA-001 · REV 2.3</text>
+<text x="30" y="30">@PWRLAB_bot</text><text x="1000" y="880">@PWRLAB_bot</text>
+</g>
+</svg>
 </div>
 <div class="pa-inner">
 
@@ -311,6 +364,8 @@ body{background:#020608}
   <button class="nav-tab" data-sec="streak">🔥 PWR</button>
   <button class="nav-tab" data-sec="kcal">🍽 КБЖУ</button>
   <button class="nav-tab" data-sec="profile">👤 ПРОФИЛЬ</button>
+  <button class="nav-tab" data-sec="bench">🎯 РАСКЛАДКА ЖИМА</button>
+  <button class="nav-tab" data-sec="articles">📰 СТАТЬИ</button>
 </div>
 
 <!-- ===== СЕКЦИЯ: НОРМАТИВЫ (оригинал) ===== -->
@@ -340,6 +395,7 @@ body{background:#020608}
 <div class="pa-footer">
   <div class="pa-src" id="srcNote">Источник: ФПР ЕВСК 2022–2026 (приказ Минспорта №1255 от 19.12.2022, ред. 24.01.2024) · WRPF — wrpf.pro · СПР — russia-powerlifting.ru · НАП — napdv.com, сводные таблицы frs24.ru</div>
   <div class="pa-handle-sm"><a href="https://t.me/PWRLab_bot" target="_blank">🔥 @PWRLAB_bot</a></div>
+  <div style="width:100%;text-align:center;font-size:9px;color:#3a6a7a;letter-spacing:1px;margin-top:6px;border-top:1px solid rgba(79,195,247,0.1);padding-top:6px">POWER ATLAS · v1.2 · Created by Nikita · ©2026</div>
 </div>
 </div>
 
@@ -657,6 +713,36 @@ body{background:#020608}
     <button class="save-btn" onclick="saveReminder()">💾 СОХРАНИТЬ НАПОМИНАНИЕ</button>
     <span id="reminderMsg" style="display:none;font-size:10px;color:#00ddb4;margin-left:8px" class="saved-flash">✓ Сохранено!</span>
   </div>
+</div>
+</div>
+</div>
+
+<!-- ===== СЕКЦИЯ: РАСКЛАДКА ЖИМА ===== -->
+<div class="section" id="sec-bench">
+<div class="rank-wrap">
+  <div class="rank-controls">
+    <h4>⚙️ ВВЕДИ СВОЙ ПМ В ЖИМЕ</h4>
+    <div class="rank-inp-row">
+      <div class="inp-group">
+        <label>ПМ (кг)</label>
+        <input type="number" id="benchPM" placeholder="например, 100" min="20" max="400" oninput="calcBench()">
+      </div>
+    </div>
+  </div>
+  <div id="benchOut" style="margin-top:14px;font-size:12px;line-height:1.7;color:#ffffff;white-space:pre-wrap;background:rgba(10,20,32,0.65);border:1px solid rgba(79,195,247,0.2);border-radius:12px;padding:16px"></div>
+</div>
+</div>
+
+<!-- ===== СЕКЦИЯ: СТАТЬИ ===== -->
+<div class="section" id="sec-articles">
+<div class="rank-wrap">
+  <div class="rank-controls" style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="save-btn" onclick="showArt('split')">СПЛИТ</button>
+    <button class="save-btn" onclick="showArt('updown')">ВЕРХ/НИЗ</button>
+    <button class="save-btn" onclick="showArt('full')">ФУЛБАДИ</button>
+    <button class="save-btn" onclick="showArt('food')">ПИТАНИЕ</button>
+  </div>
+  <div id="artOut" style="margin-top:14px;font-size:12px;line-height:1.7;color:#ffffff;white-space:pre-wrap;background:rgba(10,20,32,0.65);border:1px solid rgba(79,195,247,0.2);border-radius:12px;padding:16px"></div>
 </div>
 </div>
 
@@ -1190,6 +1276,8 @@ document.getElementById('navTabs').addEventListener('click',e=>{
   if(sec==='streak'){loadStreak();}
   if(sec==='kcal')calcKcal();
   if(sec==='rank'){fillRankFed();fillRankWC();calcRank();}
+  if(sec==='articles'&&!document.getElementById('artOut').innerHTML)showArt('split');
+  if(sec==='bench')calcBench();
   if(window.Telegram&&window.Telegram.WebApp)window.Telegram.WebApp.HapticFeedback&&window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
 });
 
@@ -1856,6 +1944,173 @@ document.getElementById('pwa-install-btn').addEventListener('click', async () =>
 document.getElementById('pwa-dismiss-btn').addEventListener('click', () => {
   banner.style.display = 'none'; localStorage.setItem('pwa-dismissed', '1');
 });
+
+/* ===== ПРОГРАММЫ ТРЕНИРОВОК ===== */
+const PROGS={
+split:`💪 СПЛИТ ПРОГРАММА (3 ДНЯ В НЕДЕЛЮ)
+Где 3×10-12: первое число — подходы, второе — повторы
+
+ДЕНЬ 1: ГРУДЬ + СПИНА
+• Жим штанги лёжа — 4×8-10
+• Подтягивания — 4×6-10
+• Жим гантелей 45 градусов — 3×10-12
+• Тяга штанги в наклоне — 4×8-10
+• Бабочка — 3×12-15
+• Горизонтальная тяга — 3×10-12
+
+ДЕНЬ 2: БИЦЕПС БЕДРА + ТРИЦЕПС + БИЦЕПС РУК
+• Румынская тяга — 4×8-10
+• Сгибания ног лёжа — 3×10-12
+• Французский жим — 4×10-12
+• Подъём штанги на бицепс — 4×8-10
+• Разгибания на блоке — 3×12-15
+• Молотки — 3×10-12
+
+ДЕНЬ 3: КВАДРИЦЕПСЫ + ПЛЕЧИ
+• Приседания со штангой — 4×6-8
+• Разгибания в тренажере — 3×8-10
+• Махи гантелями в стороны — 4×12-15
+• Жим гантелей сидя (90°) — 3×8-10
+• Задняя дельта в бабочке — 3×12-15
+• Икры — 4×15-20`,
+updown:`💪 ВЕРХ/НИЗ ПРОГРАММА (4 ДНЯ В НЕДЕЛЮ)
+Где 3×10-12: первое число — подходы, второе — повторы
+
+ДЕНЬ 1: ВЕРХ
+• Жим штанги лёжа — 5×6-8
+• Подтягивания — 3×6-10
+• Разгибание гантели из-за головы — 4×8-10
+• Жим гантелей 45 градусов — 3×8-10
+• Тяга штанги в наклоне — 4×6-8
+• Бабочка — 3×8-12
+
+ДЕНЬ 2: НИЗ, ЧУТЬ ВЕРХ
+• Приседания со штангой — 4×5-8
+• Румынская тяга — 4×8-10
+• Бицепс со штангой — 5×10-12
+• Сгибания ног — 3×10-12
+• Молотки — 3×8-10
+
+ДЕНЬ 3: ВЕРХ
+• Жим лёжа — 5×10-12
+• Вертикальная тяга — 3×10-12
+• Хамер на верх груди — 3×10-12
+• Горизонтальная тяга — 3×8-12
+• Разгибание на блоке — 3×10-12
+
+ДЕНЬ 4: НИЗ, ЧУТЬ ВЕРХ
+• Жим ногами — 4×10-12
+• Разгибания ног — 4×12-15
+• Махи — 4×10-12
+• Жим гантелей 90 градусов — 3×10-12
+• Разведение в бабочке — 3×10-12`,
+full:`💪 ФУЛБАДИ ПРОГРАММА (3 ДНЯ В НЕДЕЛЮ)
+Где 3×10-12: первое число — подходы, второе — повторы
+
+ДЕНЬ 1
+• Жим штанги лёжа — 5×6-8
+• Приседания со штангой — 4×6-8
+• Подтягивания — 3×6-10
+• Тяга штанги в наклоне — 4×6-8
+• Горизонтальная тяга — 3×8-10
+
+ДЕНЬ 2
+• Жим гантелей на наклонной 45 градусов — 4×10-12
+• Вертикальная тяга — 3×10-12
+• Жим гантелей сидя (90°) — 3×10-12
+• Трицепс (французский жим) — 4×10-12
+• Бицепс (подъём штанги) — 4×10-12
+
+ДЕНЬ 3
+• Румынская тяга — 4×8-10
+• Разгибания в тренажере — 3×10-12
+• Бабочка (Pec-Deck) — 3×12-15
+• Махи гантелей в стороны — 4×10-12
+• Сведения рук в бабочке — 3×10-12`,
+food:`🍽️ ПИТАНИЕ ДЛЯ СИЛОВЫХ (по ISSN Position Stand)
+
+БЕЛОК
+• 1.6–2.2 г/кг/день для роста и сохранения мышц
+• Порция 0.25 г/кг (20-40 г) каждые 3-4 часа, 4+ приёма в день
+
+ЖИРЫ И УГЛЕВОДЫ
+• Жиры: 0.8–1.2 г/кг веса
+• Углеводы — под калорийность и объём тренировок, в дни тяжёлых жимов больше
+
+КАЛОРИЙНОСТЬ
+• Набор массы — профицит 300–500 ккал к норме
+• Сушка — дефицит 200–300 ккал от нормы (резкий дефицит = потеря силы)
+
+ОСНОВА
+• Сон 8-9 часов — главный анаболический фактор
+• Вода 30-40 мл/кг веса в день
+• Большую часть белка — из цельной пищи, спортпит — для удобства`
+};
+const PROGS_FOOT=`
+
+💊 РЕКОМЕНДУЕМЫЕ ДОБАВКИ
+• Креатин — 5 г/день
+• Омега-3 — 1-2 г/день
+• Магний — 300-400 мг перед сном
+• Витамин D3 — 2000-4000 МЕ (при дефиците)
+• Цинк — 15-30 мг/день
+• BCAA — по желанию
+
+⚠️ Перед использованием добавок проконсультируйся с врачом.`;
+function hl(s){
+  return s.replace(/^([A-ZА-ЯЁ0-9].{0,40}:)$/gm,'<b style="color:#00ddb4">$1</b>')
+          .replace(/(\d+(?:[.,]\d+)?\s?(?:кг|г|ккал|МЕ|мл|×|x)[^\n]{0,3})/g,'<span style="color:#ffb020;font-weight:700">$1</span>');
+}
+function showArt(key){
+  document.getElementById('artOut').innerHTML=hl(PROGS[key]+PROGS_FOOT);
+}
+
+/* ===== РАСКЛАДКА ПО ЖИМУ (формула из бота) ===== */
+function rn(w){return Math.round(w/2.5)*2.5;}
+function calcBench(){
+  const out=document.getElementById('benchOut');
+  const pm=parseFloat(document.getElementById('benchPM').value);
+  if(!pm||pm<=0){out.textContent='Введи свой ПМ в жиме, чтобы получить раскладку.';return;}
+  const w55=rn(pm*0.55),w60=rn(pm*0.60),w65=rn(pm*0.65),w70=rn(pm*0.70),w75=rn(pm*0.75),
+        w80=rn(pm*0.80),w85=rn(pm*0.85),w90=rn(pm*0.90);
+  let w94=rn(pm*0.94),w96=rn(pm*0.96);
+  if(w94>=w96)w94=w96-2.5;
+  const wb94=rn(pm*1.08),wb96=rn(pm*1.12),w100=rn(pm*1.00),w105=rn(pm+5);
+  out.innerHTML=hl(`📊 ПРОГРАММА ПО ЖИМУ (ПМ = ${pm} кг)
+Первое число — подходы, второе — повторы (3×8 = 3 подхода по 8)
+
+ШКАЛА RPE: 10 — отказ · 9.5 — сомнения на ещё один · 9 — 1 в запасе · 8 — 2 в запасе · 7 — 3 в запасе · 6 и ниже — легко
+В отказ не работаем. Максимум RPE 9.5 и только на тяжёлых тренировках с брусками.
+
+ВВОДНАЯ (Пт): ${w70}кг 5×5 — RPE 3.5
+
+ОСНОВНАЯ ПРОГРАММА (14 ТРЕНИРОВОК, ПН/ПТ)
+
+1) ПН рекрутирование+добивка: ${w90}кг 6×2 RPE8 / ${w70}кг 1×8
+2) ПТ объём: ${w75}кг 6×5 RPE4
+3) ПН техника: ${w80}кг 6×4 RPE5
+4) ПТ тяжёлый рекрутинг+бруски: ${w94}кг 6×2 RPE9 / ${wb94}кг с бруска 1×2 / ${w60}кг 1×8
+5) ПН лёгкий объём: ${w70}кг 6×4 RPE3-4 / ${w55}кг 1×8
+6) ПТ техника+объём: ${w80}кг 5×5 RPE5.5
+7) ПН пауза 1с+добивка: ${w85}кг в паузу 6×3 RPE6-7 / ${w70}кг 1×5
+8) ПТ рекрутинг+бруски: ${w96}кг 6×2 RPE9.5 / ${wb96}кг с бруска 1×2 / ${w65}кг 1×8
+9) ПН объём: ${w75}кг 5×5 RPE4
+10) ПТ техника: ${w80}кг 6×4 RPE5
+11) ПН средний жим+добивка: ${w90}кг 6×3 RPE8.5 / ${w70}кг 1×8
+12) ПТ динамика/скорость: ${w65}кг 3×5 RPE1 / ${w70}кг 3×4 RPE2
+13) ПН техника: ${w70}кг 5×5 RPE3
+14) ПТ ПРОХОДКА: ${w100}кг 1×1 (текущий ПМ) / ${w105}кг 1×1 (+5 кг)
+
+⚡ ПРАВИЛА
+• Бруски (тр. 4 и 8): на грудь, опускание контролируемое, партнёр обязательно страхует
+• Добивка — лёгкая гипертрофия без отказа
+• Динамика — быстрое выжимание, подконтрольное опускание
+• Минимум 5 подходов, оптимально 5-6
+• Сон 8-9 часов, профицит калорий
+• Перед тяжёлыми жимами не грузи трицепс/плечи тяжёлой подсобкой
+• Программа подходит больше всего до 150 кг в жиме
+• Выходи на максимум не чаще раза в 2 месяца`);
+}
 </script>
 </body>
 </html>
