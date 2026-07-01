@@ -1944,16 +1944,21 @@ let deferredPrompt;
 const banner = document.getElementById('pwa-banner');
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault(); deferredPrompt = e;
-  if (!localStorage.getItem('pwa-dismissed')) banner.style.display = 'flex';
+  banner.style.display = 'flex';
 });
+// iOS fallback
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.navigator.standalone;
+if (isIOS) banner.style.display = 'flex';
+
 document.getElementById('pwa-install-btn').addEventListener('click', async () => {
+  if (isIOS) { alert('На iPhone: нажми «Поделиться» → «На экран домой»'); return; }
   if (!deferredPrompt) return;
   deferredPrompt.prompt();
   await deferredPrompt.userChoice;
   deferredPrompt = null; banner.style.display = 'none';
 });
 document.getElementById('pwa-dismiss-btn').addEventListener('click', () => {
-  banner.style.display = 'none'; localStorage.setItem('pwa-dismissed', '1');
+  banner.style.display = 'none';
 });
 
 /* ===== ПРОГРАММЫ ТРЕНИРОВОК ===== */
