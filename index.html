@@ -384,6 +384,8 @@ body{background:linear-gradient(160deg,#0a1420,#0d1f2e 60%,#0a1420);background-i
   <button class="nav-tab" data-sec="profile">👤 ПРОФИЛЬ</button>
   <button class="nav-tab" data-sec="bench">🎯 РАСКЛАДКА ЖИМА</button>
   <button class="nav-tab" data-sec="articles">📰 СТАТЬИ</button>
+  <button class="nav-tab" data-sec="pm">💪 МОЙ ПМ</button>
+  <button class="nav-tab" data-sec="diary">📓 ДНЕВНИК</button>
 </div>
 
 <!-- ===== СЕКЦИЯ: НОРМАТИВЫ (оригинал) ===== -->
@@ -759,12 +761,37 @@ body{background:linear-gradient(160deg,#0a1420,#0d1f2e 60%,#0a1420);background-i
     <button class="save-btn" onclick="showArt('updown')">ВЕРХ/НИЗ</button>
     <button class="save-btn" onclick="showArt('full')">ФУЛБАДИ</button>
     <button class="save-btn" onclick="showArt('food')">ПИТАНИЕ</button>
+    <button class="save-btn" onclick="showArt('ekip')">⚙️ ЭКИП vs КЛАССИКА</button>
+    <button class="save-btn" onclick="showArt('weight')">⚖️ ВЕСОВАЯ</button>
+    <button class="save-btn" onclick="showArt('fpr_wrpf')">🏛️ ФПР vs WRPF</button>
   </div>
   <div id="artOut" style="margin-top:14px;font-size:12px;line-height:1.7;color:#ffffff;white-space:pre-wrap;background:rgba(10,20,32,0.65);border:1px solid rgba(79,195,247,0.2);border-radius:12px;padding:16px"></div>
 </div>
 </div>
 
-</div><!-- pa-inner -->
+<div class="section" id="sec-pm">
+<div class="rank-wrap">
+  <h3 style="color:#00ddb4;margin-bottom:12px">💪 РАСЧЁТ ОДНОПОВТОРНОГО МАКСИМУМА</h3>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+    <input id="pm-weight" type="number" placeholder="Вес (кг)" style="background:#021018;border:1px solid #0d2535;color:#fff;padding:8px;border-radius:6px;font-family:monospace;width:120px">
+    <input id="pm-reps" type="number" placeholder="Повторения" min="2" max="9" style="background:#021018;border:1px solid #0d2535;color:#fff;padding:8px;border-radius:6px;font-family:monospace;width:130px">
+    <button class="save-btn" onclick="calcPM()">РАССЧИТАТЬ</button>
+  </div>
+  <div id="pm-result" style="font-size:13px;line-height:2;color:#fff"></div>
+</div>
+</div>
+
+<div class="section" id="sec-diary">
+<div class="rank-wrap">
+  <h3 style="color:#00ddb4;margin-bottom:12px">📓 ДНЕВНИК ТРЕНИРОВОК</h3>
+  <textarea id="diary-text" placeholder="Запиши тренировку: дата, упражнения, результаты..." style="width:100%;min-height:120px;background:#021018;border:1px solid #0d2535;color:#fff;padding:10px;border-radius:8px;font-family:monospace;font-size:12px;resize:vertical;box-sizing:border-box"></textarea>
+  <div style="display:flex;gap:8px;margin-top:8px">
+    <button class="save-btn" onclick="diaryAdd()">➕ ДОБАВИТЬ ЗАПИСЬ</button>
+    <button class="save-btn" onclick="diaryClear()" style="background:rgba(255,50,50,0.15)">🗑️ ОЧИСТИТЬ</button>
+  </div>
+  <div id="diary-log" style="margin-top:14px;font-size:11px;color:#ccc;line-height:1.8"></div>
+</div>
+</div>
 </div><!-- pa-root -->
 
 <div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#011c20;border-top:1px solid #00ddb4;padding:10px 14px;align-items:center;gap:10px;font-family:'Courier New',monospace">
@@ -2067,7 +2094,61 @@ food:`🍽️ ПИТАНИЕ ДЛЯ СИЛОВЫХ (по ISSN Position Stand)
 ОСНОВА
 • Сон 8-9 часов — главный анаболический фактор
 • Вода 30-40 мл/кг веса в день
-• Большую часть белка — из цельной пищи, спортпит — для удобства`
+• Большую часть белка — из цельной пищи, спортпит — для удобства`,
+ekip:`⚙️ ЭКИПИРОВОЧНЫЙ И КЛАССИЧЕСКИЙ ПАУЭРЛИФТИНГ
+
+КЛАССИЧЕСКИЙ (RAW)
+• Выступают в майке, шортах, поясе и наколенниках
+• Честный показатель силы без помощи экипировки
+• Самый популярный вид, больше соревнований
+• Проще для новичков — не нужно осваивать спецэкипировку
+
+ЭКИПИРОВОЧНЫЙ (EQUIPPED)
+• Используется комбинезон для приседа/тяги, рубашка для жима
+• Даёт +20–40% к результату за счёт упругости материала
+• Требует длительного обучения правильному использованию
+• Отдельные нормативы — выше, чем в классике
+
+ЧТО ВЫБРАТЬ НОВИЧКУ?
+Начинай с классики. После 2–3 лет тренировок и наработки техники можно пробовать экипировку. В нормативах на сайте: (э) — экипировочный, без пометки — классический.`,
+weight:`⚖️ КАК ВЫБРАТЬ ВЕСОВУЮ КАТЕГОРИЮ
+
+ВЕСОВЫЕ КАТЕГОРИИ МУЖЧИНЫ (ФПР/IPF)
+до 59 / до 66 / до 74 / до 83 / до 93 / до 105 / до 120 / 120+
+
+ВЕСОВЫЕ КАТЕГОРИИ МУЖЧИНЫ (WRPF)
+до 52 / до 56 / до 60 / до 67.5 / до 75 / до 82.5 / до 90 / до 100 / до 110 / до 125 / до 140 / 140+
+
+КАК ВЫБРАТЬ?
+1. Взвесься утром натощак — это рабочий вес
+2. Если вес близко к верхней границе — выступай в ней
+3. Если вес на 5–7 кг выше — похудей или перейди выше
+4. Сгонка веса (обезвоживание) — только для опытных
+
+СОВЕТ
+Не гонись за низкой категорией. Лучше выступить в своей весовой с хорошим результатом, чем прийти ослабленным после сгонки.`,
+fpr_wrpf:`🏛️ ФПР vs WRPF — В ЧЁМ РАЗНИЦА
+
+ФПР (Федерация Пауэрлифтинга России)
+• Аффилирована с IPF — международная федерация
+• Признана Министерством спорта РФ
+• Строгий допинг-контроль (ВАДА)
+• Присваивает государственные разряды ЕВСК: III, II, I, КМС, МС, МСМК
+• Весовые категории IPF
+• Жёсткие правила техники
+
+WRPF (World Raw Powerlifting Federation)
+• Независимая международная федерация
+• Свой допинг-контроль, менее строгий
+• Разряды не государственные (ЕВСК не присваивает)
+• Больше соревнований, ниже порог входа
+• Другие весовые категории
+• Популярна среди любителей и начинающих
+
+ЧТО ВЫБРАТЬ?
+Хочешь госразряд → ФПР
+Хочешь просто попробовать соревнования → WRPF
+Многие выступают в обеих федерациях.`
 };
 const PROGS_FOOT=`
 
@@ -2084,6 +2165,38 @@ function hl(s){
   return s.replace(/^([A-ZА-ЯЁ0-9].{0,40}:)$/gm,'<b style="color:#00ddb4">$1</b>')
           .replace(/(\d+(?:[.,]\d+)?\s?(?:кг|г|ккал|МЕ|мл|×|x)[^\n]{0,3})/g,'<span style="color:#ffb020;font-weight:700">$1</span>');
 }
+function calcPM(){
+  const w=parseFloat(document.getElementById('pm-weight').value);
+  const r=parseInt(document.getElementById('pm-reps').value);
+  if(!w||!r||r<2||r>9){document.getElementById('pm-result').innerHTML='<span style="color:#ff6b6b">Введи вес и повторения (2–9)</span>';return;}
+  const epley=Math.round(w*(1+r/30)*10)/10;
+  const brzycki=Math.round(w*(36/(37-r))*10)/10;
+  const avg=Math.round((epley+brzycki)/2*10)/10;
+  document.getElementById('pm-result').innerHTML=`
+    <div>📐 Формула Эпли: <b style="color:#00ddb4">${epley} кг</b></div>
+    <div>📐 Формула Бржицки: <b style="color:#00ddb4">${brzycki} кг</b></div>
+    <div>⭐ Средний ПМ: <b style="color:#ffd700;font-size:15px">${avg} кг</b></div>
+    <div style="margin-top:8px;color:#aaa;font-size:11px">💡 Ваш примерный одноповторный максимум — ${avg} кг</div>`;
+}
+
+function diaryAdd(){
+  const text=document.getElementById('diary-text').value.trim();
+  if(!text)return;
+  const entries=JSON.parse(localStorage.getItem('pwr-diary')||'[]');
+  const date=new Date().toLocaleDateString('ru-RU',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  entries.unshift({date,text});
+  localStorage.setItem('pwr-diary',JSON.stringify(entries.slice(0,50)));
+  document.getElementById('diary-text').value='';
+  renderDiary();
+}
+function diaryClear(){if(confirm('Очистить весь дневник?')){localStorage.removeItem('pwr-diary');renderDiary();}}
+function renderDiary(){
+  const entries=JSON.parse(localStorage.getItem('pwr-diary')||'[]');
+  const log=document.getElementById('diary-log');
+  if(!entries.length){log.innerHTML='<span style="color:#1a4a5a">Записей пока нет</span>';return;}
+  log.innerHTML=entries.map(e=>`<div style="border-bottom:1px solid #0d2535;padding:8px 0"><span style="color:#00ddb4;font-size:10px">${e.date}</span><br>${e.text}</div>`).join('');
+}
+document.addEventListener('DOMContentLoaded',renderDiary);
 function showArt(key){
   document.getElementById('artOut').innerHTML=hl(PROGS[key]+PROGS_FOOT);
 }
