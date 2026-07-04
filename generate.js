@@ -8,7 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const BASE_URL = 'https://nikitatopro36-dot.github.io/pwrlabs-normatives';
+const BASE_URL = 'https://pwrlab.site';
 const OUT_DIR = path.join(__dirname, 'normativy');
 
 // ─── ДАННЫЕ ─────────────────────────────────────────────────────────────────
