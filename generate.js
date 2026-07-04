@@ -1749,30 +1749,22 @@ if(process.argv.includes('--submit')){
     process.exit(1);
   }
   const https = require('https');
-  const body = JSON.stringify({
-    host: 'pwrlab.site',
-    key: INDEXNOW_KEY,
-    keyLocation: `${BASE_URL}/${INDEXNOW_KEY}.txt`,
-    urlList: allUrls
-  });
-  console.log(`\nОтправляю ${allUrls.length} URL в Яндекс IndexNow...`);
-  const req = https.request({
-    hostname: 'yandex.com',
-    path: '/indexnow',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=utf-8',
-      'Content-Length': Buffer.byteLength(body)
-    }
-  }, res => {
-    console.log(`IndexNow → Яндекс: HTTP ${res.statusCode}`);
-    if(res.statusCode === 200) console.log('✅ Яндекс принял URL на индексацию');
-    else if(res.statusCode === 202) console.log('✅ Принято (202) — URL в очереди');
-    else console.log('⚠️  Проверь: файл-ключ залит на GitHub? Ключ совпадает с именем файла?');
-  });
-  req.on('error', e => console.error('Ошибка запроса:', e.message));
-  req.write(body);
-  req.end();
+  console.log('\nОтправляю '+allUrls.length+' URL в Яндекс IndexNow...');
+  const CHUNK=10000;
+  const sendChunk=(i)=>{
+    if(i>=allUrls.length)return;
+    const slice=allUrls.slice(i,i+CHUNK);
+    const body=JSON.stringify({host:'pwrlab.site',key:INDEXNOW_KEY,keyLocation:BASE_URL+'/'+INDEXNOW_KEY+'.txt',urlList:slice});
+    const req=https.request({hostname:'yandex.com',path:'/indexnow',method:'POST',headers:{'Content-Type':'application/json; charset=utf-8','Content-Length':Buffer.byteLength(body)}},(res)=>{
+      console.log('Чанк '+(Math.floor(i/CHUNK)+1)+': HTTP '+res.statusCode);
+      if(res.statusCode===200||res.statusCode===202)console.log('OK');
+      else console.log('Ошибка');
+      setTimeout(()=>sendChunk(i+CHUNK),2000);
+    });
+    req.on('error',e=>console.error('Ошибка:',e.message));
+    req.write(body);req.end();
+  };
+  sendChunk(0);
 }
 
 // ─── ГЕНЕРАЦИЯ KEYWORD PAGES (ТИП 8) ──────────────────────────────────────
