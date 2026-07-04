@@ -1750,7 +1750,7 @@ if(process.argv.includes('--submit')){
   }
   const https = require('https');
   const body = JSON.stringify({
-    host: 'nikitatopro36-dot.github.io',
+    host: 'pwrlab.site',
     key: INDEXNOW_KEY,
     keyLocation: `${BASE_URL}/${INDEXNOW_KEY}.txt`,
     urlList: allUrls
