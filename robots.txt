@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pwrlab.site/sitemap.xml
+Sitemap: https://nikitatopro36-dot.github.io/pwrlabs-normatives/sitemap.xml

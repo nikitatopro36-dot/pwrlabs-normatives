@@ -8,7 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const BASE_URL = 'https://pwrlab.site';
+const BASE_URL = 'https://nikitatopro36-dot.github.io/pwrlabs-normatives';
 const OUT_DIR = path.join(__dirname, 'normativy');
 
 // ─── ДАННЫЕ ─────────────────────────────────────────────────────────────────
@@ -1754,7 +1754,7 @@ if(process.argv.includes('--submit')){
   const sendChunk=(i)=>{
     if(i>=allUrls.length)return;
     const slice=allUrls.slice(i,i+CHUNK);
-    const body=JSON.stringify({host:'pwrlab.site',key:INDEXNOW_KEY,keyLocation:BASE_URL+'/'+INDEXNOW_KEY+'.txt',urlList:slice});
+    const body=JSON.stringify({host:'nikitatopro36-dot.github.io',key:INDEXNOW_KEY,keyLocation:BASE_URL+'/'+INDEXNOW_KEY+'.txt',urlList:slice});
     const req=https.request({hostname:'yandex.com',path:'/indexnow',method:'POST',headers:{'Content-Type':'application/json; charset=utf-8','Content-Length':Buffer.byteLength(body)}},(res)=>{
       console.log('Чанк '+(Math.floor(i/CHUNK)+1)+': HTTP '+res.statusCode);
       if(res.statusCode===200||res.statusCode===202)console.log('OK');
