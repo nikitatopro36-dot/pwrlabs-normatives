@@ -515,7 +515,7 @@ footer{font-size:11px;color:var(--muted);text-align:center;padding:20px;border-t
 footer a{color:var(--accent);text-decoration:none}
 </style>`;
 }
-function header(){ return `<header class="top"><a href="../">🏋️ PWR Нормативы</a></header>`; }
+function header(){ return `<header class="top"><a href="../">🏋️ PWR Нормативы</a><a href="https://t.me/PWRLab_bot" target="_blank" rel="noopener" style="margin-left:auto;padding:6px 12px;border-radius:8px;background:#229ED9;color:#fff;text-decoration:none;font-weight:600">🤖 Бот в Telegram</a></header>`; }
 function footer(){ return `<footer>© PWR Нормативы · Telegram-бот <a href="https://t.me/PWRLab_bot" target="_blank">@PWRLAB_bot</a></footer>`; }
 function cta(){ return `<a class="cta" href="../">🧮 Открыть полный калькулятор нормативов и разрядов</a>`; }
 
